@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Suggestions for Public Speakers</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="topline">
+            <div><h1>Stage Finder</h1></div>
+            <div><button>menu</button></div>
+        </div>
+        <h4>Find events to speak at and apply today!</h4>
+        <h4>Curated by <em>"The Knowledge Formula"</em></h4>
+    </header>
+    <main>
+        <div class="eventGeneratorDiv">
+            <div class="selectionDiv">
+                <label for="where-picker">Select Location</label>
+                <select id="where-picker" multiple>
+                    <option value="world">The Whole World</option>
+                    <option value="africa">Africa</option>
+                    <option value="asia">Asia</option>
+                    <option value="europe">Europe</option>
+                    <option value="north-america">North America</option>
+                    <option value="south-america">South America</option>
+                    <option value="australia">Australia</option>
+                    <option value="antarctica">Antarctica</option>
+                </select>
+            </div>
+            <div class="selectionDiv">
+                <label for="subject-picker">Subjects</label>
+                <select id="subject-picker" multiple>
+                    <option value="ai">AI</option>
+                    <option value="it">IT</option>
+                    <option value="entrepreneurship">Entrepreneurship</option>
+                    <option value="innovation">Innovation</option>
+                    <option value="motivation">Motivation</option>
+                    <option value="sales">Sales</option>
+                    <option value="leadership">Leadership</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <button id="generate">Find events</button>
+        </div>
+        <div class="eventDisplay">
+            <div id="output"></div>
+        </div>
+    </main>
+    <footer>
+        <p><em>Copyright: The Knowledge Formula, 2024</em></p>
+    </footer>
+</body>
+</html>
