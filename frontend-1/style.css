@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 110vh;
+}
+
+h1, h2, h3, h3, h4, h5 ,h6, p {
+color:aquamarine
+}
+
+header {
+    height: 40vh;
+    padding: 1rem;
+    background-image: url('https://cdn.pixabay.com/photo/2019/01/26/20/22/public-speaking-3956908_1280.jpg');
+    background-size: cover;
+}
+    .topline {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+main {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.eventGeneratorDiv{
+    justify-self: baseline;
+    display: flex;
+    justify-content: space-around;
+}
+    .selectionDiv {
+        display: flex;
+        flex-direction: column;
+    }
+.eventDisplay {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: aquamarine;
+
+}
+
+footer {
+    background-color: gray;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+
+}
