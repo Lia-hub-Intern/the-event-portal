@@ -1,0 +1,227 @@
+.event-container {
+    height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.event-container-small-outer {
+    width: 72vw;
+    height: 62vh;
+    display: flex;
+    justify-content: center;
+    overflow-y: scroll;
+}
+
+.event-container-small-inner {
+    width: 70vw;
+    height: 100vh; /*Remove this to make it work with multipile event's*/
+}
+
+.main-title {
+    font-size: 2.25rem;
+    color: var(--Gray);
+    margin-left: 1%;
+    font-weight: 600;
+}
+
+.sub-main-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--Gray);
+    margin-left: 1%;
+}
+
+.recency-container {
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 16%;
+    border-bottom: 3px solid var(--Gray);
+}
+
+.recency-item {
+    margin: 0 10px;
+    color: var(--Gray);
+    cursor: pointer;
+    font-weight: 500;
+    padding: 0.45%;
+    border-bottom: 4px solid var(--Gray);
+    transition: border-color 0.25s;
+}
+
+.recency-item:hover {
+    border-color: var(--LightContrastBlue)
+}
+
+.speaker-type-container {
+    width: 98%;
+    margin-left: 1%;
+    display: flex;
+}
+
+.speaker-type-item {
+    color: var(--Gray);
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    margin: 0 1.5%;
+    background-color: var(--White);
+    transition: all 0.25s;
+    border: 1px solid var(--Gray);
+}
+
+.speaker-type-item:hover {
+    color: var(--White);
+    background-color: var(--Gray);
+}
+
+.overhead-column-name {
+    background-color: var(--White);
+    border: 1px solid var(--Gray);
+    border-radius: 10px;
+    height: 3.5vh;
+    width: 69vw;
+    margin-bottom: 0.75%;
+    margin-left: -0.5%;    
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.column-title {
+    font-size: 1.2rem;
+    color: var(--Gray);
+    font-weight: 500;
+    text-align: center;
+}
+
+.event-item-container {
+    width: 98%;
+    height: 12vh;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    padding: 1%;
+    background-color: var(--White);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--Gray);
+}
+
+.event-item-name-container, .event-item-application-due-container, .event-item-event-date-container, .event-item-paying-container, .event-item-email-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-item-name-container {
+    width: 35%;
+}
+
+.event-item-name {
+    color: var(--Black);
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: left;
+    width: 100%;
+}
+
+.event-item-application-due-container {
+    width: 15%;
+}
+
+.event-item-event-date-container {
+    width: 15%;
+}
+
+.event-item-paying-container {
+    width: 20%;
+}
+
+.event-payment {
+    border-radius: 10px;
+    height: 40%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.event-item-email-container {
+    width: 15%;
+}
+
+.event-email-button {
+    border: 1px solid var(--HighContrastBlue);
+    color:var(--HighContrastBlue);
+    background: linear-gradient(90deg, var(--HighContrastBlue) 50%, var(--White) 50%);
+    background-size: 200.5% 100%;
+    background-position: right bottom;
+    transition: background-position 0.1s ease-in-out;
+    font-weight: 500;
+    letter-spacing: 0.065rem;
+    border-radius: 10px;
+    height: 40%;
+    width: 90%;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.event-email-button:hover {
+    border: 1px solid var(--White);
+    color: var(--White);
+    background-position: left bottom;
+}
+
+/*Dark mode - lägg till klasser här för att hålla allting ordnat*/
+
+.dark-mode {
+    color: var(--White);
+}
+
+.sub-main-title.dark-mode {
+    color: var(--White);
+}
+
+.recency-item.dark-mode {
+    color: var(--White);
+    border-color: var(--White);
+}
+
+.recency-item.dark-mode:hover {
+    border-color: var(--LightContrastBlue);
+}
+
+.recency-container.dark-mode {
+    border-color: var(--White);
+}
+
+/*Gray mode*/
+
+.gray-mode {
+    color: var(--White);
+}
+
+.sub-main-title.gray-mode {
+    color: var(--White);
+}
+
+.recency-item.gray-mode {
+    color: var(--White);
+    border-color: var(--White);
+}
+
+.recency-item.gray-mode:hover {
+    border-color: var(--LightContrastBlue);
+}
+
+.recency-container.gray-mode {
+    border-color: var(--White);
+}

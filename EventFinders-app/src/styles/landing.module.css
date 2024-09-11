@@ -1,0 +1,117 @@
+.landing-page-container {
+    height: 90.25vh;
+    width: 99%;
+    margin-top: 0.5%;
+    margin-left: 0.5%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.landing-page-inner {
+    height: 120vh;
+}
+
+.title-text {
+    margin-top: 3%;
+    font-size: 1.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.numbers-container {
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.number-container-one, .number-container-two, .number-container-three {
+    height: 100%;
+    width: 32%;
+    margin: 0 0.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.15rem;
+}
+
+.content-for-one, .content-for-two, .content-for-three {
+    font-size: 1.45rem;
+    margin-top: 4.5%;
+}
+
+
+.headline-for-two{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-us-container {
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-us-content {
+    font-size: 1.15rem;
+    margin: 0 5%;
+    font-weight: 600;
+}
+
+.seconad-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid pruple;
+}
+
+.explenation-container {
+    height: 30vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.explenation-image {
+    width: 8.333%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.explenation-content {
+    width: 20.333%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.explenation-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.email-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 20%;
+}
+
+.email-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.email-content {
+    font-size: 1.45rem;
+}
