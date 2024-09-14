@@ -1,0 +1,198 @@
+.main-header-empty {
+    width: 100%;
+    height: 7.4vh;
+    display: flex;
+    align-items: center;
+}
+
+.header-stopper {
+    height: 3px;
+    width: 98%;
+    margin-left: 1%;
+    background-image: linear-gradient(to right, var(--White), var(--Gray), var(--White));
+    background-size: 300%;  
+    animation: moveGradient 10s linear infinite; 
+}
+
+.logo-header {
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.logo-link {
+    margin-left: 1%;
+    height: 75%;
+    width: 14.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navigation-item {
+    color: var(--Gray);
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--White);
+    transition: border-color 0.25s;
+}
+
+.navigation-item:hover {
+    border-color: var(--Gray);
+}
+
+
+.logout-button {
+    color: var(--White);
+    background-color: var(--HighContrastBlue);
+    font-size: 1.2rem;
+    padding: 0.5%;
+    border: 1px solid var(--HighContrastBlue);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    color: var(--HighContrastBlue);
+    background-color: var(--White);
+}
+
+.navigation-bar {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.image-of-user {
+    border: 3px solid var(--LightContrastBlue);
+    height: 6vh;
+    width: 6vh;
+    border-radius: 50%;
+    margin-right: 3%;
+    overflow: hidden;
+    background-color: black;
+}
+
+.hover-profile-photo {
+    height: 99%;
+    width: 99%;
+    border-radius: 50%;
+    position: relative; /* Make the div a positioning context */
+    overflow: hidden; /* Ensure any overflowing content is hidden */
+}
+
+.profile-inner-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+.cogwheel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px; /* Adjust the size of the cogwheel */
+    color: white;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Smooth transition for appearance */
+}
+
+.hover-profile-photo:hover .profile-inner-photo {
+    opacity: 0.4; /* Darken the image */
+}
+
+.hover-profile-photo:hover .cogwheel {
+    opacity: 1; /* Show the cogwheel */
+}
+
+@keyframes moveGradient {
+    0% {
+        background-position: 0% 50%; /* Start from the left */
+    }
+    50% {
+        background-position: 100% 50%; /* Move to the right */
+    }
+    100% {
+        background-position: 0% 50%; /* Start from the left */
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+  
+  /* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+  
+  /* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+  
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+  
+  /* When checked, move the slider to the right */
+input:checked + .slider {
+    background-color: var(--HighContrastBlue);
+}
+  
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+
+/*Dark mode - lägg till en ny klasser här*/
+
+.navigation-item.dark-mode {
+    color: var(--White);
+    border-color: var(--DarkBlue);
+}
+
+.navigation-item.dark-mode:hover {
+    border-color: var(--White);
+}
+
+/*Gray mode*/
+
+.navigation-item.gray-mode {
+    color: var(--White);
+    border-color: var(--Gray);
+}
+
+.navigation-item.gray-mode:hover {
+    border-color: var(--White);
+}

@@ -1,0 +1,104 @@
+.documentation-main-container {
+    height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.documentation-menu-container {
+    height: 97%;
+    width: 30vw;
+    margin: 1%;
+}
+
+.documentation-content-container {
+    height: 97%;
+    width: 70vw;
+    margin: 1%;
+    margin-left: 0;
+    background-color: var(--White);
+    border: 1px solid var(--Gray);
+    border-radius: 10px;
+}
+
+
+.list-item {
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    margin: 1%;
+    padding: 1%;
+    height: 8vh;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid var(--Gray);
+    transition: background-color 0.25s;
+}
+
+.list-item:hover {
+    background-color: #2C2B2B33;
+}
+
+.icon-container {
+    background-color: var(--Gray);
+    border-radius: 10px;
+    height: 6.5vh;
+    font-size: 2rem;
+    color: var(--White);
+    width: 7vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-container-two {
+    border-radius: 10px;
+    height: 7vh;
+    font-size: 1.5rem;
+    color: var(--Gray);
+    width: 7vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-text {
+    font-size: 1.2rem;
+    color: var(--Gray);
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    cursor: pointer;
+}
+
+/*Dark mode - documentation*/
+
+.dark-mode {
+    color: var(--White);
+}
+
+.list-item.dark-mode {
+    border-color: var(--White);
+}
+
+.list-item.dark-mode:hover {
+    background-color: #FAFAFA33;
+}
+
+/*Gray mode*/
+
+.gray-mode {
+    color: var(--White);
+}
+
+.list-item.gray-mode {
+    border-color: var(--White);
+}
+
+.list-item.gray-mode:hover {
+    background-color: #FAFAFA33;
+}
+

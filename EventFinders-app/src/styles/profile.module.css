@@ -1,0 +1,209 @@
+.profile-main-container {
+    height: 92.25vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-main {
+    width: 85vw;
+    height: 80vh;
+    padding: 1%;
+    border: 1px solid var(--Gray);
+    border-radius: 10px;
+    background-color: var(--White);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.title-container {
+    width: 100%;
+    border: 1px solid var(--Gray);
+    background-color: var(--White);
+    border-radius: 10px;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.25rem;
+    font-weight: 600;
+}
+
+.photo-container {
+    border: 1px solid var(--Gray);
+    background-color: var(--White);
+    border-radius: 10px;
+    margin-top: 1%;
+    width: 40%;
+    height: 99%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.change-container {
+    border: 1px solid var(--Gray);
+    background-color: var(--White);
+    border-radius: 10px;
+    width: 64%;
+    height: 99%;
+    margin-top: 1%;
+    margin-left: 1%;
+}
+
+.user-image-profile {
+    border: 3px solid var(--LightContrastBlue);
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    height: 15vh;
+    width: 15vh;
+    border-radius: 50%;
+    margin-right: 3%;
+    background-color: var(--White);
+}
+
+.user-name {
+    width: 98%;
+    border-radius: 10px;
+    padding: 3%;
+    margin-bottom: 2vh;
+    border: 1px solid var(--Gray);
+    font-weight: 500;
+}
+
+.menu-item {
+    padding: 2%;
+    width: 91%;
+    height: 6vh;
+    border-radius: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    background: var(--White);
+    transition: all 0.25s;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background: #2C2B2B33;
+}
+
+.settings-menu {
+    height: 100%;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-right: 1px solid var(--Gray);
+}
+
+.item-icon {
+    width: 0.5vh;
+    height: 4.5vh;
+    border-radius: 10px;
+    margin-right: 3%;
+}
+
+.menu-item-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-main-settings {
+    width: 71%;
+    margin-left: 1%;
+    height: 98%;
+}
+
+.color-apperance-container {
+    margin-top: 2%;
+}
+
+.color-settings-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1.5%;
+}
+
+.example-version-image {
+    border-radius: 5px;
+    border: 5px solid #2C2B2B44;
+}
+
+
+.example-version-image:hover {
+    border: 5px solid #2C2B2B66;
+}
+
+.user-info-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.account-title {
+    width: 100%;
+    height: 6%;
+    margin-bottom: 1%;
+}
+
+.profile-photo {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    width: 11%;
+    border-radius: 50%;
+    border: 4px solid var(--LightContrastBlue)
+}
+
+.user-input-field {
+    border: 2px solid var(--LightContrastBlue);
+    border-radius: 10px;
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    font-weight: 500;
+}
+
+.bigger-inner-container {
+    display: flex;
+    width: 100%;
+}
+
+.smaller-inner-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-input-button {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 2px solid var(--LightContrastBlue);
+    color: var(--LightContrastBlue);
+    height: 5%;
+    width: 5%;
+    position: absolute;
+    right: 8.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.25s;
+    cursor: pointer;
+}
+
+.user-input-button:hover {
+    background-color: var(--LightContrastBlue);
+    color: var(--White);
+}

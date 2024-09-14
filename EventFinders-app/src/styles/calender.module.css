@@ -1,0 +1,243 @@
+.calender-main-container {
+    height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.calender-title-container {
+    width: 72vw;
+    height: 10vh;
+}
+
+.calender-main-content {
+    height: 70vh;
+    width: 72vw;
+}
+
+.main-title {
+    font-size: 2.25rem;
+    color: var(--Gray);
+    margin-left: 1%;
+    font-weight: 600;
+}
+
+.recency-container {
+    width: 98%;
+    margin-left: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 36%;
+    border-bottom: 3px solid var(--Gray);
+}
+
+.recency-item {
+    margin: 0 10px;
+    color: var(--Gray);
+    cursor: pointer;
+    font-weight: 500;
+    padding: 0.4%;
+    border-bottom: 2px solid var(--Gray);
+    transition: border-color 0.25s;
+    text-decoration: none;
+}
+
+.recency-item:hover {
+    border-color: var(--LightContrastBlue)
+}
+
+.day-container {
+    background-color: var(--White);
+    border-radius: 10px;
+    height: 8.5vh;
+    width: 100%;
+    margin: 1% 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--Gray);
+}
+
+.day-name {
+    margin-right: 6%;
+    height: 50%;
+    width: 10%;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    border-bottom: 3px solid red;
+}
+
+.event-name-calender {
+    height: 50%;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+    justify-content: left;
+}
+
+.event-speaker-time {
+    height: 50%;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.monthly-calender-day-container {
+    margin-left: 6px;
+    border-radius: 10px;
+    background-color: var(--White);
+    width: 36vw;
+    height: 3.75vh;
+    color: var(--Gray);
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--Gray);
+}
+
+.monthly-calender-day {
+    border-bottom: 3px solid var(--Red);
+    color: var(--Gray);
+    padding: 0.5%;
+    width: 4.5%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1%;
+}
+
+.monthly-calender-small-container {
+    padding: 1% 0px;
+    width: 72vw;
+    height: 4.355vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.monthly-calender-event {
+    color: var(--Gray);
+    padding: 0.5%;
+    width: 80%;
+    font-weight: 500;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    margin-left: 1%;
+}
+
+.monthly-calender-time {
+    color: var(--Gray);
+    padding: 0.5%;
+    width: 15.5%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1%;
+}
+
+.calender-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.5px;
+    width: 72vw;
+    height: 5vh;
+}
+
+.calender-arrow {
+    background-color: transparent;
+    border: none;
+    height: 5vh;
+    width: 8vw;
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--White);
+    border-radius: 10px;
+    transition: border 0.25s;
+}
+
+.calender-arrow:hover {
+    border: 1px solid var(--Gray)
+}
+
+.calender-month-year {
+    margin: 0 15px;
+    font-size: 1.5rem;
+}
+
+/*Dark mode - Lägger till nya klasser*/
+.dark-mode {
+    color: var(--White);
+}
+
+.calender-arrow.dark-mode {
+    color: var(--White);
+    border-color: var(--DarkBlue);
+}
+
+.recency-item.dark-mode {
+    color: var(--White);
+    border-color: var(--White);
+}
+
+.recency-item.dark-mode:hover {
+    border-color: var(--LightContrastBlue);
+}
+
+.recency-container.dark-mode {
+    border-color: var(--White);
+}
+
+.calender-title-container.dark-mode:hover {
+    color: var(--White);
+}
+
+.calender-arrow.dark-mode:hover {
+    border-color: var(--White);
+}
+
+/*Gray mode*/
+.gray-mode {
+    color: var(--White);
+}
+
+.calender-arrow.gray-mode {
+    color: var(--White);
+    border-color: var(--Gray);
+}
+
+.recency-item.gray-mode {
+    color: var(--White);
+    border-color: var(--White);
+}
+
+.recency-item.gray-mode:hover {
+    border-color: var(--LightContrastBlue);
+}
+
+.recency-container.gray-mode {
+    border-color: var(--White);
+}
+
+.calender-title-container.gray-mode:hover {
+    color: var(--White);
+}
+
+.calender-arrow.gray-mode:hover {
+    border-color: var(--White);
+}
+

@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --DarkBlue: #10112B;
+  --White: #FAFAFA;
+  --HighContrastBlue: #2600BF;
+  --LightContrastBlue: #5A33FF;
+  --LightGray: #61788A;
+  --Black: #000E1D;
+  --Red: #FF8585;
+  --Green: #4DE577;
+  --Gray: #2C2B2B;
+}
+
+* {
+  padding:0;
+  margin:0;
+  box-sizing: border-box;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  cursor: default;
+}
+
+body {
+  height: 100vh;
+  background-color: var(--White);
+  font-family: "Montserrat", sans-serif;
+}
+
+body.dark-mode {
+  background-color: var(--DarkBlue);
+}
+
+body.gray-mode {
+  background-color: var(--Gray);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--HighContrastBlue);
+  border-radius: 12px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--HighContrastBlue);
+}

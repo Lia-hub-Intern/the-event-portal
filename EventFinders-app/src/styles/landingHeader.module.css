@@ -1,0 +1,62 @@
+.main-header-empty {
+    width: 100%;
+    height: 7.4vh;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.header-stopper {
+    height: 3px;
+    width: 98%;
+    margin-left: 1%;
+    background-image: linear-gradient(to right, var(--White), var(--Gray), var(--White));
+    background-size: 300%;  
+    animation: moveGradient 10s linear infinite; 
+}
+
+.logo-header {
+    -khtml-user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    margin-left: 3.5%;
+}
+
+.logout-button {
+    color: var(--White);
+    background-color: var(--HighContrastBlue);
+    font-size: 1.2rem;
+    padding: 0.5%;
+    width: 10vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--HighContrastBlue);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+    text-decoration: none;
+    position: absolute;
+    right: 5%;
+
+}
+
+.logout-button:hover {
+    color: var(--HighContrastBlue);
+    background-color: var(--White);
+}
+
+@keyframes moveGradient {
+    0% {
+        background-position: 0% 50%; /* Start from the left */
+    }
+    50% {
+        background-position: 100% 50%; /* Move to the right */
+    }
+    100% {
+        background-position: 0% 50%; /* Start from the left */
+    }
+}
