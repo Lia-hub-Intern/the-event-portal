@@ -22,6 +22,7 @@ import Navbar from './components/navbar/Navbar';
 import { navBarLinks } from './components/functions/Functions';
 import Home from './components/views/Home';
 import Login from './components/views/Login';
+import Speakers from './components/views/Speakers';
 import 'dayjs/locale/en-gb';
 
 /**
@@ -38,6 +39,7 @@ export default function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/login" element={<Login />} />
+						<Route path="/speakers" element={<Speakers />} />
 						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
 				</Container>
