@@ -28,7 +28,7 @@ export const theme = createTheme({
 		h3: {},
 		h4: {},
 		h5: {
-			fontSize: 24, // Font size for h5 headings
+			fontSize: 20, // Font size for h5 headings
 			fontWeight: 500, // Font weight for h5 headings
 			//fontWeight: 400, // Font weight for h5 headings
 		},

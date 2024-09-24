@@ -146,7 +146,11 @@ export default function Speakres() {
 									>
 										{item.name}
 									</Typography>
-									<Typography variant="p1" component="p">
+									<Typography
+										variant="p1"
+										component="p"
+										sx={{ paddingBottom: '0.5rem' }}
+									>
 										{item.title}
 									</Typography>
 									<Typography variant="p2" component="">
