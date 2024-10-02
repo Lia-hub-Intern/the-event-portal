@@ -3,11 +3,11 @@ import {
     Typography,
     Box
 } from '@mui/material'
-import AboutUsImage from '../../../public/videos/about-us-hero-image.jpeg'; 
-import ImageOne from '../../../public/videos/about-us-content-image-one.jpeg';
-import ImageTwo from '../../../public/videos/about-us-content-image-two.jpeg';
-import ImageThree from '../../../public/videos/about-us-content-image-three.jpeg';
-import ImageFour from '../../../public/videos/about-us-content-image-four.png';
+import AboutUsImage from '../../assets/about-us-hero-image.jpeg'; 
+import ImageOne from '../../assets/about-us-content-image-one.jpeg';
+import ImageTwo from '../../assets/about-us-content-image-two.jpeg';
+import ImageThree from '../../assets/about-us-content-image-three.jpeg';
+import ImageFour from '../../assets/about-us-content-image-four.png';
 
 
 /* About us page. */
@@ -227,6 +227,42 @@ export default function AboutUs() {
                     </Typography>
                 </Grid>
             </Grid>
+            <Box sx={{
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                flexDirection: "column",
+                mt: 6,
+                }}
+            >
+                <Typography 
+                    variant={"body2"} 
+                    sx={{
+                        fontWeight: "600",
+                        color: "#A1824A",
+                        width: "100%",
+                        textAlign: "center",
+                    }}
+                >
+                    LONG STORY SHORT
+                </Typography>
+                <Typography
+                        variant="h3"
+                        textAlign={"center"}
+                        sx={{   
+                            fontWeight: "500",
+                            fontSize: 'clamp(1.15rem, 2vw, 1.5rem)',
+                            width: {xs: "100%", md: "50%", lg:"30"},
+                            fontStyle: "italic"
+                        }}
+                    >
+                    We believe that inspiring and equipping business
+                    leaders who want to make the world a better
+                    place is the single most effective way in which
+                    we can make an effect on the whole society at
+                    large.
+                </Typography>
+            </Box>
 		</>
 	);
 }
