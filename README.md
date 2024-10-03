@@ -9,3 +9,4 @@ Currently, two official plugins are available:
 "# Lahouaria1" 
 "# web-project" 
 "# web-project" 
+"# stagefinder-webproject" 
