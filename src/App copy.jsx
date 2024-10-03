@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/** Company: Karl Company
+ * Developer Full Stack: Darwin Rengifo
+ *
+ * Create Date: 2024-08-24
+ *     Program : App.jsx
+ *   Path Name : incasale-dev/frontend/src
+ *       Tools : NodeJS, React, Mteria UI
+ *
+ * Description:
+ * - Calls website pages through routes.
+ * - Variabler
+ *   Routes, Route  : true/false
+ *   navArrayLinks  : This variable is export as PROPS to Navbar.jsx component
+ *              sx  : Includes properties to a component
+ *
+ */
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Container } from '@mui/material'; /**This way the page updates faster */
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Navbar from './components/navbar/Navbar';
+import { navBarLinks } from './components/functions/Functions';
+import Home from './components/views/Home';
+import Login from './components/views/Login';
+import Speakers from './components/views/Speakers';
+import 'dayjs/locale/en-gb';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+/**
+ * This function is the main function of the application.
+ * It is responsible for rendering the main components of the application.
+ * @returns {JSX.Element} The main components of the application.
+ */
+export default function App() {
+	return (
+		<>
+			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+				<Navbar navBarLinks={navBarLinks} />
+				<Container sx={{ mt: 5 }}>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/speakers" element={<Speakers />} />
+						<Route path="*" element={<Navigate to="/" />} />
+					</Routes>
+				</Container>
+			</LocalizationProvider>
+		</>
+	);
 }
-
-export default App
