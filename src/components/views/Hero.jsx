@@ -1,26 +1,28 @@
 import React, { useRef } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { Engineering, BusinessCenter, School, LocalHospital, AttachMoney, Palette, Search, Link } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for programmatic navigation
 
 const categories = [
-  { name: 'Engineering and Technology', icon: '🔧' },
-  { name: 'Business and Economics', icon: '📈' },
-  { name: 'Engineering', icon: '⚙️' },
-  { name: 'Education', icon: '📚' },
-  { name: 'Healthcare', icon: '🏥' },
-  { name: 'Finance', icon: '💵' },
-  { name: 'Marketing', icon: '📊' },
-  { name: 'Arts', icon: '🎨' },
-  { name: 'Social Sciences', icon: '🔍' },
-  { name: 'Others', icon: '🔗' }
+  { name: 'Engineering and Technology', icon: <Engineering />, link: '/engineering' },
+  { name: 'Business and Economics', icon: <BusinessCenter />, link: '/business' },
+  { name: 'Education', icon: <School />, link: '/education' },
+  { name: 'Healthcare', icon: <LocalHospital />, link: '/healthcare' },
+  { name: 'Finance', icon: <AttachMoney />, link: '/finance' },
+  { name: 'Arts', icon: <Palette />, link: '/arts' },
+  { name: 'Social Sciences', icon: <Search />, link: '/social-sciences' },
+  { name: 'Others', icon: <Link />, link: '/others' }
 ];
 
-const Hero = () => {
+export default function Hero(){
   const scrollContainerRef = useRef(null);
   const categoryRefs = useRef(categories.reduce((acc, _, index) => {
     acc[index] = React.createRef();
     return acc;
   }, {}));
+
+  const navigate = useNavigate(); // useNavigate hook for programmatic navigation
 
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -29,16 +31,12 @@ const Hero = () => {
     }
   };
 
-  const handleCategoryClick = (index) => {
-    if (categoryRefs.current[index] && scrollContainerRef.current) {
-      categoryRefs.current[index].current.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center'
-      });
-    }
+  const handleCategoryClick = (link) => {
+    navigate(link); // Navigate to the specific route on category click
   };
 
   return (
+    <>
     <Box
       sx={{
         position: 'relative',
@@ -53,7 +51,7 @@ const Hero = () => {
       }}
     >
       <video
-        src="/hero.mp4" // Ensure this path is correct
+        src="/videos/hero.mp4"
         autoPlay
         muted
         loop
@@ -140,7 +138,7 @@ const Hero = () => {
                   backgroundColor: '#e0e0e0',
                 },
               }}
-              onClick={() => handleCategoryClick(index)}
+              onClick={() => handleCategoryClick(category.link)} // Navigate to the link on click
             >
               <Typography variant="h6">{category.icon}</Typography>
               <Typography variant="body1">{category.name}</Typography>
@@ -164,7 +162,6 @@ const Hero = () => {
         </IconButton>
       </Box>
     </Box>
+  </>
   );
 };
-
-export default Hero;

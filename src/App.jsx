@@ -15,7 +15,7 @@ sx  : Includes properties to a component
 **/
 
 // src/App.jsx
-import { Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router,Navigate, Route, Routes } from "react-router-dom";
 import { Container } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -25,6 +25,11 @@ import { navBarLinks } from "./components/functions/Functions";
 import Home from "./components/views/Home";
 import Login from "./components/views/Login";
 import "dayjs/locale/en-gb";
+import BusinessPage from "./components/BusinessPage";
+import StayOpenMinded from "./components/StayOpenMinded";
+import Learn from "./components/Learn";
+
+
 
 export default function App() {
   return (
@@ -35,9 +40,12 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/business" element={<BusinessPage />} />
+          <Route path="/stay-open-minded" element={<StayOpenMinded />} />
+          <Route path="/learn" element={<Learn />} />
         </Routes>
       </Container>
-      <Footer /> {/* Add Footer component here */}
+      <Footer /> 
     </LocalizationProvider>
   );
 }

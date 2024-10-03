@@ -1,15 +1,16 @@
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const values = [
-  { value: 'Learn', text: 'Expand your knowledge and skills.' },
-  { value: 'Volunteer', text: 'Offer your time and expertise.' },
-  { value: 'Share', text: 'Spread information and resources.' },
-  { value: 'Donate', text: 'Contribute financially or materially.' }
+  { value: 'Learn', text: 'Expand your knowledge and skills.', link: '/learn' },
+  { value: 'Volunteer', text: 'Offer your time and expertise.', link: '/volunteer' },
+  { value: 'Share', text: 'Spread information and resources.', link: '/share' },
+  { value: 'Donate', text: 'Contribute financially or materially.', link: '/donate' }
 ];
-
-const Values = () => {
+export default function Values(){
   return (
+    <>
     <Box
       sx={{
         maxWidth: '1200px',
@@ -57,29 +58,30 @@ const Values = () => {
         }}
       >
         {values.map((item, index) => (
-          <Box
-            key={index}
-            sx={{
-              backgroundColor: '#f4f4f4',
-              borderRadius: '8px',
-              padding: '20px',
-              textAlign: 'center',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              transition: 'transform 0.2s',
-              '&:hover': {
-                transform: 'scale(1.05)',
-              },
-            }}
-          >
-            <Typography variant="h5">{item.value}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {item.text}
-            </Typography>
-          </Box>
+          <Link to={item.link} key={index} style={{ textDecoration: 'none' }}>
+            <Box
+              sx={{
+                backgroundColor: '#f4f4f4',
+                borderRadius: '8px',
+                padding: '20px',
+                textAlign: 'center',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                transition: 'transform 0.2s',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                },
+              }}
+            >
+              <Typography variant="h5">{item.value}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.text}
+              </Typography>
+            </Box>
+          </Link>
         ))}
       </Box>
     </Box>
+    </>
   );
 };
 
-export default Values;

@@ -2,8 +2,9 @@ import React from 'react';
 import { Box, Typography, Link, TextField, Button } from '@mui/material';
 import { Facebook, Twitter, YouTube, Instagram } from '@mui/icons-material';
 
-const Footer = () => {
+export default function Footer(){
   return (
+    <>
     <footer>
       <Box
         sx={{
@@ -187,7 +188,7 @@ const Footer = () => {
         </Box>
       </Box>
     </footer>
+    </>
   );
 };
 
-export default Footer;

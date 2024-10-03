@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 
-const UpcomingConferences = () => {
+ export default function UpcomingConferences() {
   return (
+    <>
     <Paper
       sx={{
         padding: '20px',
@@ -29,7 +30,7 @@ const UpcomingConferences = () => {
         You can get the latest updates on your interests regarding upcoming conferences in November.
       </Typography>
     </Paper>
+    </>
   );
 };
 
-export default UpcomingConferences;
