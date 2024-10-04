@@ -6,6 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import InterpreterModeIcon from '@mui/icons-material/InterpreterMode';
 import FestivalIcon from '@mui/icons-material/Festival';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 import { useState } from 'react';
 
 /** Receives a text and puts the first
@@ -19,6 +20,7 @@ export const navBarLinks = [
 	{ title: 'Events', path: '/Prompt', icon: <TravelExploreIcon /> },
 	{ title: 'Speakers', path: '/Speakers', icon: <InterpreterModeIcon /> },
 	{ title: 'Events', path: '/Events', icon: <FestivalIcon /> },
+	{ title: 'Conference', path: '/Conference', icon: <Diversity3Icon /> },
 ];
 
 export const logos = [
