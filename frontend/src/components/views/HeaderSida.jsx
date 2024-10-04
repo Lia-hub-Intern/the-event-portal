@@ -1,18 +1,11 @@
 import { Box, Grid, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles({
-	textOverlay: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-40%, -40%)', // Center the text
-		zIndex: 10, // Make sure the button is above the video
-	},
-});
+/**
+ 
+HeaderSida*/
 
 export default function HeaderSida() {
-	const classes = useStyles();
+	//<Grid item={true} xs={12} sm={6} md={6} lg={5}>
 
 	return (
 		<>
@@ -27,17 +20,19 @@ export default function HeaderSida() {
 					display: { xs: 'block', sm: 'flex' },
 				}}
 			>
-				<Grid container>
+				<Grid
+					container //style={{ minHeight: "80vh" }}
+				>
 					<Box
 						sx={{
 							width: '75rem',
 							height: '20rem',
 							display: 'flex',
+							position: 'relative', // Esto permite posicionar el texto absolutamente dentro del Box
 							justifyContent: 'center',
 							alignItems: 'center',
 							border: '1px solid gray',
 							overflow: 'hidden',
-							position: 'relative', // Add this line
 						}}
 					>
 						<img
@@ -49,14 +44,18 @@ export default function HeaderSida() {
 								objectFit: 'cover', // Esto ajusta la imagen dentro del Box
 							}}
 						/>
-
 						<Typography
-							component="p"
 							variant="p3"
-							className={classes.textOverlay}
+							component="p"
 							sx={{
 								backgroundColor: 'transparent',
 								color: '#FFF',
+								position: 'absolute',
+								transform: 'translate(-40%, -40%)', // Centra el texto dentro del Box
+								top: '50%',
+								left: '50%',
+								zIndex: 10,
+								fontSize: { xs: 20, sm: 40 },
 							}}
 						>
 							Partners Phrases
