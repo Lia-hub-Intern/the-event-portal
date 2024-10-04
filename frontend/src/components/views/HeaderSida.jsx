@@ -55,7 +55,7 @@ export default function HeaderSida() {
 								top: '50%',
 								left: '50%',
 								zIndex: 10,
-								fontSize: { xs: 20, sm: 40 },
+								fontSize: { xs: 22, sm: 40 },
 							}}
 						>
 							Partners Phrases
