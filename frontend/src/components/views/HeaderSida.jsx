@@ -60,12 +60,11 @@ export default function HeaderSida() {
 
 						<Typography
 							component="p"
-							variant="p1"
+							variant="p3"
 							color="success"
 							className={classes.textOverlay}
 							sx={{
 								backgroundColor: 'transparent',
-								border: '2px solid #FFF',
 								color: '#FFF',
 							}}
 						>
