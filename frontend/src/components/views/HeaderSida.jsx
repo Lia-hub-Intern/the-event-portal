@@ -3,6 +3,28 @@ import { Box, Grid, Typography } from '@mui/material';
 /**
  
 HeaderSida*/
+
+const useStyles = makeStyles({
+	playerWrapper: {
+		display: 'flex',
+		justifyContent: 'center', // Centra horizontalmente
+		alignItems: 'center', // Centra verticalmente
+		height: '45rem', // Hace que el contenedor ocupe toda la altura de la ventana
+	},
+	reactPlayer: {
+		position: 'relative',
+	},
+	buttonOverlay: {
+		position: 'absolute',
+		//top: "50%",
+		left: '50%',
+		height: '7rem', // Adjust the height as needed
+		width: '18rem', // Adjust the width as needed
+		transform: 'translate(-50%, -350%)', // To center the button absolutely
+		zIndex: 10, // Make sure the button is above the video
+	},
+});
+
 export default function HeaderSida() {
 	//<Grid item={true} xs={12} sm={6} md={6} lg={5}>
 
