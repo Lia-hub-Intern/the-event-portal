@@ -11,8 +11,9 @@ export default function HeaderSida() {
 				<Grid item={true} xs={12} sm={6} md={6} lg={5}>
 					<Box
 						sx={{
-							width: 300,
-							height: 300,
+
+							width: '75rem',
+							height: "20rem",
 							display: 'flex',
 							justifyContent: 'center',
 							alignItems: 'center',
