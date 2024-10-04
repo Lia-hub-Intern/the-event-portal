@@ -1,4 +1,5 @@
-import { Box, Grid, makeStyles, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 /**
  
@@ -7,7 +8,7 @@ HeaderSida*/
 const useStyles = makeStyles({
 	textOverlay: {
 		position: 'absolute',
-		//top: "50%",
+		top: '50%',
 		left: '50%',
 		height: '7rem', // Adjust the height as needed
 		width: '18rem', // Adjust the width as needed
@@ -36,19 +37,6 @@ export default function HeaderSida() {
 				<Grid
 					container //style={{ minHeight: "80vh" }}
 				>
-					<Typography
-						variant="h3"
-						// component="h1"
-						variant="contained"
-						color="success"
-						className={classes.textOverlay}
-						sx={{
-							backgroundColor: 'transparent',
-							border: '2px solid #FFF',
-							color: '#FFF',
-						}}
-					></Typography>
-
 					<Box
 						sx={{
 							width: '75rem',
@@ -69,6 +57,20 @@ export default function HeaderSida() {
 								objectFit: 'cover', // Esto ajusta la imagen dentro del Box
 							}}
 						/>
+
+						<Typography
+							component="p"
+							variant="p1"
+							color="success"
+							className={classes.textOverlay}
+							sx={{
+								backgroundColor: 'transparent',
+								border: '2px solid #FFF',
+								color: '#FFF',
+							}}
+						>
+							Partners Phrases
+						</Typography>
 					</Box>
 				</Grid>
 			</Grid>
