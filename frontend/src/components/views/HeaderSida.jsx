@@ -21,7 +21,7 @@ export default function HeaderSida() {
 						}}
 					>
 						<img
-							src="https://via.placeholder.com/300"
+							src="https://static7.depositphotos.com/1000998/745/i/450/depositphotos_7451136-stock-photo-on-conference.jpg"
 							alt="example"
 							style={{
 								width: '100%',
