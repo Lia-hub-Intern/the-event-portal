@@ -24,6 +24,7 @@ import Home from './components/views/Home';
 import Login from './components/views/Login';
 import Speakers from './components/views/Speakers';
 import 'dayjs/locale/en-gb';
+import Conference from './components/views/Conference';
 
 /**
  * This function is the main function of the application.
@@ -40,6 +41,8 @@ export default function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/speakers" element={<Speakers />} />
+						<Route path="/conference" element={<Conference />} />
+
 						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
 				</Container>
