@@ -13,6 +13,11 @@ export default function HeaderSida() {
 				spacing={10}
 				rowSpacing={1}
 				columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+				sx={{
+					justifyContent: 'center',
+					justifyItems: 'center',
+					display: { xs: 'block', sm: 'flex' },
+				}}
 			>
 				<Grid
 					container //style={{ minHeight: "80vh" }}
