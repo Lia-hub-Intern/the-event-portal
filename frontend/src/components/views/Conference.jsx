@@ -1,10 +1,13 @@
 /**
  * Conference
  */
+
+import HeaderSida from './HeaderSida';
+
 export default function Conference() {
 	return (
 		<>
-			<h1>Conference</h1>
+			<HeaderSida />
 		</>
 	);
 }
