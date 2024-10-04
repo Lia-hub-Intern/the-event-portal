@@ -1,4 +1,4 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 /**
  
@@ -22,6 +22,19 @@ export default function HeaderSida() {
 				<Grid
 					container //style={{ minHeight: "80vh" }}
 				>
+					<Typography
+						variant="h3"
+						// component="h1"
+						variant="contained"
+						color="success"
+						className={classes.textOverlay}
+						sx={{
+							backgroundColor: 'transparent',
+							border: '2px solid #FFF',
+							color: '#FFF',
+						}}
+					></Typography>
+
 					<Box
 						sx={{
 							width: '75rem',
