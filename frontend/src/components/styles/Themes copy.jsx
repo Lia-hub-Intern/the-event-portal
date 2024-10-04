@@ -21,20 +21,32 @@ export const theme = createTheme({
 	/** Add custom typography styles here */
 	typography: {
 		fontFamily: "'Roboto', 'Arial', sans-serif", // Change 'Roboto' to the font you want
-
+		p1: { fontSize: 14, textTransform: 'capitalize', fontWeight: 500 }, // Font size for paragraph text
+		p2: { marginTop: '1rem', fontSize: 12, fontWeight: 300 }, // Font size for paragraph text
+		p3: { textTransform: 'capitalize', fontWeight: 500 }, // Font size for paragraph text
 		h1: {},
 		h2: {},
 		h3: {},
 		h4: {},
 		h5: {
-			fontSize: 24, // Font size for h5 headings
-			fontWeight: 400, // Font weight for h5 headings
+			fontSize: 20, // Font size for h5 headings
+			fontWeight: 500, // Font weight for h5 headings
+			//fontWeight: 400, // Font weight for h5 headings
 		},
 		h6: {
 			fontSize: 18, // Font size for h6 headings
 			fontWeight: 400, // Font weight for h6 headings
 		},
+		h6A: {
+			fontSize: 30, // Font size for h6 headings
+			fontWeight: 400, // Font weight for h6 headings
+			paddingBottom: '2rem',
+			textTransform: 'capitalize',
+		},
 		body1: {
+			fontSize: 12,
+			fontWeight: 300,
+			lineHeight: 1.5,
 			//fontFamily: "'Open Sans', sans-serif", // Font for body text
 		},
 	},
@@ -70,6 +82,13 @@ export const theme = createTheme({
 				},
 				root: {
 					//borderRadius: 3, // Rounded corners for Paper components
+				},
+			},
+		},
+		MuiAutocomplete: {
+			styleOverrides: {
+				inputRoot: {
+					width: '20rem',
 				},
 			},
 		},
