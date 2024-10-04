@@ -23,7 +23,7 @@ export const theme = createTheme({
 		fontFamily: "'Roboto', 'Arial', sans-serif", // Change 'Roboto' to the font you want
 		p1: { fontSize: 14, textTransform: 'capitalize', fontWeight: 500 }, // Font size for paragraph text
 		p2: { marginTop: '1rem', fontSize: 12, fontWeight: 300 }, // Font size for paragraph text
-		p3: { fontSize: 24, textTransform: 'capitalize', fontWeight: 500 }, // Font size for paragraph text
+		p3: { fontSize: 40, textTransform: 'capitalize', fontWeight: 500 }, // Font size for paragraph text
 		h1: {},
 		h2: {},
 		h3: {},

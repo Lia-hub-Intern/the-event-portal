@@ -7,8 +7,6 @@ const useStyles = makeStyles({
 		top: '50%',
 		left: '50%',
 		transform: 'translate(-40%, -40%)', // Center the text
-		height: '7rem', // Adjust the height as needed
-		width: '18rem', // Adjust the width as needed
 		zIndex: 10, // Make sure the button is above the video
 	},
 });
