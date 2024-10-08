@@ -14,17 +14,18 @@
  *              sx  : Includes properties to a component
  *
  */
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { Container } from '@mui/material'; /**This way the page updates faster */
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Navbar from './components/navbar/Navbar';
-import { navBarLinks } from './components/functions/Functions';
-import Home from './components/views/Home';
-import Login from './components/views/Login';
-import Speakers from './components/views/Speakers';
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Container } from "@mui/material"; /**This way the page updates faster */
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Navbar from "./components/navbar/Navbar";
+import { navBarLinks } from "./components/functions/Functions";
+import Home from "./components/views/Home";
+import Login from "./components/views/Login";
+import Speakers from "./components/views/Speakers";
+import BeASpeaker from "./components/views/BeASpeaker";
 import AboutUs from './components/views/About.jsx';
-import 'dayjs/locale/en-gb';
+import "dayjs/locale/en-gb";
 
 /**
  * This function is the main function of the application.
@@ -32,20 +33,21 @@ import 'dayjs/locale/en-gb';
  * @returns {JSX.Element} The main components of the application.
  */
 export default function App() {
-	return (
-		<>
-			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
-				<Navbar navBarLinks={navBarLinks} />
-				<Container sx={{ mt: 5 }}>
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/speakers" element={<Speakers />} />
-						<Route path="/AboutUs" element={<AboutUs />} />
-						<Route path="*" element={<Navigate to="/" />} />
-					</Routes>
-				</Container>
-			</LocalizationProvider>
-		</>
-	);
+  return (
+    <>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+        <Navbar navBarLinks={navBarLinks} />
+        <Container sx={{ mt: 5 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/speakers" element={<Speakers />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/beaspeaker" element={<BeASpeaker to="/" />} />
+          </Routes>
+        </Container>
+      </LocalizationProvider>
+    </>
+  );
 }
