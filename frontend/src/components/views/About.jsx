@@ -2,7 +2,8 @@ import Grid from '@mui/material/Grid2';
 import {
     Typography,
     Box
-} from '@mui/material'
+} from '@mui/material';
+import Slideshow from './slideshowConfrence';
 import AboutUsImage from '../../assets/about-us-hero-image.jpeg'; 
 import ImageOne from '../../assets/about-us-content-image-one.jpeg';
 import ImageTwo from '../../assets/about-us-content-image-two.jpeg';
@@ -14,6 +15,7 @@ import ImageFour from '../../assets/about-us-content-image-four.png';
 export default function AboutUs() {
 	return (
 		<>
+            <Slideshow/>
             <Box
                 sx={{
                     position: 'relative',
