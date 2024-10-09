@@ -24,16 +24,20 @@ const countries = [
 // Sample data for images and descriptions
 const zigzagData = [
   {
-    image: "https://via.placeholder.com/150", // Replace with actual image URLs
+    image:
+      "https://img.freepik.com/free-photo/smart-robotic-farmers-concept-robot-farmers-agriculture-technology-farm-automation_35913-2324.jpg?t=st=1728478464~exp=1728482064~hmac=4306bf3630f4c8b6e616bec7dcc47184c5939573dc61da6e4cf34de0d2d2331d&w=2000", // Replace with actual image URLs
   },
   {
-    image: "https://via.placeholder.com/150",
+    image:
+      "https://img.freepik.com/free-photo/technology-human-touch-background-modern-remake-creation-adam_53876-129794.jpg?t=st=1728478164~exp=1728481764~hmac=dc7e8d96f99a421022c7c8d0d996aaf42723f940a00c563542c52b7ebc8fd900&w=2000",
   },
   {
-    image: "https://via.placeholder.com/150",
+    image:
+      "https://img.freepik.com/free-photo/abstract-plexus-blue-geometrical-shapes-connection-ai-generated-image_511042-595.jpg?t=st=1728478198~exp=1728481798~hmac=ade6d23c90d92f978462c361dd94cb57208792a4ed1d2d2112d33692db72b25a&w=2000",
   },
   {
-    image: "https://via.placeholder.com/150",
+    image:
+      "https://img.freepik.com/free-photo/3d-render-technology-background-with-code-male-head_1048-5960.jpg?t=st=1728478243~exp=1728481843~hmac=b3c70ad4093c4ef26c9edcd3863c16e803d1b9a55ca1300c9281acc530a4962c&w=2000",
   },
 ];
 
@@ -180,42 +184,27 @@ export default function BeASpeaker() {
 
           {/* Country Code + Phone Number Input */}
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={4}>
               <TextField
+                select
+                value={selectedCountry}
+                onChange={handleCountryChange}
+                variant="outlined"
                 fullWidth
+              >
+                {countries.map((option) => (
+                  <MenuItem key={option.code} value={option.code}>
+                    {option.name} ({option.prefix})
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={8}>
+              <TextField
+                required
                 label="Phone Number"
                 variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <TextField
-                        select
-                        value={selectedCountry}
-                        onChange={handleCountryChange}
-                        variant="standard"
-                        SelectProps={{
-                          disableUnderline: true, // Ensure the underline of the dropdown is disabled
-                        }}
-                        sx={{
-                          "& .MuiSelect-select": {
-                            paddingRight: 0,
-                          },
-                          "& .MuiInputBase-root": {
-                            display: "flex",
-                            alignItems: "center",
-                            paddingRight: 0,
-                          },
-                        }}
-                      >
-                        {countries.map((option) => (
-                          <MenuItem key={option.code} value={option.code}>
-                            {option.name} ({option.prefix})
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </InputAdornment>
-                  ),
-                }}
+                fullWidth
               />
             </Grid>
           </Grid>
@@ -435,7 +424,7 @@ export default function BeASpeaker() {
           </Grid>
           <Grid item xs={12} md={6}>
             <img
-              src={zigzagData[1].image}
+              src={zigzagData[3].image}
               alt="Zigzag Image 2"
               style={{ width: "70%", height: "auto", margin: "0 auto" }} // Adjusted width for better fit
             />
