@@ -88,6 +88,7 @@ export default function BeASpeaker() {
       <Container>
         <Box
           sx={{
+            display: { xs: "block", sm: "flex" },
             backgroundImage: `url("https://images.unsplash.com/photo-1560439514-07abbb294a86?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`, // Replace with your image URL
             position: "relative", // To position the overlay correctly
             marginBottom: "50px",
@@ -127,7 +128,7 @@ export default function BeASpeaker() {
               alignItems: "flex-start",
               textAlign: "left",
               color: "#fff",
-              left: "-120px",
+              left: "-130px",
             }}
           >
             <Typography
@@ -359,7 +360,11 @@ export default function BeASpeaker() {
         {/* Zigzag Layout Section */}
         <Box sx={{ marginBottom: "100px", marginTop: "100px", padding: "5px" }}>
           {/* First Row */}
-          <Grid container spacing={0} sx={{ alignItems: "center" }}>
+          <Grid
+            container
+            spacing={0}
+            sx={{ alignItems: "center", backgroundColor: "#f0f0f0" }}
+          >
             <Grid item xs={12} md={6} sx={{ padding: "0" }}>
               <img
                 src={zigzagData[0].image}
@@ -395,14 +400,13 @@ export default function BeASpeaker() {
           <Grid
             container
             spacing={0}
-            sx={{ alignItems: "center", marginTop: "0px" }}
+            sx={{
+              alignItems: "center",
+              marginTop: "0px",
+              backgroundColor: "#f0f0f0",
+            }}
           >
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{ paddingRight: "80px", margin: "0" }}
-            >
+            <Grid item xs={12} md={6} sx={{ paddingLeft: "80px", margin: "0" }}>
               <Typography
                 variant="h4"
                 sx={{ fontWeight: "bold", marginTop: "5px" }}
@@ -437,7 +441,11 @@ export default function BeASpeaker() {
           <Grid
             container
             spacing={0}
-            sx={{ alignItems: "center", marginTop: "0px" }}
+            sx={{
+              alignItems: "center",
+              marginTop: "0px",
+              backgroundColor: "#f0f0f0",
+            }}
           >
             <Grid item xs={12} md={6} sx={{ padding: "0", margin: "0" }}>
               <img
@@ -474,14 +482,13 @@ export default function BeASpeaker() {
           <Grid
             container
             spacing={0}
-            sx={{ alignItems: "center", marginTop: "0px" }}
+            sx={{
+              alignItems: "center",
+              marginTop: "0px",
+              backgroundColor: "#f0f0f0",
+            }}
           >
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{ paddingRight: "80px", margin: "0" }}
-            >
+            <Grid item xs={12} md={6} sx={{ paddingLeft: "80px", margin: "0" }}>
               <Typography
                 variant="h4"
                 sx={{ fontWeight: "bold", marginTop: "5px" }}
