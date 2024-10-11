@@ -76,361 +76,443 @@ export default function BeASpeaker() {
   };
 
   return (
-    <Container>
-      <Button variant="text" color="primary" sx={{ marginBottom: "10px" }}>
+    <>
+      <Button
+        variant="text"
+        color="primary"
+        sx={{ marginBottom: "10px", marginLeft: "0" }}
+      >
         <KeyboardBackspaceIcon /> Take me back
       </Button>
 
-      <Box
-        sx={{
-          marginBottom: "50px", // Reduced margin
-          marginTop: "50px",
-          width: "100%", // Set to full width
-          padding: "10px", // Add padding for spacing
-        }}
-      >
-        <Typography
-          variant="h6"
-          component="p"
-          sx={{ fontSize: "1rem", marginBottom: "14px" }}
+      <Container>
+        <Box
+          sx={{
+            backgroundImage: `url("https://images.unsplash.com/photo-1560439514-07abbb294a86?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")`, // Replace with your image URL
+            position: "relative", // To position the overlay correctly
+            marginBottom: "50px",
+            marginTop: "50px",
+            width: "100vw",
+            left: "50%",
+            right: "50%",
+            marginLeft: "-50vw",
+            marginRight: "-50vw",
+            padding: "10px",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            height: "400px",
+            display: "flex",
+            alignItems: "center",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.6)", // Semi-transparent black overlay
+              zIndex: 1, // Ensure the overlay is behind content
+            },
+          }}
         >
-          JOIN THE FAMILY
-        </Typography>
-        <Typography
-          variant="h4"
-          component="h1"
-          gutterBottom
-          sx={{ fontWeight: "bold", fontSize: "1.5rem", marginBottom: "14px" }} // Reduced font size
-        >
-          Become a speaker today!
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ fontSize: "1rem", marginBottom: "25px" }} // Reduced font size
-        >
-          Position your brand and insights effectively towards top business
-          leaders in the Nordics. Get in touch with our specialist team today to
-          secure your partnership with Compony Business Forum!
-        </Typography>
-        <Button variant="contained" color="primary">
-          Join now!
-        </Button>
-      </Box>
-
-      <Box
-        sx={{
-          marginBottom: "100px", // Reduced margin
-          marginTop: "100px",
-        }}
-      >
-        <Typography
-          variant="h4"
-          component="h1"
-          gutterBottom
-          sx={{ fontWeight: "bold", fontSize: "1.5rem" }} // Reduced font size
-        >
-          Become a partner of Compony Business Forum
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
-        >
-          If you are looking to make your brand known to thousands of business
-          owners and to build relations with the top C-level executives, there
-          is no better way to reach your audience than with a tailored
-          partnership with Oslo Business Forum.
-        </Typography>
-
-        <Typography
-          variant="body1"
-          sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
-        >
-          Together with you, we can design a unique partnership. Our common goal
-          is to increase your brand visibility and help you create meaningful
-          encounters with your target audience and business executives that can
-          otherwise be difficult to reach.
-        </Typography>
-
-        <Typography
-          variant="body1"
-          sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
-        >
-          For more information, contact us - we'd be happy to find you the best
-          partnership solution.
-        </Typography>
+          <Container
+            maxWidth="md" // Adjust max width if needed
+            sx={{
+              position: "relative",
+              zIndex: 2, // Ensure content is above the overlay
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              textAlign: "left",
+              color: "#fff",
+              left: "-120px",
+            }}
+          >
+            <Typography
+              variant="h6"
+              component="p"
+              sx={{ fontSize: "1rem", marginBottom: "14px" }}
+            >
+              JOIN THE FAMILY
+            </Typography>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1.5rem",
+                marginBottom: "14px",
+              }}
+            >
+              Become a speaker today!
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ fontSize: "1rem", marginBottom: "25px" }}
+            >
+              Position your brand and insights effectively towards top business
+              leaders in the Nordics. Get in touch with our specialist team
+              today to secure your partnership with Compony Business Forum!
+            </Typography>
+            <Button variant="contained" color="primary">
+              Join now!
+            </Button>
+          </Container>
+        </Box>
 
         <Box
           sx={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
+            marginBottom: "100px", // Reduced margin
+            marginTop: "60px",
           }}
         >
-          <TextField
-            required
-            label="Full name"
-            variant="outlined"
-            fullWidth
-            sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
-          />
-          <TextField
-            required
-            label="Email"
-            variant="outlined"
-            fullWidth
-            sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
-          />
-
-          {/* Country Code + Phone Number Input */}
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <TextField
-                select
-                value={selectedCountry}
-                onChange={handleCountryChange}
-                variant="outlined"
-                fullWidth
-              >
-                {countries.map((option) => (
-                  <MenuItem key={option.code} value={option.code}>
-                    {option.name} ({option.prefix})
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={8}>
-              <TextField
-                required
-                label="Phone Number"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-
-          <TextField
-            required
-            label="Company name"
-            variant="outlined"
-            fullWidth
-            sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
-          />
-          <TextField
-            label="Comments"
-            variant="outlined"
-            fullWidth
-            sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
-          />
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                color="primary"
-              />
-            }
-            label={
-              <span>
-                I have read and agree to the Privacy Policy.{" "}
-                <Link
-                  href="#"
-                  onClick={handleReadMoreToggle}
-                  color="primary"
-                  underline="hover"
-                >
-                  Read more
-                </Link>
-              </span>
-            }
-          />
-
-          {/* Conditional Rendering for the Privacy Policy Details */}
-          {showMore && (
-            <Typography
-              variant="body1"
-              sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
-            >
-              Your privacy is important to us. We are committed to protecting
-              your personal information and using it responsibly. Please review
-              our complete privacy policy for more details on how we collect,
-              use, and protect your information.
-            </Typography>
-          )}
-
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={!isChecked} // Disable the button if the checkbox is not checked
-            sx={{ marginTop: "10px" }}
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+            sx={{ fontWeight: "bold", fontSize: "1.5rem" }} // Reduced font size
           >
-            Submit
-          </Button>
+            Become a partner of Compony Business Forum
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
+          >
+            If you are looking to make your brand known to thousands of business
+            owners and to build relations with the top C-level executives, there
+            is no better way to reach your audience than with a tailored
+            partnership with Oslo Business Forum.
+          </Typography>
+
+          <Typography
+            variant="body1"
+            sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
+          >
+            Together with you, we can design a unique partnership. Our common
+            goal is to increase your brand visibility and help you create
+            meaningful encounters with your target audience and business
+            executives that can otherwise be difficult to reach.
+          </Typography>
+
+          <Typography
+            variant="body1"
+            sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
+          >
+            For more information, contact us - we'd be happy to find you the
+            best partnership solution.
+          </Typography>
+
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+            }}
+          >
+            <TextField
+              required
+              label="Full name"
+              variant="outlined"
+              fullWidth
+              sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
+            />
+            <TextField
+              required
+              label="Email"
+              variant="outlined"
+              fullWidth
+              sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
+            />
+
+            {/* Country Code + Phone Number Input */}
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <TextField
+                  select
+                  value={selectedCountry}
+                  onChange={handleCountryChange}
+                  variant="outlined"
+                  fullWidth
+                >
+                  {countries.map((option) => (
+                    <MenuItem key={option.code} value={option.code}>
+                      {option.name} ({option.prefix})
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid item xs={8}>
+                <TextField
+                  required
+                  label="Phone Number"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+
+            <TextField
+              required
+              label="Company name"
+              variant="outlined"
+              fullWidth
+              sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
+            />
+            <TextField
+              label="Comments"
+              variant="outlined"
+              fullWidth
+              sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                  color="primary"
+                />
+              }
+              label={
+                <span>
+                  I have read and agree to the Privacy Policy.{" "}
+                  <Link
+                    href="#"
+                    onClick={handleReadMoreToggle}
+                    color="primary"
+                    underline="hover"
+                  >
+                    Read more
+                  </Link>
+                </span>
+              }
+            />
+
+            {/* Conditional Rendering for the Privacy Policy Details */}
+            {showMore && (
+              <Typography
+                variant="body1"
+                sx={{ fontSize: "1rem", marginBottom: "10px" }} // Reduced font size
+              >
+                Your privacy is important to us. We are committed to protecting
+                your personal information and using it responsibly. Please
+                review our complete privacy policy for more details on how we
+                collect, use, and protect your information.
+              </Typography>
+            )}
+
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={!isChecked} // Disable the button if the checkbox is not checked
+              sx={{ marginTop: "10px" }}
+            >
+              Submit
+            </Button>
+          </Box>
         </Box>
-      </Box>
-
-      <Box
-        sx={{
-          marginTop: "100px", // Reduced margin
-          padding: "100px", // Reduced padding
-
-          width: "100%", // Set to full width
-          display: "flex", // Enable Flexbox
-          flexDirection: "column", // Arrange items in a column
-          justifyContent: "center", // Center vertically
-          alignItems: "center", // Center horizontally
-          textAlign: "center",
-          fontWeight: "bold",
-        }}
-      >
-        <Typography
-          sx={{ fontWeight: "bold" }}
-          variant="h4"
-          component="h2"
-          gutterBottom
-        >
-          Our Partners
-        </Typography>
-        <Typography
-          variant="body1"
+        <Box
           sx={{
-            fontSize: "1rem", // Reduced font size
-            marginBottom: "10px", // Reduced margin
+            backgroundColor: "#aeafb0",
+            display: "flex", // Enable Flexbox
+            flexDirection: "column", // Arrange items in a column
+            justifyContent: "center", // Center vertically
+            textAlign: "center",
             fontWeight: "bold",
+            marginBottom: "50px",
+            marginTop: "50px",
+            width: "100vw", // Full width of the viewport
+            position: "relative",
+            left: "50%",
+            right: "50%",
+            marginLeft: "-50vw",
+            marginRight: "-50vw",
+            padding: "10px",
+            height: "400px",
+            alignItems: "center", // Center content horizontally
           }}
         >
-          We are proud to collaborate with leading organizations in the industry
-          to deliver exceptional value to our clients.
-        </Typography>
-      </Box>
+          <Typography
+            sx={{ fontWeight: "bold" }}
+            variant="h4"
+            component="h2"
+            gutterBottom
+          >
+            Our Partners
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "1rem", // Reduced font size
+              marginBottom: "10px", // Reduced margin
+              fontWeight: "bold",
+            }}
+          >
+            We are proud to collaborate with leading organizations in the
+            industry to deliver exceptional value to our clients.
+          </Typography>
+        </Box>
+        {/* Zigzag Layout Section */}
+        <Box sx={{ marginBottom: "100px", marginTop: "100px", padding: "5px" }}>
+          {/* First Row */}
+          <Grid container spacing={0} sx={{ alignItems: "center" }}>
+            <Grid item xs={12} md={6} sx={{ padding: "0" }}>
+              <img
+                src={zigzagData[0].image}
+                alt="Zigzag Image 1"
+                style={{
+                  width: "100%",
+                  height: "300px", // Fixed height for uniform size
+                  objectFit: "cover", // Ensure the image covers the area without distortion
+                  margin: "0",
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ paddingLeft: "80px", margin: "0" }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: "bold", marginTop: "5px" }}
+              >
+                Brand Awareness
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ fontSize: "1rem", marginTop: "5px" }}
+              >
+                Connect your brand with the world's leading companies and
+                position your company towards the top business leaders in the
+                Nordics. Join us to create an outstanding brand experience at
+                the event and throughout the year. {zigzagData[0].description}
+              </Typography>
+            </Grid>
+          </Grid>
 
-      {/* Zigzag Layout Section */}
-      <Box sx={{ marginBottom: "100px", marginTop: "100px", padding: "5px" }}>
-        {/* First Row */}
-        <Grid container sx={{ alignItems: "center" }}>
-          <Grid item xs={12} md={6}>
-            <img
-              src={zigzagData[0].image}
-              alt="Zigzag Image 1"
-              style={{ width: "70%", height: "auto", margin: "0 auto" }} // Adjusted width for better fit
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: "bold", marginTop: "5px" }}
+          {/* Second Row */}
+          <Grid
+            container
+            spacing={0}
+            sx={{ alignItems: "center", marginTop: "0px" }}
+          >
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{ paddingRight: "80px", margin: "0" }}
             >
-              Brand Awareness
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: "1rem", marginTop: "5px" }}
-            >
-              Connect your brand with the world's leading companies and position
-              your company towards the top business leaders in the Nordics. Join
-              us to create an outstanding brand experience at the event and
-              throughout the year. {zigzagData[0].description}
-            </Typography>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: "bold", marginTop: "5px" }}
+              >
+                Thought Leadership
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ fontSize: "1rem", marginTop: "5px" }}
+              >
+                Your brand can take the lead on a rising issue, organize an
+                executive roundtable, take part in the agenda, join our podcasts
+                or webinars. Build your company's reputation as a trusted and
+                authoritative voice. {zigzagData[1].description}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ padding: "0", margin: "0" }}>
+              <img
+                src={zigzagData[1].image}
+                alt="Zigzag Image 2"
+                style={{
+                  width: "100%",
+                  height: "300px", // Fixed height for uniform size
+                  objectFit: "cover", // Ensure the image covers the area without distortion
+                  margin: "0",
+                }}
+              />
+            </Grid>
           </Grid>
-        </Grid>
 
-        {/* Second Row */}
-        <Grid
-          container
-          spacing={1}
-          sx={{ alignItems: "center", marginTop: "20px" }}
-        >
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: "bold", marginTop: "5px" }}
-            >
-              Thought Leadership
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: "1rem", marginTop: "5px" }}
-            >
-              Your brand can take the leadon a rising issue, organizean executve
-              roundtable, take part of the agenda, join our podcasts or
-              webinars. Build your company's reputaion as a trusted and
-              authoritative voice. {zigzagData[0].description}
-            </Typography>
+          {/* Third Row */}
+          <Grid
+            container
+            spacing={0}
+            sx={{ alignItems: "center", marginTop: "0px" }}
+          >
+            <Grid item xs={12} md={6} sx={{ padding: "0", margin: "0" }}>
+              <img
+                src={zigzagData[2].image}
+                alt="Zigzag Image 3"
+                style={{
+                  width: "100%",
+                  height: "300px", // Fixed height for uniform size
+                  objectFit: "cover", // Ensure the image covers the area without distortion
+                  margin: "0",
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ paddingLeft: "80px", margin: "0" }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: "bold", marginTop: "5px" }}
+              >
+                Networking
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ fontSize: "1rem", marginTop: "5px" }}
+              >
+                Oslo Business Forum is designed to create the best conversations
+                and relationships towards business leaders. At the conference,
+                you can easily network, book meetings, and enter dialogues with
+                your next business partners. {zigzagData[2].description}
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <img
-              src={zigzagData[1].image}
-              alt="Zigzag Image 2"
-              style={{ width: "70%", height: "auto", margin: "0 auto" }} // Adjusted width for better fit
-            />
-          </Grid>
-        </Grid>
 
-        {/* Third Row */}
-        <Grid
-          container
-          spacing={1}
-          sx={{ alignItems: "center", marginTop: "20px" }}
-        >
-          <Grid item xs={12} md={6}>
-            <img
-              src={zigzagData[2].image}
-              alt="Zigzag Image 3"
-              style={{ width: "70%", height: "auto", margin: "0 auto" }} // Adjusted width for better fit
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: "bold", marginTop: "5px" }}
+          {/* Fourth Row */}
+          <Grid
+            container
+            spacing={0}
+            sx={{ alignItems: "center", marginTop: "0px" }}
+          >
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{ paddingRight: "80px", margin: "0" }}
             >
-              Networking
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: "1rem", marginTop: "5px" }}
-            >
-              Oslo Business Forum is designed to create the best conversations
-              and relationships towards business leaders. At the conference you
-              can easily network, book meetings and enter dialogues with your
-              next business partners. {zigzagData[2].description}
-            </Typography>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: "bold", marginTop: "5px" }}
+              >
+                Lead Generation
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ fontSize: "1rem", marginTop: "5px" }}
+              >
+                Oslo Business Forum attendees are C-level executives and
+                decision-makers. They’re experts in their fields, and they know
+                the next big thing when they see it. Could that be your
+                company’s product? {zigzagData[3].description}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ padding: "0", margin: "0" }}>
+              <img
+                src={zigzagData[3].image}
+                alt="Zigzag Image 4"
+                style={{
+                  width: "100%",
+                  height: "300px", // Fixed height for uniform size
+                  objectFit: "cover", // Ensure the image covers the area without distortion
+                  margin: "0",
+                }}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-
-        {/* Fourth Row */}
-        <Grid
-          container
-          spacing={1}
-          sx={{ alignItems: "center", marginTop: "20px" }}
-        >
-          <Grid item xs={12} md={6}>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: "bold", marginTop: "5px" }}
-            >
-              Lead Generation
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: "1rem", marginTop: "5px" }}
-            >
-              Oslo Business Forum attendees are C-level executives and decision
-              makers. They’re experts in their fields, and they know the next
-              big thing when they see it. Could that be your company’s product?
-              {zigzagData[0].description}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <img
-              src={zigzagData[3].image}
-              alt="Zigzag Image 2"
-              style={{ width: "70%", height: "auto", margin: "0 auto" }} // Adjusted width for better fit
-            />
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </>
   );
 }
