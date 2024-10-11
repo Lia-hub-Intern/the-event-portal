@@ -24,6 +24,7 @@ import Home from "./components/views/Home";
 import Login from "./components/views/Login";
 import Speakers from "./components/views/Speakers";
 import BeASpeaker from "./components/views/BeASpeaker";
+import AboutUs from './components/views/About.jsx';
 import "dayjs/locale/en-gb";
 
 /**
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/speakers" element={<Speakers />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="*" element={<Navigate to="/" />} />
             <Route path="/beaspeaker" element={<BeASpeaker to="/" />} />
           </Routes>

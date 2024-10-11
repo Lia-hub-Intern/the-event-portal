@@ -20,6 +20,7 @@ export const navBarLinks = [
   { title: "Events", path: "/Prompt", icon: <TravelExploreIcon /> },
   { title: "Speakers", path: "/Speakers", icon: <InterpreterModeIcon /> },
   { title: "Events", path: "/Events", icon: <FestivalIcon /> },
+  { title: 'About us', path: '/AboutUs', icon: <FestivalIcon /> },
   { title: "Be a Speaker", path: "/BeASpeaker", icon: <RecordVoiceOverIcon /> },
 ];
 

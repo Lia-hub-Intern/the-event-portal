@@ -22,6 +22,7 @@
     "match-sorter": "^6.3.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-material-ui-carousel": "^3.4.2",
     "react-player": "^2.16.0",
     "react-router-dom": "^6.26.2",
     "sort-by": "^0.0.2"
