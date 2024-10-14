@@ -156,7 +156,7 @@ export default function BeASpeaker() {
             >
               Position your brand and insights effectively towards top business
               leaders in the Nordics. Get in touch with our specialist team
-              today to secure your partnership with Compony Business Forum!
+              today to secure your partnership with Company Business Forum!
             </Typography>
             <Button variant="contained" color="primary">
               Join now!
