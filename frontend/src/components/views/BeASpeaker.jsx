@@ -267,9 +267,10 @@ export default function BeASpeaker() {
               label="Comments"
               variant="outlined"
               fullWidth
+              multiline // Enables the multiline text field
+              rows={4} // Adjusts the height of the text area (you can increase or decrease the number of rows as needed)
               sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
             />
-
             <FormControlLabel
               control={
                 <Checkbox
