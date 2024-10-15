@@ -107,6 +107,30 @@ export const logos = [
 	},
 ];
 
+export const events = [
+	{
+		title: 'Logo 1',
+		image:
+			'https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=626&ext=jpg;',
+		description:
+			'For the very first time, Europe is hosting a TED event to celebrate groundbreaking ideas at the forefront of AI innovation.',
+	},
+	{
+		title: 'Logo 2',
+		image:
+			'https://img.freepik.com/free-vector/bicycle-shop-logo-design-vector_53876-40626.jpg?size=626&ext=jpg',
+		description:
+			'For the very first time, Europe is hosting a TED event to celebrate groundbreaking ideas at the forefront of AI innovationxxxxx.',
+	},
+	{
+		title: 'Logo 3',
+		image:
+			'https://img.freepik.com/free-vector/bicycle-shop-logo-design-vector_53876-40626.jpg?size=626&ext=jpg;',
+		description:
+			'For the very first time, Europe is hosting a TED event to celebrate groundbreaking ideas at the forefront of AI innovationxxxxx.',
+	},
+];
+
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 export const top100Films = [
 	{ title: 'The Shawshank Redemption', year: 1994 },
