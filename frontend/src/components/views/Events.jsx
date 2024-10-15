@@ -31,20 +31,22 @@ export default function Events() {
          {events.map(event => (
         <Grid2 item key={event.id} xs={12} sm={6} md={4}>
           <Card sx={{ maxWidth: 345 }}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={event.image}
-              alt={event.title}
-            />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {event.title} // Visa titeln
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {event.description} // Lägg till en beskrivning om den finns
-                </Typography>
-              </CardContent>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="140"
+                image={event.image}
+                alt={event.title}
+              />
+              <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {event.title} // Visa titeln
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {event.description} // Lägg till en beskrivning om den finns
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
             </Card>
           </Grid2>
         ))}
