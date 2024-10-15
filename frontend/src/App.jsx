@@ -41,6 +41,7 @@ export default function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/speakers" element={<Speakers />} />
+						<Route path="/events" element={<Events />} />
 						<Route path="/conference" element={<Conference />} />
 
 						<Route path="*" element={<Navigate to="/" />} />
