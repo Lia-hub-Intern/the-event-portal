@@ -23,6 +23,7 @@ import { navBarLinks } from './components/functions/Functions';
 import Home from './components/views/Home';
 import Login from './components/views/Login';
 import Speakers from './components/views/Speakers';
+import Events from './components/views/Events';
 import 'dayjs/locale/en-gb';
 import Conference from './components/views/Conference';
 
