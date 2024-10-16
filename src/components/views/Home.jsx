@@ -1,12 +1,13 @@
-// src/components/views/Home.jsx
 import React from "react";
 import Hero from "./Hero";
 import Values from "./Values";
 import UpcomingConferences from "./UpcomingConferences";
-
 import { Container, Box } from "@mui/material";
-
 import CustomCard from "./CustomCard";
+import RecommendedEvents from "./RecommendedEvents";
+
+
+
 
 const cardData = [
   {
@@ -56,6 +57,7 @@ export default function Home() {
             ))}
           </Box>
         </Box>
+        <RecommendedEvents /> {/* Add scrolling TED Talk events here */}
       </Container>
     </>
   );
