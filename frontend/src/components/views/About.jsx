@@ -3,7 +3,7 @@ import {
     Typography,
     Box
 } from '@mui/material';
-import Slideshow from './slideshowConfrence';
+import HeaderSida from './header.jsx';
 import AboutUsImage from '../../assets/about-us-hero-image.jpeg'; 
 import ImageOne from '../../assets/about-us-content-image-one.jpeg';
 import ImageTwo from '../../assets/about-us-content-image-two.jpeg';
@@ -13,9 +13,12 @@ import ImageFour from '../../assets/about-us-content-image-four.png';
 
 /* About us page. */
 export default function AboutUs() {
+    const Image = AboutUsImage;
+
 	return (
 		<>
-            <Slideshow/>
+            <HeaderSida headerTitle={"Empowering leaders to change the world!"} headerImage={Image} />
+            {/*
             <Box
                 sx={{
                     position: 'relative',
@@ -54,7 +57,7 @@ export default function AboutUs() {
                 >
                     Empowering leaders to <Box component={"span"} sx={{color: "yellow"}}>Change</Box> the world!
                 </Typography>
-            </Box>
+            </Box> */}
             <Typography 
                 variant={"h4"} 
                 sx={{

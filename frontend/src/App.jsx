@@ -37,7 +37,7 @@ export default function App() {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
         <Navbar navBarLinks={navBarLinks} />
-        <Container sx={{ mt: 5 }}>
+        <Container sx={{ overflowX: "hidden" }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

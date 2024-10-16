@@ -17,7 +17,7 @@ const items = [
         picture: "https://s3-alpha-sig.figma.com/img/da82/425a/e158d18ce03670b2c63b5d92edfdcf52?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=lc8mLoLNQ9PXHr9OHRhMZvx8DXTxXpuRzWl-ZdBrsIz7O4sTNmHzZ8BuzvZVdaNMymnnzlWL8dZ8qy4andvWIl3Hhmjf26jwL5oew-JXBhuoG2eLKzjxPZS6OHVro6NO311NUiHiFjj0OtSL71MQqT5CJjDJpVt5o20YkSWQmtZVbnFLA7NAX-ZtUsmNx9M9E9CmYNILEVH4PnKv0APnbDNIrTTx53DcE16iHPIX7URg0LiXBCaLIsG38mE1UYKK79X7l4zlA8dwLqN2fC~Koln4EHX0XYVHT-any6skwl3Vz0NPWaJ7dKPeE8dt0IHGtciXlBaQZ6tm7iGKgvIrvA__"
     },
     {
-        name: "Get your business “unstuck”",
+        name: "Get your business unstuck",
         description: "Companies and executives seek out professional business coaches for various reasons, but they all have one thing in…",
         picture: "https://s3-alpha-sig.figma.com/img/9866/04c9/94738c19230cbc04c5dc0bb583620718?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=maKUMsmSBZiHeP6s9kLb5TqJg9Gsno3Dv07HjGze6a0nDvUUGR9irctlocpFgxiweXpRJlG0j0rMP1pUshVrKWJIgNoZOd-IkWgewTBf9yz8YmyZydaQQKv9Z-ZSwM8wy3JA6TBHaKFsOhup~7SnQmDPhaujODF1Tio5bIF0HrQWxjOwtlvDZWyPKzByf7feJUM3dnsi4vraxjDKy31XJ64hBsE6whVQ0M19TrOLBWWzmOFDSm3nIQonGV~id4llyPIEM4RGsZ~fx2Nifq6MLpliiNPVYW0F4AS4EYshA3puc77Fb87~ECngLOLUBN3FVSjoiEEh5ZWbGpJKBr~~sA__"
     },
@@ -100,15 +100,18 @@ export default function CustomCarousel() {
     };
 
     return (
-        <Box id="carousel-container" sx={{
-            display: 'flex',
-            position: 'relative',
-            width: '100%',
-            height: "50vh",
-            margin: '20px auto',
-            overflow: 'hidden',
-            flexDirection: "column",
-        }}>
+        <Box 
+            id="carousel-container"
+            sx={{
+                display: 'flex',
+                position: 'relative',
+                width: '100%',
+                height: "50vh",
+                margin: '20px auto',
+                overflow: 'hidden',
+                flexDirection: "column",
+            }}
+            >
             <Box sx={{
                 width: "100%",
                 height: "10%",
@@ -116,80 +119,81 @@ export default function CustomCarousel() {
                 padding: "4px",
             }}>
                 <Box sx={{
-                    width: "80%",
-                    display: "flex",
-                    alignItems: "center",
+                width: "80%",
+                display: "flex",
+                alignItems: "center",
                 }}>
-                    <Typography variant="h4" sx={{fontWeight: "500", marginRight: "2%"}}>
-                        Blog
-                    </Typography>
-                    <Button
-                        sx={{
-                            color: "gray",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            padding: "0",
-                            borderRadius: "0",
-                            borderBottom: "1px solid #f0f0f0",
-                            fontSize: "1rem",
-                            '&:hover': {
-                                borderColor: 'gray',
-                            }
-                        }}
-                    >
-                        Go to the Blog <ArrowForwardIosIcon fontSize='0.9rem'/>
-                    </Button>
-                </Box>
-                <Box sx={{
-                    width: "20%",
+                <Typography variant="h4" sx={{fontWeight: "500", marginRight: "2%"}}>
+                    Blog
+                </Typography>
+                <Button
+                    sx={{
+                    color: "gray",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    padding: "0",
+                    borderRadius: "0",
+                    borderBottom: "1px solid #f0f0f0",
+                    fontSize: "1rem",
+                    '&:hover': {
+                        borderColor: 'gray',
+                    }
+                    }}
+                >
+                    Go to the Blog <ArrowForwardIosIcon fontSize='0.9rem'/>
+                </Button>
+                </Box>
+                <Box sx={{
+                width: "20%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 }}>
-                    <Button
-                        onClick={handlePrev}
-                        sx={{
-                            color: "black",
-                            height: "40px",
-                            width: "40px",
-                            borderRadius: "50%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            padding: "0",
-                            minWidth: "0",
-                            backgroundColor: "#f0f0f0",
-                            marginRight: "10px",
-                            '&:hover': {
-                                backgroundColor: "#e0e0e0"
-                            }
-                        }}
-                    >
-                        <ArrowBackIosIcon fontSize="small" />
-                    </Button>
-                    <Button
-                        onClick={handleNext}
-                        sx={{
-                            color: "black",
-                            height: "40px",
-                            width: "40px",
-                            borderRadius: "50%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            padding: "0",
-                            minWidth: "0",
-                            backgroundColor: "#f0f0f0",
-                            '&:hover': {
-                                backgroundColor: "#e0e0e0"
-                            }
-                        }}
-                    >
-                        <ArrowForwardIosIcon fontSize="small" />
-                    </Button>  
+                <Button
+                    onClick={handlePrev}
+                    sx={{
+                    color: "black",
+                    height: "40px",
+                    width: "40px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0",
+                    minWidth: "0",
+                    backgroundColor: "#f0f0f0",
+                    marginRight: "10px",
+                    '&:hover': {
+                        backgroundColor: "#e0e0e0"
+                    }
+                    }}
+                >
+                    <ArrowBackIosIcon fontSize="small" />
+                </Button>
+                <Button
+                    onClick={handleNext}
+                    sx={{
+                    color: "black",
+                    height: "40px",
+                    width: "40px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "0",
+                    minWidth: "0",
+                    backgroundColor: "#f0f0f0",
+                    '&:hover': {
+                        backgroundColor: "#e0e0e0"
+                    }
+                    }}
+                >
+                    <ArrowForwardIosIcon fontSize="small" />
+                </Button>  
                 </Box>
             </Box>
+
             <Box sx={{
                 display: 'flex',
                 transition: 'transform 0.5s ease',
@@ -200,51 +204,65 @@ export default function CustomCarousel() {
                 padding: "5px",
             }}>
                 {items.map((item, index) => (
-                    <Card key={index} sx={{
-                        width: `${itemWidthPercentage}%`,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: "column",
-                        backgroundColor: '#f5f5f5',
-                        textAlign: 'center',
-                    }}>
-                        <CardMedia
-                        component="img"
-                        image={item.picture}
-                        alt={item.name}
-                        sx={{
-                            width: '100%',
-                            height: '200px', // Ensure all images have the same height
-                            objectFit: 'cover', // Makes sure the image fills the card without distorting
-                            marginBottom: '8px', // Adds a slight margin below the image
-                            borderRadius: "10px",
-                        }}
-                        />
+                <Card 
+                    key={index}
+                    sx={{
+                    width: `${itemWidthPercentage}%`,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: "column",
+                    backgroundColor: '#f5f5f5',
+                    }}
+                >
+                    <CardMedia
+                    component="img"
+                    image={item.picture}
+                    alt={item.name}
+                    sx={{
+                        width: '100%',
+                        height: '200px',  // Ensure all images have the same height
+                        objectFit: 'cover',  // Makes sure the image fills the card without distorting
+                        marginBottom: '8px',  // Adds a slight margin below the image
+                        borderRadius: "10px",
+                    }}
+                    />
 
-                        <CardContent sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
-                        <Typography 
-                            variant="h6" 
-                            sx={{ 
-                            whiteSpace: 'nowrap', 
-                            overflow: 'hidden', 
-                            textOverflow: 'ellipsis', 
-                            width: '75%',
-                            fontWeight: "400"
-                            }}
-                        >
-                            {item.name}
-                        </Typography>
-                        <Typography 
-                            variant="body2" 
-                            sx={{
-                            color: '#6e6e6e', // A slightly gray but still dark color
-                            }}
-                        >
-                            {item.description}
-                        </Typography>
-                        </CardContent>
-                    </Card>
+                    <CardContent sx={{ 
+                    display: "flex", 
+                    flexDirection: "column", 
+                    height: "100%",
+                    width: "100%",
+                    padding: "2vh",  // Ensure there is padding inside the CardContent 
+                    textAlign: "left", // Aligns text to the left
+                    }}>
+                    <Typography 
+                        variant="h6" 
+                        sx={{ 
+                        fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',  // Adjust clamp values for better scaling
+                        fontWeight: "400",
+                        textAlign: "left",
+                        whiteSpace: 'nowrap',  // Prevents wrapping
+                        overflow: 'hidden',    // Hides overflow
+                        textOverflow: 'ellipsis', // Adds ellipsis if text is too long
+                        width: '100%',  // Ensures it takes up full width of the card
+                        marginBottom: "4px",
+                        }}
+                    >
+                        {item.name}
+                    </Typography>
+                    <Typography 
+                        variant="body2" 
+                        sx={{
+                        color: '#6e6e6e',  // A slightly gray but still dark color
+                        fontSize: 'clamp(0.75rem, 1.2vw, 1rem)',  // Adjust the body2 font size similarly
+                        textAlign: "left",
+                        }}
+                    >
+                        {item.description}
+                    </Typography>
+                    </CardContent>
+                </Card>
                 ))}
             </Box>
         </Box>
