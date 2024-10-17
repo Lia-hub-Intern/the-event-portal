@@ -29,13 +29,9 @@ export default function Events() {
             <Box sx={{ position: 'relative'}}>
               <Card 
                 sx={{ 
-                  transition: '0.2s',
-                  '&:hover': {
-                    transform: 'scale(1.03)', 
-                  },
                   width: '100%', 
-                  maxWidth: '300px',
-                  height: '200px',
+                  maxWidth: '350px',
+                  height: '300px',
                   marginBottom: '-1px', 
                   textDecoration: 'none',
                   borderBottom: 'none',
@@ -44,10 +40,12 @@ export default function Events() {
                 <CardActionArea>
                   <CardMedia
                     component="img"
-                    height="140"
+                    height="300px"
                     image={event.image}
                     alt={event.title}
-                    sx={{ objectFit: 'cover' }}
+                    sx={{ 
+                      objectFit: 'cover',
+                    }}
                   />
                 </CardActionArea>
               </Card>
@@ -56,52 +54,42 @@ export default function Events() {
                   onClick={() => handleTitleClick(event.id)}
                   sx={{
                     position: 'absolute',
-                    top: '180px', 
+                    top: '270px', 
                     left: '50%',
+                    width: '75%',
+                    height: '50px',
                     transform: 'translateX(-50%)',
                     backgroundColor: 'darkgray', 
-                    padding: '5px 10px', 
+                    padding: '5px 60px', 
                     cursor: 'pointer',
-                    // borderRadius: '4px',
                     boxShadow: 2,
                     zIndex: 1,
+                    display: 'flex',
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
                     textAlign: 'center',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
                   }}
                 >
                   <Typography variant="h6" component="span">
                     {event.title}
                   </Typography>
                 </Box>
-              {/* <Typography 
-                gutterBottom 
-                variant="h5" 
-                component="div"
-                onClick={() => handleTitleClick(event.id)} 
-                sx={{
-                backgroundColor: '#f0f0f0',
-                padding: '10px',
-                cursor: 'pointer',
-                borderRadius: '4px',
-                '&:hover': {
-                  backgroundColor: '#e0e0e0',
-                  color: 'primary.main',
-                },
-              }}
-              > */}
-              {/* {event.title} */}
+         
               <Card 
                 sx={{ 
                   backgroundColor: '#f0f0f0', 
                   width: '100%', 
-                  maxWidth: '300px',
-                  height: '200px',
+                  maxWidth: '350px',
+                  height: '300px',
                   marginTop: '-1px',
                   borderTop: 'none', 
                 }}
               >
                 <CardContent sx={{ paddingTop: '30px' }}>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {event.description} // Lägg till en beskrivning om den finns
+                    {event.description} 
                   </Typography>
                 </CardContent>
               </Card>
