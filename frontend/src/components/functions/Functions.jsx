@@ -153,9 +153,65 @@ export const events = [
 	{
 		title: 'RSA Conference',
 		image:
-			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPxDxHjTIh6QgzxapzjKyXW1S0HqZa2EWENw&s',
+			'https://kongre.net/sites/default/files/2021-02/RSA%20Conference%20logos.%20png_0.png',
 		description:
-			'FinovateEurope is a premier financial technology conference held annually, showcasing the latest innovations in fintech. It features live product demos, insightful presentations, and networking opportunities with industry leaders. The event focuses on emerging trends in banking, payments, lending, blockchain, AI, and more. With its emphasis on cutting-edge technology and forward-thinking solutions, FinovateEurope attracts professionals from across the financial services ecosystem, including startups, investors, and established institutions.',
+			'The RSA Conference USA is a leading cybersecurity event, bringing together industry experts, thought leaders, and professionals to discuss the latest trends and challenges in the field. Attendees can participate in sessions, workshops, and presentations covering topics like cyber threats, data protection, encryption, and governance. The conference provides valuable insights into new technologies, security innovations, and best practices to combat cyber risks. It also offers networking opportunities with peers and experts.',
+	},
+	{
+		title: 'City arts',
+		image:
+			'https://cdn.sfcityarts.org/wordpress/wp-content/uploads/2018/06/Chairs.Logo_.Square.jpg',
+		description:
+			'City Arts is a nonprofit organization dedicated to promoting and supporting the arts in the community. They provide various programs, events, and resources to artists and art enthusiasts, fostering creativity and collaboration. Their mission includes enhancing public engagement with the arts through workshops, exhibitions, and educational initiatives. City Arts aims to enrich the cultural landscape and improve the quality of life through artistic expression and community involvement.',
+	},
+	{
+		title: 'Tony Robbins',
+		image:
+			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4T80SUcUezfuhXTOQYIvif1ywE2aMYGhDKQ&s',
+		description:
+			'Tony Robbins hosts dynamic events focused on personal growth, financial success, and health improvement. His most notable events include "Unleash the Power Within," where participants engage in motivational exercises and strategies to break through personal barriers, and "Date With Destiny," which focuses on creating life strategies for success and fulfillment. These events often feature live interventions, practical exercises, and powerful talks to help attendees transform their lives. Robbins events attract thousands of attendees worldwide looking for personal and professional breakthroughs.',
+	},
+	{
+		title: 'EASRD',
+		image:
+			'https://www.eventalways.com/media/eventlogo/large/undefined-logo-1716802767.jpg',
+		description:
+			'The International Conference on Accounting, Business, Management & Leadership (ICABML) by EASRD focuses on key advancements and challenges in these fields. Scholars, researchers, and professionals gather to present research, exchange ideas, and discuss topics like leadership strategies, business innovations, and accounting practices. The event features presentations, workshops, and networking opportunities aimed at fostering collaboration and knowledge sharing among industry experts.',
+	},
+	{
+		title: 'SAIRAP',
+		image:
+			'https://sairap.org/images/logo.png',
+		description:
+			'SAIRAP (South Asia Institute for Research and Publications) is an organization dedicated to advancing research, innovation, and academic excellence. They specialize in organizing international conferences and workshops, promoting knowledge exchange among researchers, professionals, and students. SAIRAP focuses on a wide range of disciplines, including science, technology, management, and social sciences. Their events provide a platform for presenting research, fostering collaboration, and discussing advancements in various fields. SAIRAP also supports the publication of research papers through its proceedings and academic journals.',
+	},
+	{
+		title: 'Conferenzia World',
+		image:
+			'https://media.licdn.com/dms/image/v2/C4D0BAQFCGbj1Y9RxMg/company-logo_200_200/company-logo_200_200/0/1630477091791/conferenzia_world_logo?e=2147483647&v=beta&t=iThVco2BML-nvjAr3HvkN9Gp8ky9Od_ypSIIn7foHY4',
+		description:
+			'Conferenzia World is an international platform that organizes high-level conferences, summits, and forums across various industries. Their events are designed to bring together industry experts, professionals, and thought leaders to discuss cutting-edge topics, trends, and innovations. The goal is to foster knowledge sharing, networking opportunities, and collaboration among participants. Covering sectors like finance, healthcare, technology, and more, Conferenzia World aims to provide valuable insights and solutions for business challenges faced in today’s global markets.',
+	},
+	{
+		title: 'AI Conference',
+		image:
+			'https://play-lh.googleusercontent.com2jVBUyT7a4JoOpgXlQ0mH8wvAMeLK7kTqekpnMGy0NkFxurgZCgyxZ0MMRgibMY5xUr6=w600-h300-pc0xffffff-pd',
+		description:
+			'The AI Conference in London focuses on the latest advancements in artificial intelligence and its practical applications across industries. It brings together leading AI experts, business professionals, and innovators to discuss key topics like AI ethics, machine learning, AI in business, and emerging technologies. Participants can attend insightful sessions, workshops, and networking events to explore the future of AI and its role in driving innovation and efficiency. The conference offers a platform for learning, collaboration, and discovering cutting-edge AI solutions.',
+	},
+	{
+		title: 'Web Summit',
+		image:
+			'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Web_Summit_logo.svg/2048px-Web_Summit_logo.svg.png',
+		description:
+			'Web Summit is one of the largest technology conferences globally, bringing together startups, tech giants, and industry leaders to explore the latest innovations and trends. Held annually in Lisbon, the event attracts tens of thousands of attendees, including entrepreneurs, investors, and journalists. It features a mix of keynote speakers, panel discussions, and networking opportunities, covering topics such as AI, fintech, cybersecurity, and more. Web Summit is known for its vibrant atmosphere and being a hub for innovation and tech-driven businesses.',
+	},
+	{
+		title: 'AI & Big data expo',
+		image:
+			'https://www.ai-expo.net/europe/wp-content/uploads/2022/10/AI-White-Europe-3.png',
+		description:
+			'The AI Expo Europe is a major event focused on artificial intelligence, bringing together industry leaders, AI experts, and tech innovators from across Europe. The expo covers topics such as machine learning, natural language processing, AI in business, and more, with a variety of presentations, panel discussions, and networking opportunities. Attendees can explore the latest AI advancements and technologies, aimed at enhancing innovation and problem-solving in sectors like healthcare, finance, and retail.',
 	},
 ];
 
