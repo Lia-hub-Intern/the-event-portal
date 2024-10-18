@@ -193,11 +193,11 @@ export const events = [
 			'Conferenzia World is an international platform that organizes high-level conferences, summits, and forums across various industries. Their events are designed to bring together industry experts, professionals, and thought leaders to discuss cutting-edge topics, trends, and innovations. The goal is to foster knowledge sharing, networking opportunities, and collaboration among participants. Covering sectors like finance, healthcare, technology, and more, Conferenzia World aims to provide valuable insights and solutions for business challenges faced in today’s global markets.',
 	},
 	{
-		title: 'AI Conference',
+		title: 'TED',
 		image:
-			'https://play-lh.googleusercontent.com2jVBUyT7a4JoOpgXlQ0mH8wvAMeLK7kTqekpnMGy0NkFxurgZCgyxZ0MMRgibMY5xUr6=w600-h300-pc0xffffff-pd',
+			'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASsAAACoCAMAAACPKThEAAAAilBMVEX////rACjrACXtFzfsDDHqABT2mqfrACD//P3rABvvUWXqAA75ucLxXnL3pbHqABf1jZv1k6D5xsztNEvpAAD3oa3vP1b7ztX2mqb96Oz8193+8PPvRFv6ytDze4r/9/n94+j4rrntHTzycYLxZXb4tr/uNlD83eLzf4vydIHxWG3tKkTvQVr1iJce36m1AAADrklEQVR4nO3ce1faMBiA8TZSQ6ysRYp4G6KoY6Lf/+sN9OiGvIEINJed5/d3uT32tGkam2UAAAAAAAAAAAAAAAAAAAAAAAAAAADZeedod/mPLOvu8QbqbvENei5vcD8/mdbD0WXQVgOtdldeLFoVe7x+0To7MU7balMVTTOYnt6Ga6Xy3RXLVmaP17+10t94hTJl8XBGK0fKNINHWrnSzdOIVq50OevSylX55P2kmGyrXOdXtHKlKs8HrYRbLc6IfveslFvlunNNK1fmhlbOyj6tXKniF61c6RNaOWv8XUkn30qfe2s1L4s1cj6zvmHTt7aq1rcWXj+0tvr4tMoYvfnP2fz01eru4vir4ZP05fR0bcPj/sjWSvXX31d4/ZWtlRl/bDL7fWPKakMu0/PVStKTvn15Km8stlLa/dPEVuW/O0t3VN+X1lrKhJxZPkQr9xkTudWXI3b3cV7YYr3NRIcSYavF57zadi2fw4Y1UbZaHFotJ5288npVuCrSVtljKbeyfTUfYm2V1XIsM9vpZx5EtK2yJ3Espr3ONqyKYcwgtzoTdyylwt1f3b9Vruq+g3o5CfydVtm5uGM14UZYB2iVVy7s1zi2VnfijmXb2oNDtHJiv3a2/fpL8eKwGLbWYpuIW8nzIpXP2dFVMbeaSR9nxm2l2CrmVkPpslA/t5Viq5hbnUoHd4/zfV/F3GoktVLztlJsFXOrK1rRqoVWP8VWg7ZSbBVzK3Hgrl/aSrFVzK3kMUO42xMxtxozFnVuxTWOc6tr9R9eO5t25mTEYXviczLqtXbw+u25PvGrpT3X19Yc8qV4Q1V1Up5DbuvexFTciUPeTI22lXjhvDgNvu70Mw8i1lbX9/JSrYCH9lhb3d7Ip1xlwh2uIm01GVhGcuZh1x96ADG26g61ba1kyOUMUYwZVhc2XtVH1sVqIUcMhxmLHg8dXGxYA/m5TT3r5cWGRZBVwJUfh7nGcVla67K2drm6dvPi2jLoP9dHcO3srgo3H7OUUquwK2vTarV8RERICbUKeBf1XTqtlJn4DCNIp1UTchj6JplWzbHXLpJUWjXhbkl8SqOVKsPvVYm0MjrgrNVfCbRS5c3EZxKr6FupSoW7I7gq8laqMLOA/620KuZWypSdOppS8bZSuijV9Mz/g6826ElPG7S2qtp/tqF+f7Dh/cnFKKpQCw95Z52xtZI2dqSXz8x83vYGR/OX3rgejiaxdQIAAAAAAAAAAAAAAAAAAAAAAAAAAJH5A3CAbNzh/PpyAAAAAElFTkSuQmCC',
 		description:
-			'The AI Conference in London focuses on the latest advancements in artificial intelligence and its practical applications across industries. It brings together leading AI experts, business professionals, and innovators to discuss key topics like AI ethics, machine learning, AI in business, and emerging technologies. Participants can attend insightful sessions, workshops, and networking events to explore the future of AI and its role in driving innovation and efficiency. The conference offers a platform for learning, collaboration, and discovering cutting-edge AI solutions.',
+			'TED Talks are influential presentations where experts from various fields share innovative ideas and personal stories. These talks cover topics like technology, education, design, science, and social issues, offering insights aimed at inspiring audiences to think differently and take action. TED events often feature thought leaders, creators, and change-makers, with a global audience watching both in-person and online through recorded sessions. The format encourages short, impactful talks, typically under 18 minutes, designed to be engaging, informative, and accessible to all.',
 	},
 	{
 		title: 'Web Summit',
@@ -207,11 +207,11 @@ export const events = [
 			'Web Summit is one of the largest technology conferences globally, bringing together startups, tech giants, and industry leaders to explore the latest innovations and trends. Held annually in Lisbon, the event attracts tens of thousands of attendees, including entrepreneurs, investors, and journalists. It features a mix of keynote speakers, panel discussions, and networking opportunities, covering topics such as AI, fintech, cybersecurity, and more. Web Summit is known for its vibrant atmosphere and being a hub for innovation and tech-driven businesses.',
 	},
 	{
-		title: 'AI & Big data expo',
+		title: 'Grant Cardone',
 		image:
-			'https://www.ai-expo.net/europe/wp-content/uploads/2022/10/AI-White-Europe-3.png',
+			'https://media.licdn.com/dms/image/v2/C560BAQHQcnpWTOjW9g/company-logo_200_200/company-logo_200_200/0/1630662073472/grant_cardone_enterprises_logo?e=2147483647&v=beta&t=HzGbUjwCKeMzrkBHbvMVmZXEGe_beoqqiQ5ERVo58t4',
 		description:
-			'The AI Expo Europe is a major event focused on artificial intelligence, bringing together industry leaders, AI experts, and tech innovators from across Europe. The expo covers topics such as machine learning, natural language processing, AI in business, and more, with a variety of presentations, panel discussions, and networking opportunities. Attendees can explore the latest AI advancements and technologies, aimed at enhancing innovation and problem-solving in sectors like healthcare, finance, and retail.',
+			'Grant Cardone`s events are centered around business growth, sales, real estate, and personal development. His signature event, "10X Growth Conference," is designed to help entrepreneurs and professionals "10X" their business and life through actionable insights, motivational speeches, and networking opportunities. The events feature a lineup of renowned speakers from various industries, providing strategies on scaling businesses, improving sales, and increasing personal and financial success. Cardone also hosts real estate investment seminars and workshops focusing on financial freedom and wealth-building strategies.',
 	},
 ];
 
