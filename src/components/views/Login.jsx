@@ -1,3 +1,15 @@
+/**
+ * Developer Full Stack: Darwin Rengifo
+ *
+ * Create Date: 2024-08-05
+ *     Program : Login.jsx
+ *   Path Name : stagefider/frontend/src/components/views
+ *       Tools : NodeJS, React, Mterial UI
+ *
+ * Description:
+ * - Access login for users with membership.
+ *
+ */
 import {
   Avatar,
   Box,
@@ -9,6 +21,7 @@ import {
   Checkbox,
   Button,
   Grid,
+  IconButton,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { NavLink } from "react-router-dom";
@@ -22,7 +35,7 @@ export default function Login() {
           <Avatar
             sx={{
               mx: "auto",
-              //bgcolor: "secondary.main",
+              bgcolor: "secondary.main",
               textAlign: "center",
               mb: 1,
             }}
@@ -59,9 +72,17 @@ export default function Login() {
               type="submit"
               variant="contained"
               fullWidth
-              sx={{ marginTop: 1 }}
+              sx={{
+                marginTop: 1,
+                "&:hover": {
+                  backgroundColor: "secondary.main",
+                  color: "white",
+                },
+              }}
             >
-              Sign In
+              <Typography variant="body2" component="span">
+                Sign In
+              </Typography>
             </Button>
           </Box>
           <Grid container justifyContent="space-between" sx={{ marginTop: 1 }}>
@@ -69,8 +90,21 @@ export default function Login() {
               item
               component={NavLink} //component react router
               to={"/Forgot"}
+              sx={{ textDecoration: "none" }}
             >
-              <Typography color="primary" sx={{ fontSize: 14 }}>
+              <Typography
+                color="primary"
+                sx={{
+                  fontSize: 14,
+                  transition: "0.2s",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                    color: "primary.dark",
+                    fontWeight: 500,
+                    opacity: "revert-layer",
+                  },
+                }}
+              >
                 Forgot password?
               </Typography>
             </Grid>
@@ -78,9 +112,22 @@ export default function Login() {
               item
               component={NavLink} //component react router
               to={"/Register"}
-              color="secondary"
+              sx={{ textDecoration: "none" }}
+              //color="secondary"
             >
-              <Typography color="primary" sx={{ fontSize: 14 }}>
+              <Typography
+                color="primary"
+                sx={{
+                  fontSize: 14,
+                  transition: "0.2s",
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                    color: "primary.dark",
+                    fontWeight: 500,
+                    opacity: "revert-layer",
+                  },
+                }}
+              >
                 Sign Up
               </Typography>
             </Grid>

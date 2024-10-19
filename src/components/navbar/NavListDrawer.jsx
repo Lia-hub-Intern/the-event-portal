@@ -32,7 +32,11 @@ export default function NavListDrawer({ navBarLinks, NavLink, setOpen }) {
       <nav>
         <List>
           <ListItem sx={{ marginBottom: 3, paddingLeft: 3 }}>
-            <ListItemText primary="StageFinder"></ListItemText>
+            <ListItemText>
+              <Typography component="p" variant="p4">
+                StageFinder
+              </Typography>
+            </ListItemText>
           </ListItem>
         </List>
         <List>
@@ -44,9 +48,13 @@ export default function NavListDrawer({ navBarLinks, NavLink, setOpen }) {
                 to={item.path}
                 onClick={() => setOpen(false)}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemIcon sx={{ minWidth: 0.2 }}>{item.icon}</ListItemIcon>
                 <ListItemText>
-                  <Typography sx={{ textTransform: "capitalize" }}>
+                  <Typography
+                    component="p"
+                    variant="p5"
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     {item.title}
                   </Typography>
                 </ListItemText>

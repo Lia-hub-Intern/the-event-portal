@@ -1,3 +1,15 @@
+/**
+ * Developer Full Stack: Darwin Rengifo
+ *
+ * Create Date: 2024-09-17
+ *     Program : VHeader.jsx
+ *   Path Name : stagefider/frontend/src/components/videos
+ *       Tools : NodeJS, React, Mterial UI
+ *
+ * Description:
+ * - Display a video in the home page header
+ *
+ */
 import ReactPlayer from "react-player";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -41,7 +53,7 @@ export default function VHeader() {
       <Grid sx={{ position: "relative" }}>
         <ReactPlayer
           className={classes.reactPlayer}
-          url="/videos/Header.mp4"
+          url="/videos/VHeader.mp4"
           width="80rem"
           height="45rem"
           playing

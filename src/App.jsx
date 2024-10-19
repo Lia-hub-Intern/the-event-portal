@@ -1,10 +1,10 @@
-/** Company: INCA DEVELOPMENT AB
+/**
  * Developer Full Stack: Darwin Rengifo
  *
  * Create Date: 2024-08-24
  *     Program : App.jsx
- *   Path Name : incasale-dev/frontend/src
- *       Tools : NodeJS, React, Mteria UI
+ *   Path Name : stagefinder/frontend/src
+ *       Tools : NodeJS, React, Mterial UI
  *
  * Description:
  * - Calls website pages through routes.
@@ -22,9 +22,12 @@ import Navbar from "./components/navbar/Navbar";
 import { navBarLinks } from "./components/functions/Functions";
 import Home from "./components/views/Home";
 import Login from "./components/views/Login";
-import Prompt from "./components/views/Prompt";
 import Speakers from "./components/views/Speakers";
 import Events from "./components/views/Events";
+import Conference from "./components/views/Conference";
+import BeASpeaker from "./components/views/BeASpeaker";
+import About from "./components/views/About";
+import Footer from "./components/navbar/Footer";
 import "dayjs/locale/en-gb";
 
 /**
@@ -41,12 +44,15 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/prompt" element={<Prompt />} />
-            <Route path="/speakers" element={<Speakers />} />
-            <Route path="/events" element={<Events />} />
+            <Route path="/speakers" element={<Speakers title="Speaker" />} />
+            <Route path="/events" element={<Events title="Events" />} />
+            <Route path="/conference" element={<Conference />} />
+            <Route path="/beaspeaker" element={<BeASpeaker to="/" />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>
+        <Footer />
       </LocalizationProvider>
     </>
   );
