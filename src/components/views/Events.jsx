@@ -1,5 +1,5 @@
 /**
- * Developer Full Stack: Darwin Rengifo
+ * Developer Full Stack: Darwin Rengifo / Alexandra
  *
  * Create Date: 2024-09-10
  *     Program : Speakers.jsx
@@ -253,11 +253,11 @@ export default function Events({ title }) {
           }}
         >
           {events.map((item) => (
-            /** CARD: es la cartilla que encierra todo el contenido del card */
+            /** CARD: is the booklet that contains all the contents of the card */
             <Card
               key={item.title}
               //component={NavLink} //component del react router
-              /** Envia item.title como parametro a DetailProduct */
+              /** Send item.title as a parameter to DetailProduct */
               //to={`/DetailProduct/${item.title}`}
               sx={{
                 transition: "0.2s",
@@ -275,12 +275,12 @@ export default function Events({ title }) {
               <CardActionArea
                 sx={{
                   display: "flex",
-                  flexDirection: "column", // Para asegurarse de que el contenido se apile verticalmente
-                  alignItems: "center", // Centrar horizontalmente
-                  justifyContent: "center", // Centrar verticalmente
+                  flexDirection: "column", // To ensure that content is stacked vertically
+                  alignItems: "center", // Center horizontally
+                  justifyContent: "center", // Center vertically
                 }}
               >
-                {/** Encierra la imagen */}
+                {/** Enclose the image */}
                 <CardMedia
                   component="img"
                   image={item.image}
@@ -311,9 +311,8 @@ export default function Events({ title }) {
                     transition: "background-color 0.3s, color 0.3s",
                     cursor: "pointer",
                     "&:hover": {
-                      backgroundColor: "secondary.main", // Cambia el color de fondo al hacer hover
-                      //backgroundColor: "#1976d2", // Cambia el color de fondo al hacer hover
-                      color: "white", // Cambia el color del texto al hacer hover
+                      backgroundColor: "secondary.main", // Change background color on hover
+                      color: "white", // Change text color on hover
                     },
                   }}
                 >

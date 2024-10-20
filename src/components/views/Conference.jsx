@@ -94,7 +94,7 @@ export default function Conference() {
     {
       title: "Awaken Your True Power at the 2024 She’s Unstoppable Summit",
       description:
-        "It’s time for us, the women of the world, to awaken our true power and nature. In a world filled with noise, confusion, and division, we",
+        "It’s time for us, the women of the world, to awaken our true power and nature. In a world filled with noise, confusion, and division, we...",
       image:
         "https://cdn.sanity.io/images/nyyhaljw/production/3adf79db07a1441c06b7b1b300f21419de3d9223-1473x850.png?w=1473&h=850&q=80&auto=format",
     },
@@ -111,7 +111,6 @@ export default function Conference() {
       <HeaderSida headerTitle={"Conferences"} headerImage={Image} />
       <Grid
         container
-        spacing={0}
         sx={{
           justifyContent: "center",
           alignItems: "center",
@@ -120,7 +119,7 @@ export default function Conference() {
         }}
       >
         {/** Awaken your true power and ignite your unstoppable self */}
-        <Grid item spacing={2}>
+        <Grid item>
           <Box>
             <Typography
               component="h6"
@@ -137,7 +136,7 @@ export default function Conference() {
         </Grid>
 
         {/** Four phases, unlimited possibilities */}
-        <Grid item spacing={2} sx={{ marginTop: "6rem" }}>
+        <Grid item sx={{ marginTop: "6rem" }}>
           <Typography
             component="h6"
             variant="h6A"
@@ -230,7 +229,7 @@ export default function Conference() {
             <ArrowBackIosIcon />
           </IconButton>
 
-          <Grid item spacing={2} sx={{ marginTop: "2rem" }}>
+          <Grid item sx={{ marginTop: "2rem" }}>
             <Box
               sx={{
                 display: "flex",

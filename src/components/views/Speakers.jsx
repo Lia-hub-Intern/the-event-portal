@@ -104,7 +104,6 @@ export default function Speakres({ title }) {
               sx={{ marginBottom: "1rem", textAlign: "center" }}
             >
               {title} {/** Title sida */}
-              <Typography />
             </Typography>
 
             <Autocomplete

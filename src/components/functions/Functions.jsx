@@ -28,7 +28,8 @@ export const navBarLinks = [
   { title: "Home", path: "/", icon: <HomeIcon /> },
   { title: "Speakers", path: "/Speakers", icon: <InterpreterModeIcon /> },
   { title: "Events", path: "/Events", icon: <CalendarMonthIcon /> },
-  { title: "Conference", path: "/Conference", icon: <Diversity3Icon /> },
+  { title: "Conference", path: "/Conference", icon: <TravelExploreIcon /> },
+  { title: "Partners", path: "/Partners", icon: <Diversity3Icon /> },
   { title: "Be a Speaker", path: "/BeASpeaker", icon: <RecordVoiceOverIcon /> },
   { title: "About", path: "/About", icon: <FestivalIcon /> },
 ];

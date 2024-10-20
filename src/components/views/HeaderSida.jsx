@@ -30,7 +30,7 @@ export default function HeaderSida({ headerTitle, headerImage }) {
           <Box
             sx={{
               width: { xs: "25.7rem", sm: "80rem" },
-              height: { xs: "10rem", sm: "20rem" },
+              height: { xs: "10rem", sm: "31.7rem" }, //20
               display: "flex",
               position: "relative", // This allows you to position the text absolutely within the Box
               justifyContent: "center",

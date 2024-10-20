@@ -28,6 +28,8 @@ import Conference from "./components/views/Conference";
 import BeASpeaker from "./components/views/BeASpeaker";
 import About from "./components/views/About";
 import Footer from "./components/navbar/Footer";
+import Partners from "./components/views/Partners";
+import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import "dayjs/locale/en-gb";
 
 /**
@@ -41,13 +43,24 @@ export default function App() {
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
         <Navbar navBarLinks={navBarLinks} />
         <Container sx={{ mt: 5 }}>
+          <ScrollToTopButton />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/speakers" element={<Speakers title="Speaker" />} />
-            <Route path="/events" element={<Events title="Events" />} />
+            <Route
+              path="/speakers"
+              element={<Speakers title="Find the speaker of your interest" />}
+            />
+            <Route
+              path="/events"
+              element={<Events title="Participate in the next events" />}
+            />
             <Route path="/conference" element={<Conference />} />
-            <Route path="/beaspeaker" element={<BeASpeaker to="/" />} />
+            <Route
+              path="/partners"
+              element={<Partners title="Become one of our partners" />}
+            />
+            <Route path="/beaspeaker" element={<BeASpeaker />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

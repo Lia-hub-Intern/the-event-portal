@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
-//import { Link } from "react-router-dom";
 
 const values = [
   { value: "Learn", text: "Expand your knowledge and skills.", link: "/learn" },
@@ -67,9 +66,9 @@ export default function Values() {
           }}
         >
           {values.map((item, index) => (
-            //<Link to={item.link} key={index} style={{ textDecoration: "none" }}>
             <Box
               component={NavLink} //component  react router
+              key={item.value}
               to={item.path}
               sx={{
                 textDecoration: "none",
@@ -89,7 +88,6 @@ export default function Values() {
                 {item.text}
               </Typography>
             </Box>
-            //</Link>
           ))}
         </Box>
       </Box>
