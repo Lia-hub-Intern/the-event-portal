@@ -58,7 +58,7 @@ const listPartners = [
 export default function Partners({ title }) {
   return (
     <>
-      <HeaderSida headerTitle={"Partners Phrases"} headerImage={Image} />
+      <HeaderSida headerTitle={"Our partners"} headerImage={Image} />
       <Grid
         container
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
