@@ -73,7 +73,7 @@ export default function Speakres({ title }) {
 
   return (
     <>
-      <HeaderSida headerTitle={"Partners Phrases"} headerImage={Image} />
+      <HeaderSida headerTitle={"Meet Our Speakers"} headerImage={Image} />
       <Grid
         container
         //spacing={10}

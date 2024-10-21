@@ -31,7 +31,7 @@ export const navBarLinks = [
   { title: "Conference", path: "/Conference", icon: <TravelExploreIcon /> },
   { title: "Partners", path: "/Partners", icon: <Diversity3Icon /> },
   { title: "Be a Speaker", path: "/BeASpeaker", icon: <RecordVoiceOverIcon /> },
-  { title: "About", path: "/About", icon: <FestivalIcon /> },
+  { title: "About Us", path: "/About", icon: <FestivalIcon /> },
 ];
 
 export const listSpeakers = [
