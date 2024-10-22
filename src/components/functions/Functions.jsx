@@ -43,6 +43,10 @@ export const listSpeakers = [
       "Karl Lillrud makes sure you get not just advice but also the tools to apply straight away to make a difference and improve your Future, AI knowledge, Innovation thinking, and Leadership mindset.",
     image:
       "https://static.wixstatic.com/media/4d53c3_40db86ddf78f4270961713c4c7a3e645~mv2_d_1617_2048_s_2.jpg/v1/crop/x_0,y_44,w_1595,h_1956/fill/w_548,h_672,al_c,q_90,enc_auto/Karl%20Lillrud%20.jpg",
+    facebook: "https://www.facebook.com/klillrud",
+    twitter: "https://twitter.com/karl_lillrud",
+    instagram: "https://www.instagram.com/karl.lillrud",
+    linkedin: "https://www.linkedin.com/in/karl-lillrud",
   },
   {
     name: "Yuval Noah Harari",
@@ -52,6 +56,10 @@ export const listSpeakers = [
       "Yuval Noah Harari has a brilliant and unique ability to take his extensive knowledge of world history and present broad, accessible, and helpful understandings of humanity.",
     image:
       "https://pbs.twimg.com/profile_images/1034789978444886017/9GqAdkNk_400x400.jpg",
+      facebook: "",
+      twitter: "",
+      instagram: "",
+      linkedin: "",
   },
   {
     name: "Adam Grant",
