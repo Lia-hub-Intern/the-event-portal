@@ -8,13 +8,16 @@
  *
  * Description:
  * - Displays a list of speakers with filtering options.
+ * -  Nurhussein : Stars have been added to rate the speakers in order to assess their performance.
  *
  */
+import React, { useEffect, useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import Rating from "@mui/material/Rating";
 import { listSpeakers } from "../functions/Functions";
 import {
   Box,
@@ -26,7 +29,6 @@ import {
   Grid,
   MenuItem,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import HeaderSida from "./HeaderSida";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -35,9 +37,10 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const Image =
   "https://img.freepik.com/fotos-premium/mujer-esta-pie-frente-gran-multitud-dando-discurso_283836-5657.jpg?w=826";
 
-export default function Speakres({ title }) {
+export default function Speakers({ title }) {
   const [categories, setCategories] = useState([]);
   const [speakers, setSpeakers] = useState(listSpeakers);
+  const [ratings, setRatings] = useState({});
 
   useEffect(() => {
     const listCategories = [
@@ -50,6 +53,13 @@ export default function Speakres({ title }) {
     ].map((category) => ({ title: category })); // Creates an object with the title property for each category
 
     setCategories([...listCategories]);
+
+    // Initialize ratings
+    const initialRatings = {};
+    listSpeakers.forEach((speaker) => {
+      initialRatings[speaker.name] = 0;
+    });
+    setRatings(initialRatings);
   }, []);
 
   const filterSpeakers = (event, newValue) => {
@@ -69,6 +79,13 @@ export default function Speakres({ title }) {
     } else {
       setSpeakers([...listSpeakers]);
     }
+  };
+
+  const handleRatingChange = (speakerName, newValue) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [speakerName]: newValue,
+    }));
   };
 
   return (
@@ -159,7 +176,7 @@ export default function Speakres({ title }) {
           {speakers.map((item) => (
             /** CARD: es la cartilla que encierra todo el contenido del card */
             <Card
-              key={item.title}
+              key={item.name}
               //component={NavLink} //component del react router
               /** Envia item.title como parametro a DetailProduct */
               //to={`/DetailProduct/${item.title}`}
@@ -169,7 +186,7 @@ export default function Speakres({ title }) {
                   transform: "scale(1.05)",
                 },
                 width: { xs: "38vh", sm: "50vh" },
-                height: { xs: "72vh", sm: "110vh" },
+                height: { xs: "80vh", sm: "120vh" },
                 marginLeft: { sm: "1rem" },
                 marginTop: "2rem",
                 textDecoration: "none",
@@ -191,7 +208,7 @@ export default function Speakres({ title }) {
                 {/** Encloses all text content */}
                 <CardContent
                   sx={{
-                    height: "9rem",
+                    height: "12rem",
                     justifyContent: "left",
                     justifyItems: "left",
                   }}
@@ -212,7 +229,16 @@ export default function Speakres({ title }) {
                   >
                     {item.title}
                   </Typography>
-                  <Typography variant="body1">{item.description}</Typography>
+                  <Typography variant="body1" sx={{ marginBottom: "1rem" }}>
+                    {item.description}
+                  </Typography>
+                  <Rating
+                    name={`rating-${item.name}`}
+                    value={ratings[item.name]}
+                    onChange={(event, newValue) => {
+                      handleRatingChange(item.name, newValue);
+                    }}
+                  />
                 </CardContent>
               </CardActionArea>
             </Card>
