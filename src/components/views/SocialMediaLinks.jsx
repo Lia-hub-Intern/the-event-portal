@@ -5,13 +5,21 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
-export default function SocialMediaLinks({ facebook, twitter, instagram, linkedin }) {
+export default function SocialMediaLinks({ facebook, twitter, instagram, linkedin, isLoggedIn }) {
   // State to track whether the icons should be visible or not
   const [showIcons, setShowIcons] = useState(false);
 
   // Function to toggle icon visibility
   const handleToggle = () => {
     setShowIcons((prevShowIcons) => !prevShowIcons);
+
+  //    // Function to toggle icon visibility
+  // const handleToggle = () => {
+  //   if (isLoggedIn) {
+  //     setShowIcons((prevShowIcons) => !prevShowIcons);
+  //   } else {
+  //     alert('Please log in to view social media links.'); // Notify user to log in
+  //   }
   };
 
   return (
@@ -51,8 +59,8 @@ export default function SocialMediaLinks({ facebook, twitter, instagram, linkedi
         </a>
       )}
     </Box>
-    
-     
+
+
       )}
     </Box>
   );

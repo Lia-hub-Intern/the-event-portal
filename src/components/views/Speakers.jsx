@@ -18,7 +18,6 @@ import {
 import { useEffect, useState } from "react";
 import HeaderSida from "./HeaderSida";
 
-
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -83,12 +82,12 @@ export default function Speakers({ title }) {
         >
           <Box
             sx={{
-              width: { xs: "20rem", sm: "auto" },
+              width: { xs: "18rem", sm: "auto" }, // Adjusted width for mobile
               marginBottom: "1rem ",
             }}
           >
             <Typography
-              variant="h4"
+              variant="h5" // Adjusted font size for mobile
               sx={{ marginBottom: "1rem", textAlign: "center" }}
             >
               {title} {/** Title sida */}
@@ -129,8 +128,8 @@ export default function Speakers({ title }) {
 
         <Grid
           container
-          spacing={10}
-          rowSpacing={1}
+          spacing={3} // Reduced spacing for mobile screens
+          rowSpacing={3} // Adjusted for mobile screens
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           sx={{
             item: { xs: 12, sm: 6, md: 4 },
@@ -146,8 +145,8 @@ export default function Speakers({ title }) {
                 "&:hover": {
                   transform: "scale(1.05)",
                 },
-                width: { xs: "38vh", sm: "50vh" },
-                height: { xs: "72vh", sm: "110vh" },
+                width: { xs: "80vw", sm: "50vh" }, // Responsive width
+                height: { xs: "auto", sm: "110vh" }, // Responsive height
                 marginLeft: { sm: "1rem" },
                 marginTop: "2rem",
                 textDecoration: "none",
@@ -159,37 +158,37 @@ export default function Speakers({ title }) {
                   image={item.image}
                   alt="Card Image"
                   sx={{
-                    height: { xs: "48vh", sm: "60vh" },
+                    height: { xs: "30vh", sm: "60vh" }, // Responsive image height
                     objectFit: "cover",
                   }}
                 />
                 <CardContent
                   sx={{
-                    height: "9rem",
+                    height: "auto", // Adjusted for responsiveness
                     justifyContent: "left",
                     justifyItems: "left",
                   }}
                 >
                   <Typography
-                    variant="h5"
+                    variant="h6" // Smaller font for mobile screens
                     sx={{
-                      paddingBottom: "1rem",
+                      paddingBottom: "0.5rem",
                       textTransform: "capitalize",
                     }}
                   >
                     {item.name}
                   </Typography>
                   <Typography
-                    variant="p1"
+                    variant="subtitle1"
                     component="p"
                     sx={{ paddingBottom: "0.5rem" }}
                   >
                     {item.title}
                   </Typography>
-                  <Typography variant="body1">{item.description}</Typography>
+                  <Typography variant="body2">{item.description}</Typography>
                 </CardContent>
               </CardActionArea>
-              {/* Add the SocialMediaLinks component here */}
+           
               <SocialMediaLinks 
                 facebook={item.facebook} 
                 twitter={item.twitter} 
