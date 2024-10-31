@@ -31,7 +31,7 @@ import Footer from "./components/navbar/Footer";
 import Partners from "./components/views/Partners";
 import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import "dayjs/locale/en-gb";
-
+import Prompt from "./components/views/Prompt";
 /**
  * This function is the main function of the application.
  * It is responsible for rendering the main components of the application.
@@ -62,6 +62,7 @@ export default function App() {
             />
             <Route path="/beaspeaker" element={<BeASpeaker />} />
             <Route path="/about" element={<About />} />
+            <Route path="/prompt" element={<Prompt />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>
