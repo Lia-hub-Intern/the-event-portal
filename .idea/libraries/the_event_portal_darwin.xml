@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="the-event-portal-darwin">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/the-event-portal-darwin.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

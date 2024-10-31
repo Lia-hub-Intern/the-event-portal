@@ -1,0 +1,23 @@
+{
+  "name": "the-event-portal",
+  "version": "1.0.0",
+  "description": "A simple event portal API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "groq-sdk": "^0.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "author": "Your Name",
+  "license": "ISC"
+}
+
+
