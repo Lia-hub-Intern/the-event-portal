@@ -198,4 +198,4 @@ We also have meetings every weekday at 10:30 in the "Meeting Room" and if you ne
 
 Changelog:
 
-2024-11-01 \Svartakatten : Updates the entire main code to the newest version and wrote a new Readme. If you have any questions, you can contact me on Discord "airikrr" or you can see me through the Discord Server as Svartakatten.
+2024-11-01 \Svartakatten : Updated the entire main code to the newest version and wrote a new Readme. If you have any questions, you can contact me on Discord "airikrr" or you can see me through the Discord Server as Svartakatten.
