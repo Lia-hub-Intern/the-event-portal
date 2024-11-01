@@ -1,3 +1,9 @@
+# StageFinder
+
+## Acknowledgments
+- [React](https://reactjs.org/) - JavaScript library for building user interfaces.
+- [Vite](https://vitejs.dev/) - Next-generation front-end tooling.
+
 #Svensk Version
 
 Steg 1 : Installera Node.js, detta kan du göra på deras webbplats (https://nodejs.org/en). Kör filen och följ Package Manager instruktioner tills du är färdig.
