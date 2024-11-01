@@ -98,7 +98,7 @@ Här är en quickstart guide för codegpt (https://docs.codegpt.co/docs/tutorial
 
 Komihåg att Providern ska vara Groq och modellen llama3-70b-8192 !!!
 
-Om det finns ytliggare problem kan det vara att den öppnas på fel port har vi märkt, vänligen kontrollera detta i eran terminal!
+Om det finns ytterligare problem kan det vara att den öppnas på fel port, har vi märkt, vänligen kontrollera detta i eran terminal!
 
 Vid frågor kan du ställa dom i våran Discord Server som heter "LIA".
 
