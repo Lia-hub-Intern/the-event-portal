@@ -4,7 +4,7 @@
 - [React](https://reactjs.org/) - JavaScript library for building user interfaces.
 - [Vite](https://vitejs.dev/) - Next-generation front-end tooling.
 
-#Svensk Version
+## Svensk Version
 
 Steg 1 : Installera Node.js, detta kan du göra på deras webbplats (https://nodejs.org/en). Kör filen och följ Package Manager instruktioner tills du är färdig.
 
@@ -102,7 +102,7 @@ Changelog :
 
 2024-11-01 \Svartakatten : Uppdaterar hela main koden till nyaste versionen och skrivit ny Readme. Vid fråga kan ni höra av er till mig på Discord "airikrr" eller så ser ni mig igenom Discord Servern som Svartakatten.
 
-#English Version
+## English Version
 
 Step 1 : Install Node.js, you can do this on their website (https://nodejs.org/en). Run the file and follow the Package Manager's instructions until you are done.
 
