@@ -15,46 +15,54 @@
  *    Routes, Route : true/false
  */
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
-	Box,
-	List,
-	ListItem,
-	ListItemButton,
-	ListItemIcon,
-	ListItemText,
-	Typography,
-} from '@mui/material';
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 
 export default function NavListDrawer({ navBarLinks, NavLink, setOpen }) {
-	return (
-		<Box sx={{ width: 250 }}>
-			<nav>
-				<List>
-					<ListItem sx={{ marginBottom: 3, paddingLeft: 3 }}>
-						<ListItemText primary="StageFinder"></ListItemText>
-					</ListItem>
-				</List>
-				<List>
-					{navBarLinks.map((item) => (
-						<ListItem sx={{ marginTop: -3 }} key={item.title}>
-							<ListItemButton
-								sx={{ paddingLeft: 0 }}
-								component={NavLink}
-								to={item.path}
-								onClick={() => setOpen(false)}
-							>
-								<ListItemIcon>{item.icon}</ListItemIcon>
-								<ListItemText>
-									<Typography sx={{ textTransform: 'capitalize' }}>
-										{item.title}
-									</Typography>
-								</ListItemText>
-							</ListItemButton>
-						</ListItem>
-					))}
-				</List>
-			</nav>
-		</Box>
-	);
+  return (
+    <Box sx={{ width: 250 }}>
+      <nav>
+        <List>
+          <ListItem sx={{ marginBottom: 3, paddingLeft: 3 }}>
+            <ListItemText>
+              <Typography component="p" variant="p4">
+                StageFinder
+              </Typography>
+            </ListItemText>
+          </ListItem>
+        </List>
+        <List>
+          {navBarLinks.map((item) => (
+            <ListItem sx={{ marginTop: -3 }} key={item.title}>
+              <ListItemButton
+                sx={{ paddingLeft: 0 }}
+                component={NavLink}
+                to={item.path}
+                onClick={() => setOpen(false)}
+              >
+                <ListItemIcon sx={{ minWidth: 0.2 }}>{item.icon}</ListItemIcon>
+                <ListItemText>
+                  <Typography
+                    component="p"
+                    variant="p5"
+                    sx={{ textTransform: "capitalize" }}
+                  >
+                    {item.title}
+                  </Typography>
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </nav>
+    </Box>
+  );
 }

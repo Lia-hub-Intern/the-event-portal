@@ -1,10 +1,10 @@
-/** Company: Karl Company
+/**
  * Developer Full Stack: Darwin Rengifo
  *
  * Create Date: 2024-08-24
  *     Program : App.jsx
- *   Path Name : incasale-dev/frontend/src
- *       Tools : NodeJS, React, Mteria UI
+ *   Path Name : stagefinder/frontend/src
+ *       Tools : NodeJS, React, Mterial UI
  *
  * Description:
  * - Calls website pages through routes.
@@ -23,9 +23,15 @@ import { navBarLinks } from "./components/functions/Functions";
 import Home from "./components/views/Home";
 import Login from "./components/views/Login";
 import Speakers from "./components/views/Speakers";
+import Events from "./components/views/Events";
+import Conference from "./components/views/Conference";
 import BeASpeaker from "./components/views/BeASpeaker";
-import AboutUs from './components/views/About.jsx';
+import About from "./components/views/About";
+import Footer from "./components/navbar/Footer";
+import Partners from "./components/views/Partners";
+import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import "dayjs/locale/en-gb";
+import Prompt from "./components/views/Prompt";
 
 /**
  * This function is the main function of the application.
@@ -38,15 +44,30 @@ export default function App() {
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
         <Navbar navBarLinks={navBarLinks} />
         <Container sx={{ mt: 5 }}>
+          <ScrollToTopButton />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/speakers" element={<Speakers />} />
-            <Route path="/AboutUs" element={<AboutUs />} />
+            <Route
+              path="/speakers"
+              element={<Speakers title="Find the speaker of your interest" />}
+            />
+            <Route
+              path="/events"
+              element={<Events title="Participate in the next events" />}
+            />
+            <Route path="/conference" element={<Conference />} />
+            <Route
+              path="/partners"
+              element={<Partners title="Become one of our partners" />}
+            />
+            <Route path="/beaspeaker" element={<BeASpeaker />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/prompt" element={<Prompt />} />
             <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/beaspeaker" element={<BeASpeaker to="/" />} />
           </Routes>
         </Container>
+        <Footer />
       </LocalizationProvider>
     </>
   );
