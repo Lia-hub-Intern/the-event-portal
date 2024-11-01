@@ -96,7 +96,7 @@ Changelog :
 
 2024-11-01 \Svartakatten : Uppdaterar hela main koden till nyaste versionen och skrivit ny Readme. Vid fråga kan ni höra av er till mig på Discord "airikrr" eller så ser ni mig igenom Discord Servern som Svartakatten.
 
-#English version
+#English Version
 
 Step 1 : Install Node.js, you can do this on their website (https://nodejs.org/en). Run the file and follow the Package Manager's instructions until you are done.
 
