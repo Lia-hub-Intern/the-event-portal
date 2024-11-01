@@ -22,22 +22,22 @@ Efteråt behöver du också skriva in "npm audit fix --force" för att fixa de p
 
 Därefter kör du dessa kommandon för att installera resten --->
 
-"npm install cors" 
-För ytliggare information finner du på (https://www.npmjs.com/package/cors)
-"npm install dotenv" 
-För ytliggare information finner du på (https://www.npmjs.com/package/dotenv)
-"npm install express" 
-För ytliggare information finner du på (https://www.npmjs.com/package/express)
-"npm install groq-sdk" 
-För ytliggare information finner du på (https://www.npmjs.com/package/groq-sdk)
-"npm install nodemon" 
-För ytliggare information finner du på (https://www.npmjs.com/package/nodemon)
+"npm install cors" <br/>
+För ytliggare information finner du på (https://www.npmjs.com/package/cors) <br/>
+"npm install dotenv" <br/>
+För ytliggare information finner du på (https://www.npmjs.com/package/dotenv) <br/>
+"npm install express" <br/>
+För ytliggare information finner du på (https://www.npmjs.com/package/express) <br/>
+"npm install groq-sdk" <br/>
+För ytliggare information finner du på (https://www.npmjs.com/package/groq-sdk) <br/>
+"npm install nodemon" <br/>
+För ytliggare information finner du på (https://www.npmjs.com/package/nodemon) <br/>
 
 <--- Paket <---
 
-Grattis! nu har du installerat alla paket för backend och ska nu installera det du behöver för frontend, därför ska du nu skriva i din terminal "cd .." och sedan "cd frontend" för att lokalisera frontend'et.
+Grattis! nu har du installerat alla paket för backend och ska nu installera det du behöver för frontend, därför ska du nu skriva i din terminal <br/> "cd .." och sedan "cd frontend" för att lokalisera frontend'et.
 
-Nu är det bara ett paket som du behöver installera och det är "npm install" och när du har gjort det behöver du också köra "npm audit fix --force" igen för att fixa problemen som kan ha följt med.
+Nu är det bara ett paket som du behöver installera och det är "npm install" och när du har gjort det behöver du också köra <br/> "npm audit fix --force" igen för att fixa problemen som kan ha följt med.
 
 Nu är det viktigt att du går in i backend mappen och ersätter "GROQ_API_KEY = #Placeholder för din groqcloud api-nyckel" så att det blir "GROQ_API_KEY = din api nyckel" utan citattecken. kom ihåg att aldrig ladda upp på github med din nyckel på grund av säkerhetsrisker.
 
@@ -47,7 +47,7 @@ För att köra båda måste du köra kommandot "npm run dev" i båda terminalern
 
 Om du har några frågor kan du ställa dom i våran discord server, och om du vill arbeta backend eller frontend måste du först informera scrum-masterna som just nu är "Sina", "Asia Rauf" och "darwinrr". Så att vi kan ha koll på vem som arbetar med vad, strukturera teamet och ge ut tasks på ett säkert sätt. Då detta är väldigt viktigt för arbetet att flyta på utan problem.
 
-Sedan när du ska börja på och arbeta med projektet kommer du behöva skapa din egen bransch till projektet då det är väldigt viktigt att du inte laddar upp direkt till main och detta gör du nere till vänster på VS Code där du ser att det står main klickar du och sedan "Create new branch". Nu kommer du att få nämna din bransch till något eget som du kommer att få göra Pushningar och Pull Requests igenom. 
+Sedan när du ska börja på och arbeta med projektet kommer du behöva skapa din egen bransch till projektet då det är väldigt viktigt att du inte laddar upp direkt till main och detta gör du nere till vänster på VS Code där du ser att det står main klickar du och sedan <br/> "Create new branch". Nu kommer du att få nämna din bransch till något eget som du kommer att få göra Pushningar och Pull Requests igenom. 
 
 När du ser nere till vänster att du är på din bransch istället för main kommer du att kunna börja arbeta på koden och lycka till!
 
@@ -76,13 +76,13 @@ Har jag skapat en förgreningsstrategi för att organisera kodändringar?
 
 Har jag genomfört alla senaste ändringar och löst merge konflikter?
 
-Sedan för att pusha upp din kod till din bransch måste du säkerställa att du är på din branch och sedan kör du dessa kommandon i terminalen "\the-event-portal> "
+Sedan för att pusha upp din kod till din bransch måste du säkerställa att du är på din branch och sedan kör du dessa kommandon i terminalen <br/> "\the-event-portal> "
 
-git add .
-git commit -m "Describe your changes here"
-git push origin your-branch-name
+git add . <br/>
+git commit -m "Describe your changes here" <br/>
+git push origin your-branch-name <br/>
 
-Detta går också att göra genom Source Control men det rekommenderar jag inte då mycket problem brukar uppstå som till exempel "du fastnar i laddningen". 
+Detta går också att göra genom Source Control men det rekommenderar jag inte då mycket problem brukar uppstå som till exempel <br/> "du fastnar i laddningen". 
 
 (Observera!)
 
@@ -120,22 +120,22 @@ Afterwards, you also need to type "npm audit fix --force" to fix the problems en
 
 Then run these commands to install the rest --->
 
-"npm install cores"
-For more superficial information you can find at (https://www.npmjs.com/package/cors)
-"npm install dotenv"
-For more superficial information you can find at (https://www.npmjs.com/package/dotenv)
-"npm install express"
-For more superficial information you can find at (https://www.npmjs.com/package/express)
-"npm install groq-sdk"
-For more superficial information you can find at (https://www.npmjs.com/package/groq-sdk)
-"npm install nodemon"
-For more superficial information you can find at (https://www.npmjs.com/package/nodemon)
+"npm install cores" <br/>
+For more superficial information you can find at (https://www.npmjs.com/package/cors) <br/>
+"npm install dotenv" <br/>
+For more superficial information you can find at (https://www.npmjs.com/package/dotenv) <br/>
+"npm install express" <br/>
+For more superficial information you can find at (https://www.npmjs.com/package/express) <br/>
+"npm install groq-sdk" <br/>
+For more superficial information you can find at (https://www.npmjs.com/package/groq-sdk) <br/>
+"npm install nodemon" <br/>
+For more superficial information you can find at (https://www.npmjs.com/package/nodemon) <br/>
 
 <--- Package <---
 
-Congratulations! Now you have installed all the packages for the backend and will now install what you need for the frontend, therefore you should now type in your terminal "cd .." and then "cd frontend" to locate the frontend.
+Congratulations! Now you have installed all the packages for the backend and will now install what you need for the frontend, therefore you should now type in your terminal <br/> "cd .." and then "cd frontend" to locate the frontend.
 
-Now there is only one package that you need to install and that is "npm install" and when you have done that you also need to run "npm audit fix --force" again to fix the problems that may have come with it.
+Now there is only one package that you need to install and that is "npm install" and when you have done that you also need to run <br/> "npm audit fix --force" again to fix the problems that may have come with it.
 
 Now it is important that you go into the backend folder and replace "GROQ_API_KEY = #Placeholder for your groqcloud api key" so that it becomes "GROQ_API_KEY = your api key" without quotes. remember to never upload to github with your key due to security risks.
 
@@ -145,7 +145,7 @@ To run both, you need to run the command "npm run dev" in both terminals that yo
 
 If you have any questions, you can ask them in our discord server, and if you want to work backend or frontend, you must first inform the scrum masters who are currently "Sina", "Asia Rauf" and "darwinrr". So that we can keep track of who works with what, structure the team and issue tasks in a safe way. As this is very important for the work to flow without problems.
 
-Then when you start and work with the project you will need to create your own branch for the project as it is very important that you do not upload directly to main and you do this at the bottom left of VS Code where you see it says main click you and then "Create new branch". Now you will be able to name your branch as something of your own that you will be able to make Pushes and Pull Requests through.
+Then when you start and work with the project you will need to create your own branch for the project as it is very important that you do not upload directly to main and you do this at the bottom left of VS Code where you see it says main click you and then <br/> "Create new branch". Now you will be able to name your branch as something of your own that you will be able to make Pushes and Pull Requests through.
 
 When you see in the bottom left that you are on your branch instead of main you will be able to start working on the code and good luck!
 
@@ -174,13 +174,13 @@ Have I created a branching strategy to organize code changes?
 
 Have I committed all recent changes and resolved merge conflicts?
 
-Then to push your code to your branch you need to ensure you are on your branch and then run these commands in the terminal "\the-event-portal> "
+Then to push your code to your branch you need to ensure you are on your branch and then run these commands in the terminal <br/> "\the-event-portal> "
 
-git add .
-git commit -m "Describe your changes here"
-git push origin your-branch-name
+git add . <br/>
+git commit -m "Describe your changes here" <br/>
+git push origin your-branch-name <br/>
 
-This can also be done through Source Control, but I don't recommend it as a lot of problems usually arise such as "you get stuck in the loading".
+This can also be done through Source Control, but I don't recommend it as a lot of problems usually arise such as <br/> "you get stuck in the loading".
 
 (Note!)
 
