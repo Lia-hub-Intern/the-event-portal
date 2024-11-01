@@ -98,6 +98,8 @@ Här är en quickstart guide för codegpt (https://docs.codegpt.co/docs/tutorial
 
 Komihåg att Providern ska vara Groq och modellen llama3-70b-8192 !!!
 
+Om det finns ytliggare problem kan det vara att den öppnas på fel port har vi märkt, vänligen kontrollera detta i eran terminal!
+
 Vid frågor kan du ställa dom i våran Discord Server som heter "LIA".
 
 Vi har också möten varje vardag 10:30 i "Meeting Room" och om du behöver en inbjudan till servern kan du fråga i Whatsapp gruppen, så får du svar så fort som möjligt!
@@ -199,6 +201,8 @@ If your api key does not work, I can recommend using the extension "CodeGPT" whi
 Here is a quickstart guide for codegpt (https://docs.codegpt.co/docs/tutorial-basics/installation) for those of you who need it.
 
 Note that the Provider must be Groq and the model llama3-70b-8192 !!!
+
+If there are still problems, it may be that it is opening on the wrong port, we have noticed, please check this in your terminal!
 
 If you have questions, you can ask them in our Discord Server called "LIA".
 
