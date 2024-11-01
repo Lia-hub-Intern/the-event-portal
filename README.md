@@ -94,6 +94,8 @@ Detta går också att göra genom Source Control men det rekommenderar jag inte 
 
 Om din api nyckel inte fungerar kan jag rekommendera att använda dig av extensionen "CodeGPT" som du hittar till vänster i VS Code, där ser du en flik som heter "Extensions" där söker du CodeGPT och hittar tillägget "CodeGPT: Chat & AI Agents" där kan du sedan lägga in din groq api nyckel och koppla upp dig till den AI version som du behöver. Som vid detta tillfälle är "Llama3-70b-8192".
 
+Här är en quickstart guide för codegpt (https://docs.codegpt.co/docs/tutorial-basics/installation) för er som behöver.
+
 Vid frågor kan du ställa dom i våran Discord Server som heter "LIA".
 
 Vi har också möten varje vardag 10:30 i "Meeting Room" och om du behöver en inbjudan till servern kan du fråga i Whatsapp gruppen, så får du svar så fort som möjligt!
