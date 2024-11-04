@@ -36,6 +36,7 @@ export const navBarLinks = [
 
 export const listSpeakers = [
   {
+    id:"1",
     name: "Karl Lillrud",
     title: "Professional Keynote Speaker & Business Coach",
     category: "Innovation, AI, Future, Leadership",
@@ -43,8 +44,36 @@ export const listSpeakers = [
       "Karl Lillrud makes sure you get not just advice but also the tools to apply straight away to make a difference and improve your Future, AI knowledge, Innovation thinking, and Leadership mindset.",
     image:
       "https://static.wixstatic.com/media/4d53c3_40db86ddf78f4270961713c4c7a3e645~mv2_d_1617_2048_s_2.jpg/v1/crop/x_0,y_44,w_1595,h_1956/fill/w_548,h_672,al_c,q_90,enc_auto/Karl%20Lillrud%20.jpg",
-  },
+      videos: [
+        {
+          title: 'Karl Unveiling ai impact',
+          url: 'https://www.youtube.com/watch?v=TfjlTE7UZXU&ab_channel=ProfessionalPublicSpeakerKarlLillrud',
+        },
+        {
+          title: 'Karl Unveiling ai impact',
+          url: 'https://www.youtube.com/watch?v=TfjlTE7UZXU&ab_channel=ProfessionalPublicSpeakerKarlLillrud',
+        },
+        {
+          title: 'Karl Unveiling ai impact',
+          url: 'https://www.youtube.com/watch?v=TfjlTE7UZXU&ab_channel=ProfessionalPublicSpeakerKarlLillrud',
+        },
+        {
+          title: 'Karl Unveiling ai impact',
+          url: 'https://www.youtube.com/watch?v=TfjlTE7UZXU&ab_channel=ProfessionalPublicSpeakerKarlLillrud',
+        },
+        {
+          title: 'Karl Unveiling ai impact',
+          url: 'https://www.youtube.com/watch?v=TfjlTE7UZXU&ab_channel=ProfessionalPublicSpeakerKarlLillrud',
+        },
+        {
+          title: 'Karl Unveiling ai impact',
+          url: 'https://www.youtube.com/watch?v=TfjlTE7UZXU&ab_channel=ProfessionalPublicSpeakerKarlLillrud',
+        },
+      ]
+    
+    },
   {
+    id:"2",
     name: "Yuval Noah Harari",
     title: "Medievalist, military historian, public intellectual, and writer.",
     category: "History, Futurism, AI, Globalization",
@@ -54,6 +83,7 @@ export const listSpeakers = [
       "https://pbs.twimg.com/profile_images/1034789978444886017/9GqAdkNk_400x400.jpg",
   },
   {
+    id:"3",
     name: "Adam Grant",
     title: "Organizational Psychologist and Bestselling Author",
     category:
@@ -64,6 +94,7 @@ export const listSpeakers = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Adam_Grant_-_Picture_by_Jamey_Stillings.jpg/330px-Adam_Grant_-_Picture_by_Jamey_Stillings.jpg",
   },
   {
+    id:"4",
     name: "Brené Brown",
     title: "Researcher, Storyteller & Emotional Intelligence Pioneer",
     category: "Vulnerability, Leadership, Psychology, Corporate Cultur",
@@ -73,6 +104,7 @@ export const listSpeakers = [
       "https://www.female-motivational-speakers.com/wp-content/uploads/2021/06/Brene-Brown.jpg.webp",
   },
   {
+    id:"5",
     name: "Sanna Marin",
     title: "Former Prime Minister of Finland",
     category: "Politics, Leadership, Public Policy Innovation, Gender Equality",
@@ -82,6 +114,7 @@ export const listSpeakers = [
       "//images.ctfassets.net/75ila1cntaeh/59Wgs1YCDlsoYBlXDpBu6j/7e242cfcd8debed55df46b26ccce4acb/Sanna_Marin.png",
   },
   {
+    id: "6",
     name: "Peter Hinssen",
     title: "Author & Leader in Radical Innovation",
     category:
@@ -92,6 +125,7 @@ export const listSpeakers = [
       "https://theinnovator.news/wp-content/uploads/2020/04/1wqCxICHvxgS49VcYOZHOXw.jpeg",
   },
   {
+    id: "7",
     name: "Mikko Hyppönen",
     title: "Global Cybersecurity Expert & Author",
     category:
@@ -102,6 +136,7 @@ export const listSpeakers = [
       "https://www.aurumbureau.com/wp-content/uploads/2020/11/Aurum-Speakers-Bureau-Mikko-Hypponen.jpeg",
   },
   {
+    id: "8",
     name: "Lillian Gjerulf Kretz",
     title: "Moderator OBF",
     category: "Journalism, Media, International Relations",
@@ -111,6 +146,7 @@ export const listSpeakers = [
       "https://4241733.fs1.hubspotusercontent-na1.net/hub/4241733/hubfs/frame_4-1.webp?width=2400&name=frame_4-1.webp",
   },
   {
+    id: "9",
     name: "Morten Hansen",
     title: "Management Professor & Performance Expert",
     category:
@@ -120,6 +156,7 @@ export const listSpeakers = [
     image: "https://www.nbforum.com/wp-content/uploads/Morten-Hanssen.png",
   },
   {
+    id: "10",
     name: "Erin Meyer",
     title: "Bestselling Author & Professor at INSEAD",
     category:

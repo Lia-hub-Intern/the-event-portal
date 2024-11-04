@@ -30,6 +30,7 @@ import About from "./components/views/About";
 import Footer from "./components/navbar/Footer";
 import Partners from "./components/views/Partners";
 import ScrollToTopButton from "./components/views/ScrollToTopButton";
+import SpeakerDetail from './components/views/SpeakerDetail';
 import "dayjs/locale/en-gb";
 
 /**
@@ -48,9 +49,10 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route
-              path="/speakers"
+              path="/speakers/"
               element={<Speakers title="Find the speaker of your interest" />}
             />
+            <Route path="/speakers/:id" element={<SpeakerDetail />} />
             <Route
               path="/events"
               element={<Events title="Participate in the next events" />}

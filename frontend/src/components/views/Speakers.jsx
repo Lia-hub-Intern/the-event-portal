@@ -16,6 +16,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { listSpeakers } from "../functions/Functions";
+import { Link } from 'react-router-dom';
+
 import {
   Box,
   Typography,
@@ -156,8 +158,14 @@ export default function Speakres({ title }) {
             //style: { minHeight: "160vh" },
           }}
         >
+          
           {speakers.map((item) => (
-            /** CARD: es la cartilla que encierra todo el contenido del card */
+             <Link
+             to={`/speakers/${item.id}`}
+             key={item.id}
+             style={{ textDecoration: 'none' }}
+           >
+            
             <Card
               key={item.title}
               //component={NavLink} //component del react router
@@ -216,6 +224,7 @@ export default function Speakres({ title }) {
                 </CardContent>
               </CardActionArea>
             </Card>
+            </Link>
           ))}
         </Grid>
       </Grid>
