@@ -53,6 +53,6 @@ app.get('/', (req, res) => {
     res.send('Llama 3 API with Node.js and Express');
 });
 
-app.listen(PORT, () =>
+app.listen(PORT, 'localhost', () =>
     console.log(`The server is running on port:${PORT}`)
 )
