@@ -94,6 +94,12 @@ Detta går också att göra genom Source Control men det rekommenderar jag inte 
 
 Om din api nyckel inte fungerar kan jag rekommendera att använda dig av extensionen "CodeGPT" som du hittar till vänster i VS Code, där ser du en flik som heter "Extensions" där söker du CodeGPT och hittar tillägget "CodeGPT: Chat & AI Agents" där kan du sedan lägga in din groq api nyckel och koppla upp dig till den AI version som du behöver. Som vid detta tillfälle är "Llama3-70b-8192".
 
+Här är en quickstart guide för codegpt (https://docs.codegpt.co/docs/tutorial-basics/installation) för er som behöver.
+
+Komihåg att Providern ska vara Groq och modellen llama3-70b-8192 !!!
+
+Om det finns ytterligare problem kan det vara att den öppnas på fel port, har vi märkt, vänligen kontrollera detta i eran terminal!
+
 Vid frågor kan du ställa dom i våran Discord Server som heter "LIA".
 
 Vi har också möten varje vardag 10:30 i "Meeting Room" och om du behöver en inbjudan till servern kan du fråga i Whatsapp gruppen, så får du svar så fort som möjligt!
@@ -191,6 +197,12 @@ This can also be done through Source Control, but I don't recommend it as a lot 
 (Note!)
 
 If your api key does not work, I can recommend using the extension "CodeGPT" which you can find on the left in VS Code, there you will see a tab called "Extensions" there you search for CodeGPT and find the addon "CodeGPT: Chat & AI Agents " there you can then enter your groq-api-key and connect to the AI ​​version you need. Which on this occasion is "Llama3-70b-8192".
+
+Here is a quickstart guide for codegpt (https://docs.codegpt.co/docs/tutorial-basics/installation) for those of you who need it.
+
+Note that the Provider must be Groq and the model llama3-70b-8192 !!!
+
+If there are still problems, it may be that it is opening on the wrong port, we have noticed, please check this in your terminal!
 
 If you have questions, you can ask them in our Discord Server called "LIA".
 
