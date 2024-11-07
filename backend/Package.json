@@ -12,10 +12,12 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "compromise": "^14.14.2",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
         "groq-sdk": "^0.6.1",
-        "nodemon": "^3.1.7"
+        "nodemon": "^3.1.7",
+        "openai": "^4.71.0"
     }
 }

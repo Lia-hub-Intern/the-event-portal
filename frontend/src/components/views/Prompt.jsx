@@ -1,207 +1,108 @@
-import { useEffect, useState } from "react";
-import { Button, Box, TextField, Typography, Grid, Paper } from "@mui/material";
-import { textToArray } from "../functions/Functions";
-import { DatePicker } from "@mui/x-date-pickers";
-//import CalendarPicker from "./CalendarPicker";
+/**
+ * Developer Full Stack: Peter Molén, Darwin Rengifo, Erik berglund
+ *
+ * Create Date: 2024-11-05
+ *     Program : prompt.jsx
+ *   Path Name : the-event-portal/frontend/components/views/prompt
+ *       Tools : React, Material-UI, Javascript.
+ *
+ * Description:
+ * This component is responsible for handling user input and generating a response based on that input.
+ *  It uses a form to capture the user's input, sends it to the backend for processing,
+ *  and then displays the response. The component also handles errors that may occur during the process.
+ *  The component is styled using Material-UI components.
+ * 
+ */
+
+import React, { useState } from "react";
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 
 export default function Prompt() {
-  // State to control the value of the input
   const [inputValue, setInputValue] = useState("");
-  const [result, setResult] = useState([]);
-  const [cleared, setCleared] = useState(false);
-  const [dateStart, setDateStart] = useState(null);
-  const [dateEnd, setDateEnd] = useState(null);
+  const [textResponse, setTextResponse] = useState("");
+  const [events, setEvents] = useState([]);
+  const [errorEvent, setErrorEvent] = useState({ error: false, message: "" });
 
-  const [errorEvent, setErrorEvent] = useState({
-    error: false,
-    message: "",
-  });
-
-  useEffect(() => {
-    if (cleared) {
-      const timeout = setTimeout(() => {
-        setCleared(false);
-      }, 1500);
-
-      return () => clearTimeout(timeout);
-    }
-    console.log("RESULT OK!!!.....", result);
-    return () => {};
-  }, [result, cleared]);
-
-  // Function to handle form submission
   async function handleSubmit(event) {
-    event.preventDefault(); // Prevent default form behavior
-    setResult([]); // Clear the result array
-    setErrorEvent({
-      error: false,
-      message: "",
-    });
+    event.preventDefault();
+    setErrorEvent({ error: false, message: "" });
 
-    // Create the request body
-    const dataPrompt = {
-      input: inputValue,
-    };
+    const dataPrompt = { input: inputValue };
 
-    // Make the API request
     try {
-      const response = await fetch("http://localhost:7000/generate", {
+      const response = await fetch("http://localhost:7000/generate", { 
         method: "POST",
         mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataPrompt),
       });
+
       if (response.ok) {
         const responseData = await response.json();
-        console.log("RESPONSE DATA.....", responseData);
-        //const events = await parsearDataEvents(responseData.data);
-        const events = await textToArray(responseData.data);
-        console.log("EVENTS.....", events);
-        setResult((prevItems) => [...prevItems, responseData]);
+        console.log("Response data from server:", responseData);
+        
+        // Kontrollera om det finns events och text från backend
+        setTextResponse(responseData.text || "");
+        setEvents(responseData.events || []);
+        console.log("Events set in state:", responseData.events);
       } else {
         const errorResponse = await response.json();
-        setErrorEvent({
-          error: true,
-          message: errorResponse.error,
-        });
-        return;
+        setErrorEvent({ error: true, message: errorResponse.error });
       }
     } catch (error) {
-      console.log("Error.....", error);
+      console.error("Error fetching data:", error);
+      setErrorEvent({ error: true, message: "Något gick fel vid hämtning av data" });
     }
-
-    // Clear the form field
-    console.log("RESULT.....", result);
-    setInputValue("");
   }
 
   return (
     <>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        autoComplete="off"
-        sx={{
-          display: { xs: "block", sm: "flex" },
-          flexDirection: "row",
-          "& .MuiTextField-root": { m: 1, width: "25ch" },
-        }}
-      >
+      {/* Prompt-delen */}
+      <Box component="form" onSubmit={handleSubmit} autoComplete="off">
         <Grid container>
           <Paper sx={{ padding: 2 }}>
-            <Grid
-              sx={{
-                display: "column",
-                width: "15rem",
-              }}
-            >
+            <Grid sx={{ display: "column", width: "15rem" }}>
               <TextField
                 label="Find Event"
                 variant="outlined"
-                id="names"
-                type="text"
-                size="small"
-                error={errorEvent.error}
-                helperText={errorEvent.message}
-                sx={{
-                  "& .css-k4qjio-MuiFormHelperText-root": {
-                    width: "14rem",
-                  },
-                }}
-                onChange={(e) => setInputValue(e.target.value)}
                 value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                fullWidth
+                margin="normal"
                 required
               />
-
-              {/*<CalendarPicker />*/}
-
-              <Box sx={{ width: 350 }}>
-                <Grid
-                  sx={{
-                    flexDirection: "row",
-                  }}
-                >
-                  <DatePicker
-                    views={["month", "year"]}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        height: 40,
-                      },
-                    }}
-                    slotProps={{
-                      field: {
-                        clearable: true,
-                        onClear: () => setCleared(true),
-                      },
-                    }}
-                    onChange={(newValue) => {
-                      // Update the status value with the selected date
-                      setDateStart(newValue);
-                    }}
-                    value={dateStart}
-                  />
-
-                  <DatePicker
-                    views={["month", "year"]}
-                    sx={{ "& .MuiInputBase-root": { height: 40 } }}
-                    slotProps={{
-                      field: {
-                        clearable: true,
-                        onClear: () => setCleared(true),
-                      },
-                    }}
-                    onChange={(newValue) => {
-                      // Update the status value with the selected date
-                      setDateEnd(newValue);
-                    }}
-                    value={dateEnd}
-                  />
-                </Grid>
-              </Box>
-
-              <Button
-                variant="contained"
-                size="small"
-                type="submit"
-                sx={{
-                  marginTop: "0.7rem",
-                  marginLeft: "0.5rem",
-                }}
-                /*sx={{
-                  width: "7rem",
-                  height: "2rem",
-                  marginTop: "0.7rem",
-                  marginLeft: "0.5rem",
-                  borderRadius: "8px",
-                }}*/
-                disabled={dateStart !== null && dateEnd !== null ? false : true}
-              >
-                <Typography sx={{ textTransform: "capitalize" }}>
-                  Generate
-                </Typography>
+              <Button variant="contained" size="small" type="submit">
+                Generate
               </Button>
-              <Box
-                sx={{
-                  display: { xs: "block", sm: "flex" },
-                  marginLeft: "1rem",
-                }}
-              >
-                {result.map((textEvent, index) => (
-                  <Box key={textEvent.data}>
-                    <Typography
-                      component="p"
-                      sx={{ fontSize: 12, fontWeight: 300 }}
-                    >
-                      {textEvent.data}
-                    </Typography>
-                  </Box>
-                ))}
+              <Box sx={{ marginTop: "1rem" }}>
+                {/* Visa textsvaret */}
+                <Typography variant="body1">{textResponse}</Typography>
               </Box>
             </Grid>
           </Paper>
         </Grid>
+      </Box>
+
+      {/* Visa korten bredvid prompten */}
+      <Box sx={{ marginTop: '1rem' }}>
+        {events.length > 0 ? (
+          <Grid container spacing={2}>
+            {events.map((event, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Paper sx={{ padding: 2 }}>
+                  <Typography variant="h6">{event.title || "Ingen titel"}</Typography>
+                  <Typography variant="body2">Datum: {event.date || "Ej angivet"}</Typography>
+                  <Typography variant="body2">Plats: {event.location || "Ej angivet"}</Typography>
+                  <Typography variant="body2">{event.description || "Ingen beskrivning tillgänglig"}</Typography>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography variant="body1" sx={{ mt: 2, textAlign: 'center' }}>
+            Inga event hittades.
+          </Typography>
+        )}
       </Box>
     </>
   );
