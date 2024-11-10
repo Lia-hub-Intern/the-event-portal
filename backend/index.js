@@ -4,7 +4,7 @@
 * Create Date: 2024-08-14
 *     Program : Stagefinder Index
 *   Path Name : stagefinder/index.js
-*       Tools : Javascript, NodeJs, Express, dotenv, nodemon
+*       Tools : Javascript, Node.js, Express, dotenv, nodemon
 *
 * Description:
 * - create express server.
