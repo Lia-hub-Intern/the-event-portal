@@ -11,18 +11,17 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-import { BrowserRouter, HashRouter } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { theme } from "./components/styles/Themes.jsx";
+import { BrowserRouter } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
+import { ThemeToggleProvider } from "./contexts/ThemeContext"; // Added by Abenezer Anglo
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <ThemeToggleProvider> {/* Added by Abenezer Anglo */}
       <BrowserRouter>
         <CssBaseline /> {/** Reset all base styles and use Roboto font */}
         <App />
       </BrowserRouter>
-    </ThemeProvider>
+    </ThemeToggleProvider>
   </React.StrictMode>
 );

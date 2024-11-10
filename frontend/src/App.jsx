@@ -14,8 +14,9 @@
  *              sx  : Includes properties to a component
  *
  */
+import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Container } from "@mui/material"; /**This way the page updates faster */
+import { Container, CssBaseline } from "@mui/material"; /**This way the page updates faster */
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Navbar from "./components/navbar/Navbar";
@@ -42,6 +43,7 @@ export default function App() {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+        <CssBaseline /> {/* Added by Abenezer Anglo */}
         <Navbar navBarLinks={navBarLinks} />
         <Container sx={{ mt: 5 }}>
           <ScrollToTopButton />

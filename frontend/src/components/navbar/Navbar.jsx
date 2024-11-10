@@ -39,6 +39,9 @@ import DiamondIcon from "@mui/icons-material/Diamond";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import NavListDrawer from "./NavListDrawer";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useThemeToggle } from "../../contexts/ThemeContext";
 
 export default function Navbar({ navBarLinks }) {
   const [open, setOpen] = useState(false);
@@ -73,6 +76,8 @@ export default function Navbar({ navBarLinks }) {
   const getBackgroundColor = () => {
     return scrollY > 0 ? scrolledColor : appBarColor; // Change to dark color when scrolling
   };
+
+  const { isDarkMode, toggleTheme } = useThemeToggle();
 
   return (
     <>
@@ -126,6 +131,10 @@ export default function Navbar({ navBarLinks }) {
               </Button>
             ))}
           </Box>
+          {/* Theme toggle button added by Abenezer */}
+          <IconButton color="inherit" onClick={toggleTheme}>
+            {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           <Tooltip title="Login" arrow>
             <IconButton
               color="inherit"
