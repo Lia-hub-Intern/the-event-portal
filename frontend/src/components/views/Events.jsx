@@ -296,11 +296,11 @@ export default function Events({ title }) {
                 <Box
                   onClick={() => handleTitleClick(item.id)}
                   sx={{
-                    //position: "absolute",
                     position: "relative",
                     bottom: "20%",
                     width: "50%",
-                    backgroundColor: "white",
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === "dark" ? "background.paper" : "white",
                     padding: "10px",
                     borderRadius: "10px",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
@@ -310,13 +310,16 @@ export default function Events({ title }) {
                     textAlign: "center",
                     transition: "background-color 0.3s, color 0.3s",
                     cursor: "pointer",
+                    color: (theme) =>
+                      theme.palette.mode === "dark" ? "text.primary" : "text.primary",
                     "&:hover": {
-                      backgroundColor: "secondary.main", // Change background color on hover
-                      color: "white", // Change text color on hover
+                      backgroundColor: (theme) =>
+                        theme.palette.mode === "dark" ? "primary.main" : "secondary.main",
+                      color: "white",
                     },
                   }}
                 >
-                  <Typography variant="h6" component="span">
+                  <Typography variant="h6" component="span" color="inherit">
                     {item.title}
                   </Typography>
                 </Box>

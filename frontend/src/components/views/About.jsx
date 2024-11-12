@@ -67,10 +67,12 @@ export default function About() {
       <Grid container size={{ xs: 12 }}>
         <Grid item size={{ xs: 12, md: 6 }}>
           <Typography
-            variant={"body2"}
+            variant="body2"
             sx={{
               my: 1,
               fontSize: "1.1rem",
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "text.primary" : "text.primary",
             }}
           >
             We strive to inspire and equip business leaders dedicated to
@@ -85,11 +87,13 @@ export default function About() {
         </Grid>
         <Grid item size={{ xs: 12, md: 6 }}>
           <Typography
-            variant={"body2"}
+            variant="body2"
             sx={{
               my: 1,
               ml: { xs: 0, md: 4 },
               fontSize: "1.1rem",
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "text.primary" : "text.primary",
             }}
           >
             Our participants enjoy insightful presentations from world-renowned
@@ -180,10 +184,12 @@ export default function About() {
       <Grid container size={{ xs: 12 }}>
         <Grid item size={{ xs: 12, md: 6 }}>
           <Typography
-            variant={"body2"}
+            variant="body2"
             sx={{
               my: 1,
               fontSize: "1.1rem",
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "text.primary" : "text.primary",
             }}
           >
             Company Business Forum was started in January 2016, by the two
@@ -200,11 +206,13 @@ export default function About() {
         </Grid>
         <Grid item size={{ xs: 12, md: 6 }}>
           <Typography
-            variant={"body2"}
+            variant="body2"
             sx={{
               my: 1,
               ml: { xs: 0, md: 4 },
               fontSize: "1.1rem",
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "text.primary" : "text.primary",
             }}
           >
             Since then, our annual business conference has grown to be one of

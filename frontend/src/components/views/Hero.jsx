@@ -146,7 +146,8 @@ export default function Hero() {
                 key={index}
                 ref={categoryRefs.current[index]}
                 sx={{
-                  backgroundColor: "#f5f5f5",
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "dark" ? "background.paper" : "#f5f5f5",
                   borderRadius: "5px",
                   padding: "10px 20px",
                   fontSize: "1rem",
@@ -158,13 +159,20 @@ export default function Hero() {
                   cursor: "pointer",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#e0e0e0",
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.08)" : "#e0e0e0",
                   },
+                  color: (theme) =>
+                    theme.palette.mode === "dark" ? "text.primary" : "text.primary",
                 }}
                 onClick={() => handleCategoryClick(category.link)} // Navigate to the link on click
               >
-                <Typography variant="h6">{category.icon}</Typography>
-                <Typography variant="body1">{category.name}</Typography>
+                <Typography variant="h6" color="inherit">
+                  {category.icon}
+                </Typography>
+                <Typography variant="body1" color="inherit">
+                  {category.name}
+                </Typography>
               </Box>
             ))}
           </Box>

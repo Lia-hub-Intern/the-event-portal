@@ -118,9 +118,11 @@ export const darkTheme = createTheme({
     },
     background: {
       default: "#121212",
+      paper: "#1d1d1d",
     },
     text: {
-      primary: "#FFFFFF",
+      primary: "#ffffff",
+      secondary: "#b3b3b3",
     },
   },
   typography: {
@@ -165,16 +167,22 @@ export const darkTheme = createTheme({
       },
     },
     MuiButton: {
-      width: "7rem",
-      height: "2rem",
-      defaultProps: {
-        disableRipple: true,
-        disableElevation: true,
-        color: "success", // Set the default button color to secondary
-      },
       styleOverrides: {
         root: {
-          borderRadius: "10px", // Rounded corners for buttons
+          color: "#ffffff",
+        },
+        text: {
+          color: "#ffffff",
+        },
+        contained: {
+          color: "#ffffff",
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: "#ffffff",
         },
       },
     },
@@ -192,6 +200,18 @@ export const darkTheme = createTheme({
       styleOverrides: {
         inputRoot: {
           width: "20rem",
+        },
+        option: {
+          "&:hover": {
+            backgroundColor: "rgba(144, 202, 249, 0.08)",
+          },
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: "#ffffff",
         },
       },
     },

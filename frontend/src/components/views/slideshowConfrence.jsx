@@ -152,22 +152,29 @@ export default function CustomCarousel() {
           >
             <Typography
               variant="h4"
-              sx={{ fontWeight: "500", marginRight: "2%" }}
+              sx={{ 
+                fontWeight: "500", 
+                marginRight: "2%",
+                color: (theme) => theme.palette.text.primary 
+              }}
             >
               Blog
             </Typography>
             <Button
               sx={{
-                color: "gray",
+                color: (theme) => theme.palette.text.secondary,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 padding: "0",
                 borderRadius: "0",
-                borderBottom: "1px solid #f0f0f0",
+                borderBottom: (theme) =>
+                  `1px solid ${
+                    theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.12)" : "#f0f0f0"
+                  }`,
                 fontSize: "1rem",
                 "&:hover": {
-                  borderColor: "gray",
+                  borderColor: (theme) => theme.palette.text.primary,
                 },
               }}
             >
@@ -185,7 +192,7 @@ export default function CustomCarousel() {
             <Button
               onClick={handlePrev}
               sx={{
-                color: "black",
+                color: (theme) => theme.palette.text.primary,
                 height: "40px",
                 width: "40px",
                 borderRadius: "50%",
@@ -195,10 +202,12 @@ export default function CustomCarousel() {
                 padding: "0",
                 minWidth: "0",
                 marginBottom: "1rem",
-                backgroundColor: "#f0f0f0",
+                backgroundColor: (theme) =>
+                  theme.palette.mode === "dark" ? "background.paper" : "#f0f0f0",
                 marginRight: "10px",
                 "&:hover": {
-                  backgroundColor: "#e0e0e0",
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "dark" ? "background.default" : "#e0e0e0",
                 },
               }}
             >
@@ -247,7 +256,8 @@ export default function CustomCarousel() {
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "column",
-                backgroundColor: "#f5f5f5",
+                backgroundColor: (theme) =>
+                  theme.palette.mode === "dark" ? "background.paper" : "#f5f5f5",
                 textAlign: "center",
               }}
             >
@@ -270,6 +280,8 @@ export default function CustomCarousel() {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "dark" ? "background.paper" : "#f5f5f5",
                 }}
               >
                 <Typography
@@ -280,6 +292,7 @@ export default function CustomCarousel() {
                     textOverflow: "ellipsis",
                     width: "75%",
                     fontWeight: "400",
+                    color: (theme) => theme.palette.text.primary, // Add this line to use theme color
                   }}
                 >
                   {item.name}
@@ -287,7 +300,7 @@ export default function CustomCarousel() {
                 <Typography
                   variant="body2"
                   sx={{
-                    color: "#6e6e6e", // A slightly gray but still dark color
+                    color: (theme) => theme.palette.text.secondary,
                   }}
                 >
                   {item.description}
