@@ -17,6 +17,7 @@ import Diversity3Icon from "@mui/icons-material/Diversity3";
 import FestivalIcon from "@mui/icons-material/Festival";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import dayjs from 'dayjs';
 
 /** Receives a text and puts the first
  * letter in capital letters and the rest
@@ -135,28 +136,66 @@ export const listSpeakers = [
 export async function textToArray(data) {
   const lines = data.split("\n");
   const events = [];
-
   let currentEvent = {};
-  let description = "";
 
   for (const line of lines) {
     if (line.startsWith("**")) {
       if (Object.keys(currentEvent).length > 0) {
+        // Validate the link before adding the event
+        if (currentEvent.link) {
+          currentEvent.link = currentEvent.link.trim().replace(/['"]/g, '');
+          if (!currentEvent.link.match(/^https?:\/\//i)) {
+            currentEvent.link = 'https://' + currentEvent.link;
+          }
+          try {
+            new URL(currentEvent.link);
+          } catch (e) {
+            currentEvent.link = null; // Invalid URL
+          }
+        }
+
+        // Parse the event date
+        if (currentEvent.date) {
+          currentEvent.dateObject = dayjs(currentEvent.date, 'YYYY-MM-DD');
+        }
+
         events.push(currentEvent);
       }
-      currentEvent = {};
-      currentEvent.title = line.substring(2, line.length - 2);
-      description = "";
+      currentEvent = {
+        title: line.substring(2, line.length - 2).trim(),
+        date: "",
+        location: "",
+        type: "",
+        description: "",
+        link: "",
+        dateObject: null
+      };
     } else if (line.includes(":")) {
-      const [key, values] = line.split(":");
-      currentEvent[key.trim()] = values.trim();
-    } else {
-      description += line + " ";
+      const [key, ...rest] = line.split(":");
+      const trimmedKey = key.trim().toLowerCase();
+      const trimmedValue = rest.join(":").trim();
+      currentEvent[trimmedKey] = trimmedValue;
     }
   }
 
+  // Add the last event
   if (Object.keys(currentEvent).length > 0) {
-    currentEvent.description = description.trim();
+    if (currentEvent.link) {
+      currentEvent.link = currentEvent.link.trim().replace(/['"]/g, '');
+      if (!currentEvent.link.match(/^https?:\/\//i)) {
+        currentEvent.link = 'https://' + currentEvent.link;
+      }
+      try {
+        new URL(currentEvent.link);
+      } catch (e) {
+        currentEvent.link = null;
+      }
+    }
+
+    if (currentEvent.date) {
+      currentEvent.dateObject = dayjs(currentEvent.date, 'YYYY-MM-DD');
+    }
+
     events.push(currentEvent);
   }
 

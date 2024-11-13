@@ -106,7 +106,7 @@ export const lightTheme = createTheme({
     },
   },
 });
-
+//Added by Abenezer Anglo
 export const darkTheme = createTheme({
   palette: {
     mode: "dark",
