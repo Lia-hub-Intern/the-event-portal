@@ -1,77 +1,83 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 
 const getAIResponse = (userMessage) => {
-    const baseUrl = "http://localhost:5173";
+    const lowerMessage = userMessage.trim().toLowerCase();
 
-    const lowerMessage = userMessage.toLowerCase();
-
-    // Regular expressions for matching different queries
-    const speakerRegex = /(find|look for|search)?.*(speaker|talare)/;
-    const eventRegex = /(find|show|search)?.*(event|evenemang)/;
-    const conferenceRegex = /(find|show|search)?.*(conference|konferens)/;
-    const partnerRegex = /(find|show|search)?.*(partner|samarbetspartner)/;
-    const beSpeakerRegex = /(become|register as|be a speaker|blitalare)/;
-    const aboutUsRegex = /(tell me more|learn)?.*(about us|about the company)/;
-    const contactRegex = /(contact|support|help|email)/;
-
-    if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
-        return { text: "Hello! How can I assist you today?", isHtml: false };
-    }
-
-    if (contactRegex.test(lowerMessage)) {
-        return {
-            text: `You can contact us via email at <a href='mailto:Support@liveevent.se'>Support@liveevent.se</a>.`,
-            isHtml: true,
-        };
-    }
-
-    if (beSpeakerRegex.test(lowerMessage)) {
-        return {
-            text: `To become a speaker with us, click here: <a href='${baseUrl}/BeASpeaker' target='_blank'>Be a Speaker</a>`,
-            isHtml: true,
-        };
-    }
-
-    if (speakerRegex.test(lowerMessage)) {
-        return {
-            text: `To find a speaker, click here: <a href='${baseUrl}/Speakers' target='_blank'>Speakers</a>`,
-            isHtml: true,
-        };
-    }
-
-    if (eventRegex.test(lowerMessage)) {
-        return {
-            text: `To view upcoming events, click here: <a href='${baseUrl}/Events' target='_blank'>Events</a>`,
-            isHtml: true,
-        };
-    }
-
-    if (conferenceRegex.test(lowerMessage)) {
-        return {
-            text: `For conference information, click here: <a href='${baseUrl}/Conference' target='_blank'>Conference</a>`,
-            isHtml: true,
-        };
-    }
-
-    if (partnerRegex.test(lowerMessage)) {
-        return {
-            text: `Learn more about our partners here: <a href='${baseUrl}/Partners' target='_blank'>Partners</a>`,
-            isHtml: true,
-        };
-    }
-
-    if (aboutUsRegex.test(lowerMessage)) {
-        return {
-            text: `Learn more about us here: <a href='${baseUrl}/About' target='_blank'>About Us</a>`,
-            isHtml: true,
-        };
-    }
-
-    return {
-        text: "I'm not sure how to help with that. Can you clarify your question?",
-        isHtml: false,
+    const keywords = {
+        speakers: ["speaker", "speakers", "find speaker", "find speakers", "talare"],
+        events: ["event", "events", "evenemang", "show events", "upcoming events"],
+        conference: ["conference", "konferens", "conferences"],
+        partners: ["partner", "partners", "samarbetspartner"],
+        beSpeaker: ["be a speaker", "become speaker", "bli talare", "speaker registration"],
+        aboutUs: ["about us", "om oss", "about the company"],
+        contact: ["contact", "contact us", "support", "email"],
     };
+
+    if (keywords.speakers.some((kw) => lowerMessage.includes(kw))) {
+        return [
+            {
+                text: "To find a speaker, click on 'Speakers' in the top menu or visit this page: <a href='http://localhost:5173/Speakers' target='_blank'>Speakers</a>",
+                isHtml: true,
+            },
+            {
+                text: "To become a speaker with us, click on 'Be a Speaker' or follow this link: <a href='http://localhost:5173/BeASpeaker' target='_blank'>Be a Speaker</a>",
+                isHtml: true,
+            },
+        ];
+    }
+
+    if (keywords.events.some((kw) => lowerMessage.includes(kw))) {
+        return [
+            {
+                text: "To view our upcoming events, click on 'Events' or visit: <a href='http://localhost:5173/Events' target='_blank'>Events</a>",
+                isHtml: true,
+            },
+        ];
+    }
+
+    if (keywords.conference.some((kw) => lowerMessage.includes(kw))) {
+        return [
+            {
+                text: "For information about conferences, go to the 'Conference' page here: <a href='http://localhost:5173/Conference' target='_blank'>Conference</a>",
+                isHtml: true,
+            },
+        ];
+    }
+
+    if (keywords.partners.some((kw) => lowerMessage.includes(kw))) {
+        return [
+            {
+                text: "Want to learn more about our partners? Visit the 'Partners' page here: <a href='http://localhost:5173/Partners' target='_blank'>Partners</a>",
+                isHtml: true,
+            },
+        ];
+    }
+
+    if (keywords.aboutUs.some((kw) => lowerMessage.includes(kw))) {
+        return [
+            {
+                text: "Learn more about us on the 'About Us' page here: <a href='http://localhost:5173/About' target='_blank'>About Us</a>",
+                isHtml: true,
+            },
+        ];
+    }
+
+    if (keywords.contact.some((kw) => lowerMessage.includes(kw))) {
+        return [
+            {
+                text: "You can contact us via email at <a href='mailto:Support@liveevent.se'>Support@liveevent.se</a>",
+                isHtml: true,
+            },
+        ];
+    }
+
+    return [
+        {
+            text: "I'm not sure I understand. Could you rephrase your question or be more specific?",
+            isHtml: false,
+        },
+    ];
 };
 
 export default function ChatWindow() {
@@ -82,27 +88,27 @@ export default function ChatWindow() {
     const messagesEndRef = useRef(null);
 
     const handleSendMessage = () => {
-        if (!userMessage.trim()) return;
+        const trimmedMessage = userMessage.trim();
+        if (!trimmedMessage) return;
 
-        const newMessages = [
-            ...messages,
-            { text: userMessage, fromAI: false, isHtml: false },
-        ];
+        const newMessages = [...messages, { text: trimmedMessage, fromAI: false, isHtml: false }];
         setMessages(newMessages);
 
-        const aiResponse = getAIResponse(userMessage);
+        const aiResponses = getAIResponse(trimmedMessage); // Get all responses for the user input
         setUserMessage("");
 
         setTimeout(() => {
             setMessages((prevMessages) => [
                 ...prevMessages,
-                { ...aiResponse, fromAI: true },
+                ...aiResponses.map((response) => ({ ...response, fromAI: true })),
             ]);
-        }, 1000);
+        }, 500);
     };
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
     }, [messages]);
 
     return (
@@ -115,9 +121,6 @@ export default function ChatWindow() {
                 borderRadius: "10px",
                 padding: 2,
                 zIndex: 1000,
-                position: "fixed",
-                bottom: 100,
-                right: 20,
                 display: "flex",
                 flexDirection: "column",
             }}
@@ -155,9 +158,9 @@ export default function ChatWindow() {
                         )}
                     </Box>
                 ))}
-                <Box ref={messagesEndRef} />
+                <div ref={messagesEndRef} />
             </Box>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", gap: 1 }}>
                 <TextField
                     value={userMessage}
                     onChange={(e) => setUserMessage(e.target.value)}
@@ -165,11 +168,11 @@ export default function ChatWindow() {
                     variant="outlined"
                     size="small"
                     placeholder="Type your message..."
-                    onKeyPress={(e) => {
+                    onKeyDown={(e) => {
                         if (e.key === "Enter") handleSendMessage();
                     }}
                 />
-                <Button variant="contained" onClick={handleSendMessage}>
+                <Button variant="contained" color="primary" onClick={handleSendMessage}>
                     Send
                 </Button>
             </Box>
