@@ -8,33 +8,41 @@ console.log("groq---->", groq)
 
 export const callEvents = async (req, res) => {
     try {
-        const prompt = req.body;
-        if (!prompt) {
-            throw new Error("Thes prompt cannot be empty");
+        const { input, dateStart, dateEnd } = req.body;
+
+        if (!input || !dateStart || !dateEnd) {
+            throw new Error("The input, start date, and end date cannot be empty.");
         }
-        console.log("prompt-------->", prompt.input)
+
+        const yearRange = `from ${dateStart} to ${dateEnd}`;
+        const promptContent = `${input} events ${yearRange}. Please include notable events, conferences, or summits in this period.`;
+
+        console.log("Generated prompt-------->", promptContent);
+
         const response = await groq.chat.completions.create({
-            "messages": [
+            messages: [
                 {
-                    "role": "user",
-                    "content": prompt.input,
+                    role: "user",
+                    content: promptContent,
                 },
             ],
-            "model": "llama-3.1-70b-versatile",
-            "temperature": 1,
-            "max_tokens": 1024,
-            "top_p": 1,
-            "stream": false,
-            "stop": null
+            model: "llama-3.1-70b-versatile",
+            temperature: 1,
+            max_tokens: 1024,
+            top_p: 1,
+            stream: false,
+            stop: null,
         });
 
-        console.log("response------->", response.choices[0]?.message?.content || "");
+        const content = response.choices && response.choices[0]?.message?.content;
+        console.log("response------->", content || "No content received");
+
         res.status(200).json({
-            data: response.choices[0]?.message?.content || ""
-        })
+            data: content || "No events available for the specified timeframe.",
+        });
 
     } catch (error) {
-        console.error("Error:", error);
-        res.status(400).json({ error: "There was an error communicating with the modelen" });
+        console.error("Error:", error.message || error);
+        res.status(400).json({ error: "There was an error communicating with the model." });
     }
-}
+};
