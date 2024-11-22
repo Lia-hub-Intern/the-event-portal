@@ -1,128 +1,117 @@
-/**
- * Developer Full Stack: Peter Molén, Darwin Rengifo, Erik berglund
- *
- * Create Date: 2024-11-05
- *     Program : callEvents.js
- *   Path Name : the-event-portal/backend/Controller/callEvents.js
- *       Tools : NodeJS, React, compromisejs, groq-sdk, dotenv, express, cors.
- *
- * Description:
- * - a prompt ai model, to generate events. 
- * The prompt is sent to the Groq API, which returns a response. 
- * The response is then sent back to the client. 
- * The prompt is checked to see if it contains any keywords related to events.
- *  If it does, the prompt is modified to include specific instructions for returning event information in a specific format.
- *  The response is then parsed using the compromisejs library to extract the event information. 
- * The event information is then sent back to the client. 
- * If the prompt does not contain any keywords related to events,
- *  the prompt is sent to the Groq API as is.
- *  The response is then sent back to the client. 
- * The response is then parsed using the compromisejs library 
- * to extract the information. The information is then sent back to the client.
- *
- */
-
-
 import Groq from "groq-sdk";
 import dotenv from "dotenv";
-import nlp from 'compromise'; 
+import pkg from "pg"
+
+
 dotenv.config();
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const { Pool } = pkg;
 
+// Initialisera Groq SDK
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 console.log("groq---->", groq);
 
-export const callEvents = async (req, res) => {
-    try {
-        let prompt = req.body;
-        if (!prompt || !prompt.input) {
-            throw new Error("Prompten kan inte vara tom");
-        }
+// Konfigurera PostgreSQL
 
-        // Kontrollera om prompten handlar om att få events
-        const eventKeywords = ["event", "evenemang", "konferens", "AI-event", "kommande"];
-        const isEventRequest = eventKeywords.some(keyword => prompt.input.toLowerCase().includes(keyword));
+const pool = new Pool({
+    user: process.env.PG_USER,
+    host: process.env.PG_HOST,
+    database: process.env.PG_DATABASE,
+    password: process.env.PG_PASSWORD,
+    port: process.env.PG_PORT,
+});
 
-        // Om prompten handlar om events, lägg till specifika instruktioner
-        if (isEventRequest) {
-            prompt.input += "\nReturnera eventinformationen i följande format:\n"
-                + "Titel: **[Eventnamn]**\n"
-                + "Datum: [Datum]\n"
-                + "Plats: [Plats]\n"
-                + "Beskrivning: [Kort beskrivning av eventet]\n"
-                + "Url: [En-URL som hämtas från källsidan]\n"
-                + "Url: [Sök i nutid]"
-        }
-
-        console.log("Prompt-------->", prompt.input);
-
-        // Anropa modellen
-        const response = await groq.chat.completions.create({
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt.input,
-                },
-            ],
-            "model": "llama-3.1-70b-versatile",
-            "temperature": 1,
-            "max_tokens": 2000,
-            "top_p": 1,
-            "stream": false,
-            "stop": null,
-        });
-
-        const rawData = response.choices[0]?.message?.content || "";
-        console.log("Response------->", rawData);
-
-        // Använd compromise för att extrahera events från texten om det är en eventförfrågan
-        const parsedEvents = isEventRequest ? extractEventsFromText(rawData) : [];
-
-        res.status(200).json({
-            text: rawData.split("\n")[0], // Första meningen visas i textrutan
-            events: parsedEvents,
-        });
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(400).json({ error: "Ett fel inträffade vid kommunikation med modellen" });
-    }
-};
-
-
-// Funktion för att extrahera event från text med compromise
-function extractEventsFromText(text) {
-    console.log("Extracting events using compromise...");
-    const doc = nlp(text);
-    const sentences = doc.sentences().out('array');
+// Funktion för att parsning av eventdata
+const parseEventData = (content) => {
     const events = [];
-    let currentEvent = {};
+    const lines = content.split("\n").filter((line) => line.trim() !== "");
 
-    sentences.forEach(sentence => {
-        if (sentence.includes('**')) {
-            // Identifiera titeln om den finns inom '**'
-            if (currentEvent.title) {
-                events.push(currentEvent);
-            }
-            currentEvent = {
-                title: sentence.match(/\*\*(.*?)\*\*/)[1].trim(),
-                date: '',
-                location: '',
-                description: ''
-            };
-        } else if (sentence.includes('Datum:')) {
-            currentEvent.date = sentence.replace('Datum:', '').trim();
-        } else if (sentence.includes('Plats:')) {
-            currentEvent.location = sentence.replace('Plats:', '').trim();
-        } else if (sentence.trim() && currentEvent.title) {
-            currentEvent.description += sentence.trim() + ' ';
+    lines.forEach((line) => {
+        const parts = line.split(" | ");
+        if (parts.length === 5) {
+            events.push({
+                title: parts[0]?.trim(),
+                date: parts[1]?.trim(),
+                location: parts[2]?.trim(),
+                speakers: parts[3]?.trim(),
+                url: parts[4]?.trim(),
+            });
+        } else {
+            console.warn("Skipping invalid line:", line);
         }
     });
 
-    // Lägg till sista eventet om det finns
-    if (currentEvent.title) {
-        events.push(currentEvent);
-    }
-
-    console.log("Extracted events:", events);
     return events;
-}
+};
+
+// Funktion för att spara events i databasen
+const saveEventsToDatabase = async (events) => {
+    try {
+        for (const event of events) {
+            console.log("Saving to database:", event);
+
+            await pool.query(
+                `INSERT INTO events (title, date, location, speakers, url) 
+                 VALUES ($1, $2, $3, $4, $5)
+                 ON CONFLICT (title, date) DO NOTHING`,
+                [event.title, event.date, event.location, event.speakers, event.url]
+            );
+        }
+        console.log("All events saved successfully.");
+    } catch (error) {
+        console.error("Database error:", error.message || error);
+    }
+};
+
+// Exporterad funktion som ersätter eventFetcher
+export const callEvents = async (req, res) => {
+    try {
+        const { input, dateStart, dateEnd } = req.body;
+
+        if (!input || !dateStart || !dateEnd) {
+            throw new Error("The input, start date, and end date cannot be empty.");
+        }
+
+        const yearRange = `from ${dateStart} to ${dateEnd}`;
+        const promptContent = `${input} events ${yearRange}. 
+        Please include notable events, conferences, or summits in this period include. 
+        Provide details in the format: Title | Date | Location | Speakers | Url`;
+
+        console.log("Generated prompt-------->", promptContent);
+
+        const response = await groq.chat.completions.create({
+            messages: [
+                {
+                    role: "user",
+                    content: promptContent,
+                },
+            ],
+            model: "llama-3.1-70b-versatile",
+            temperature: 1,
+            max_tokens: 1024,
+            top_p: 1,
+            stream: false,
+            stop: null,
+        });
+
+        const content = response.choices && response.choices[0]?.message?.content;
+        if (!content) {
+            console.warn("No content received from Groq, returning default data.");
+            return res.status(200).json({
+                data: [{ title: "No events found", date: "-", location: "-", speakers: "-", url: "#" }],
+            });
+        }
+
+        const events = parseEventData(content);
+        console.log("Parsed events:", events);
+
+        await saveEventsToDatabase(events);
+
+        res.status(200).json({
+            data: events.length > 0 ? events : [{ title: "No events found", date: "-", location: "-", speakers: "-", url: "#" }],
+        });        
+    } catch (error) {
+        console.error("Error:", error.message || error);
+        res.status(400).json({ error: "There was an error communicating with the model." });
+    }
+};
