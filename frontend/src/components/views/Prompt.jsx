@@ -12,7 +12,7 @@ export function textToArray(text) {
         const rawItems = sections[i + 1]
             .trim()
             .split(/\n(?=\d+\.\s)/);
-        
+
         const items = rawItems
             .map((item) => item.replace(/^\d+\.\s*/, "").trim())
             .filter((item) => item);
