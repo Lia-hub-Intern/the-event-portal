@@ -9,10 +9,12 @@ export function textToArray(text) {
 
     for (let i = 1; i < sections.length; i += 2) {
         const title = sections[i].trim();
-        const items = sections[i + 1]
+        const rawItems = sections[i + 1]
             .trim()
-            .split(/\d+\.\s+/)
-            .map((item) => item.trim())
+            .split(/\n(?=\d+\.\s)/);
+        
+        const items = rawItems
+            .map((item) => item.replace(/^\d+\.\s*/, "").trim())
             .filter((item) => item);
 
         parsedData.push({ title, items });
