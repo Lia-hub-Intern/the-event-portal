@@ -45,7 +45,7 @@ Grattis! nu har du installerat alla paket för backend och ska nu installera det
 
 Nu är det bara ett paket som du behöver installera och det är "npm install" och när du har gjort det behöver du också köra <br/> "npm audit fix --force" igen för att fixa problemen som kan ha följt med.
 
-Nu är det viktigt att du går in i backend mappen och ersätter "GROQ_API_KEY = #Placeholder för din groqcloud api-nyckel" så att det blir "GROQ_API_KEY = din api nyckel" utan citattecken. kom ihåg att aldrig ladda upp på github med din nyckel på grund av säkerhetsrisker.
+Nu är det viktigt att du går in i backend mappen, skapar en ny .env fil, kopierar innehållet från .env-exampel till den och ersätter "GROQ_API_KEY = #Placeholder för din groqcloud api-nyckel" så att det blir "GROQ_API_KEY = din api nyckel" utan citattecken. kom ihåg att aldrig ladda upp på github med din nyckel på grund av säkerhetsrisker.
 
 Nu kan du öppna en andra terminal på de tre punkter upp till höger och i den skriver du "cd backend". Då borde du ha två terminaler att kunna klicka mellan till höger om din terminal och för att testa så allt fungerar korrekt så ska du köra både frontend och backendet.
 
