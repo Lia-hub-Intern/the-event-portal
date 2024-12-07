@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Box, TextField, Typography, Grid, Paper } from "@mui/material";
+import { Button, Box, TextField, Typography, Grid, Paper, Checkbox } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-
 
 export function textToArray(text) {
     const sections = text.split("**");
@@ -28,6 +27,8 @@ export default function Prompt() {
     const [cleared, setCleared] = useState(false);
     const [dateStart, setDateStart] = useState(null);
     const [dateEnd, setDateEnd] = useState(null);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [email, setEmail] = useState("");
 
     const [errorEvent, setErrorEvent] = useState({
         error: false,
@@ -54,7 +55,6 @@ export default function Prompt() {
             dateEnd: dateEnd ? dateEnd.toISOString() : null,
         };
 
-
         try {
             const response = await fetch("http://localhost:7000/generate", {
                 method: "POST",
@@ -78,6 +78,18 @@ export default function Prompt() {
 
         setInputValue("");
     }
+
+    const handleCheckboxChange = (event, item) => {
+        setSelectedEvent(selectedEvent === item ? null : item);
+        setEmail("");
+    };
+
+    const handleEmailSubmit = (event) => {
+        event.preventDefault();
+        alert(`Event: ${selectedEvent}, Email: ${email}`);
+        setSelectedEvent(null);
+        setEmail("");
+    };
 
     return (
         <Box
@@ -123,7 +135,7 @@ export default function Prompt() {
                         />
                     </Grid>
 
-                    <Grid item xs={6}> {/* Taking half width for Date Start */}
+                    <Grid item xs={6}>
                         <DatePicker
                             views={["month", "year"]}
                             sx={{
@@ -140,7 +152,6 @@ export default function Prompt() {
                     </Grid>
 
                     <Grid item xs={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
-                        {/* Making the Date End field align to the right */}
                         <DatePicker
                             views={["month", "year"]}
                             sx={{
@@ -204,12 +215,46 @@ export default function Prompt() {
                                 <ul style={{ paddingLeft: "1.5rem", marginTop: "0.5rem" }}>
                                     {section.items.map((item, itemIndex) => (
                                         <li key={itemIndex}>
-                                            <Typography
-                                                component="p"
-                                                sx={{ fontSize: 14, fontWeight: 400 }}
-                                            >
-                                                {item}
-                                            </Typography>
+                                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                                <Checkbox
+                                                    checked={selectedEvent === item}
+                                                    onChange={(e) => handleCheckboxChange(e, item)}
+                                                />
+                                                <Typography component="p" sx={{ fontSize: 14 }}>
+                                                    {item}
+                                                </Typography>
+                                            </Box>
+                                            {selectedEvent === item && (
+                                                <form
+                                                    onSubmit={handleEmailSubmit}
+                                                    style={{
+                                                        marginTop: "10px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                    }}
+                                                >
+                                                    <TextField
+                                                        type="email"
+                                                        placeholder="Enter your email"
+                                                        value={email}
+                                                        onChange={(e) => setEmail(e.target.value)}
+                                                        required
+                                                        size="small"
+                                                        sx={{
+                                                            marginRight: "10px",
+                                                            backgroundColor: "#fff",
+                                                        }}
+                                                    />
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        size="small"
+                                                        sx={{ backgroundColor: "#007bff" }}
+                                                    >
+                                                        Submit
+                                                    </Button>
+                                                </form>
+                                            )}
                                         </li>
                                     ))}
                                 </ul>
