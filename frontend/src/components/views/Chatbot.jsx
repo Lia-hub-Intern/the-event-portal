@@ -7,13 +7,11 @@ export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const chatboxRef = useRef(null);
 
-    const toggleChat = () => {
-        setIsOpen(!isOpen); // Toggle chat visibility
-    };
+    const toggleChat = () => setIsOpen((prev) => !prev);
 
     const handleClickOutside = (event) => {
         if (chatboxRef.current && !chatboxRef.current.contains(event.target)) {
-            setIsOpen(false); // Minimize the chatbox when clicking outside
+            setIsOpen(false);
         }
     };
 
@@ -36,7 +34,7 @@ export default function Chatbot() {
                     ref={chatboxRef}
                     sx={{
                         position: "fixed",
-                        bottom: 90,
+                        bottom: 100,
                         right: 30,
                         zIndex: 1000,
                     }}
