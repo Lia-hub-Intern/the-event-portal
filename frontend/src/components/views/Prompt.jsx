@@ -14,6 +14,14 @@ export function textToArray(text) {
 
         const items = rawItems
             .map((item) => item.replace(/^\d+\.\s*/, "").trim())
+            .map((item) => {
+                item = item.replace(/\s*[\d]+[\.|\:]$/, "").trim();
+
+                if (!item.endsWith(".")) {
+                    item = item + ".";
+                }
+                return item;
+            })
             .filter((item) => item);
 
         parsedData.push({ title, items });
@@ -29,7 +37,6 @@ export default function Prompt() {
     const [dateEnd, setDateEnd] = useState(null);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [email, setEmail] = useState("");
-
     const [errorEvent, setErrorEvent] = useState({
         error: false,
         message: "",
@@ -102,6 +109,12 @@ export default function Prompt() {
                 alignItems: "flex-end",
                 width: "100%",
                 marginRight: 4,
+                backgroundColor: "#0a0a0a",
+                padding: 3,
+                color: "#fff",
+                background: "linear-gradient(135deg, #1e3c72, #2a5298)",
+                borderRadius: "12px",
+                boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.7)",
             }}
         >
             <Paper
@@ -110,8 +123,10 @@ export default function Prompt() {
                     width: "100%",
                     maxWidth: "800px",
                     marginTop: 4,
-                    boxShadow: 3,
+                    boxShadow: "0px 4px 15px rgba(255, 255, 255, 0.2)",
                     marginRight: "auto",
+                    backgroundColor: "#1e1e1e",
+                    borderRadius: "12px",
                 }}
             >
                 <Grid container spacing={2}>
@@ -129,8 +144,20 @@ export default function Prompt() {
                             value={inputValue}
                             required
                             sx={{
-                                backgroundColor: "#f9f9f9",
+                                backgroundColor: "#333",
                                 borderRadius: "8px",
+                                "& .MuiOutlinedInput-root": {
+                                    "&:hover fieldset": {
+                                        borderColor: "#7f00ff",
+                                    },
+                                },
+                                color: "#fff",
+                                "& .MuiInputLabel-root": {
+                                    color: "#fff",
+                                },
+                                "& .MuiOutlinedInput-input": {
+                                    color: "#fff",
+                                },
                             }}
                         />
                     </Grid>
@@ -142,8 +169,9 @@ export default function Prompt() {
                                 "& .MuiInputBase-root": {
                                     width: "100%",
                                     height: "50px",
-                                    backgroundColor: "#f9f9f9",
+                                    backgroundColor: "#333",
                                     borderRadius: "8px",
+                                    color: "#fff",
                                 },
                             }}
                             onChange={(newValue) => setDateStart(newValue)}
@@ -158,8 +186,9 @@ export default function Prompt() {
                                 "& .MuiInputBase-root": {
                                     width: "100%",
                                     height: "50px",
-                                    backgroundColor: "#f9f9f9",
+                                    backgroundColor: "#333",
                                     borderRadius: "8px",
+                                    color: "#fff",
                                 },
                             }}
                             onChange={(newValue) => setDateEnd(newValue)}
@@ -175,14 +204,14 @@ export default function Prompt() {
                             sx={{
                                 width: "50%",
                                 padding: "10px",
-                                backgroundColor: "#007bff",
-                                ":hover": { backgroundColor: "#0056b3" },
+                                backgroundColor: "#7f00ff",
+                                ":hover": { backgroundColor: "#9c27b0" },
                                 marginTop: 2,
                                 borderRadius: "8px",
                             }}
                             disabled={!dateStart || !dateEnd}
                         >
-                            <Typography sx={{ textTransform: "capitalize", fontWeight: "bold" }}>
+                            <Typography sx={{ textTransform: "capitalize", fontWeight: "bold", color: "#fff" }}>
                                 Generate
                             </Typography>
                         </Button>
@@ -193,7 +222,7 @@ export default function Prompt() {
                 <Box
                     sx={{
                         marginTop: 4,
-                        backgroundColor: "#f5f5f5",
+                        backgroundColor: "#1c1c1c",
                         padding: 2,
                         borderRadius: "8px",
                     }}
@@ -206,7 +235,7 @@ export default function Prompt() {
                                     component="h3"
                                     sx={{
                                         fontWeight: "bold",
-                                        color: "primary.main",
+                                        color: "#7f00ff",
                                         marginBottom: "0.5rem",
                                     }}
                                 >
@@ -219,8 +248,12 @@ export default function Prompt() {
                                                 <Checkbox
                                                     checked={selectedEvent === item}
                                                     onChange={(e) => handleCheckboxChange(e, item)}
+                                                    sx={{
+                                                        color: "#7f00ff",
+                                                        "&.Mui-checked": { color: "#7f00ff" },
+                                                    }}
                                                 />
-                                                <Typography component="p" sx={{ fontSize: 14 }}>
+                                                <Typography component="p" sx={{ fontSize: 14, color: "#fff" }}>
                                                     {item}
                                                 </Typography>
                                             </Box>
@@ -241,15 +274,29 @@ export default function Prompt() {
                                                         required
                                                         size="small"
                                                         sx={{
-                                                            marginRight: "10px",
                                                             backgroundColor: "#fff",
+                                                            color: "#000",
+                                                            "& .MuiInputBase-input": {
+                                                                color: "#000",
+                                                            },
+                                                            "& .MuiOutlinedInput-root": {
+                                                                borderRadius: "5px",
+                                                                "& fieldset": {
+                                                                    borderColor: "#ccc",
+                                                                },
+                                                                "&:hover fieldset": {
+                                                                    borderColor: "#7f00ff",        },
+                                                            },
                                                         }}
                                                     />
                                                     <Button
                                                         type="submit"
                                                         variant="contained"
                                                         size="small"
-                                                        sx={{ backgroundColor: "#007bff" }}
+                                                        sx={{
+                                                            backgroundColor: "#7f00ff",
+                                                            ":hover": { backgroundColor: "#9c27b0" },
+                                                        }}
                                                     >
                                                         Submit
                                                     </Button>
@@ -264,7 +311,12 @@ export default function Prompt() {
                         <Typography
                             variant="body1"
                             component="p"
-                            sx={{ fontSize: 14, color: "gray", textAlign: "center" }}
+                            sx={{
+                                fontSize: 14,
+                                color: "#888",
+                                textAlign: "center",
+                                fontStyle: "italic",
+                            }}
                         >
                             No events found. Please enter an event to search.
                         </Typography>
