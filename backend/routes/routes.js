@@ -1,5 +1,5 @@
 import express from "express"
-import { callEvents } from "../controller/callEvents.js"
+import { callEvents } from "../callEvents.js"
 
 
 const routes = express.Router()
