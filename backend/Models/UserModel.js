@@ -21,14 +21,22 @@ const pool = new Pool({
 
 
 const UserModel = {
-  // Hämta användare baserat på användarnamn
-  getUserByUsername: async (username) => {
-    try {
-      const result = await db.query('SELECT * FROM users WHERE username = $1', [username]);
-      return result.rows[0];  // Returnerar den första användaren om den finns
-    } catch (error) {
-      throw new Error('Error fetching user by username: ' + error.message);
-    }
+    /**
+   * Get a user by username
+   * @param {string} username
+   * @returns {Promise<object|null>} User data or null if not found
+   */
+    getUserByUsername: async (username) => {
+      const query = `SELECT * FROM users WHERE username = $1`;
+      const values = [username];
+  
+      try {
+        const result = await pool.query(query, values);
+        return result.rows[0] || null;
+      } catch (err) {
+        console.error('Error fetching user by username:', err);
+        throw new Error('Failed to fetch user by username');
+      }
   },
   
 /**
@@ -227,24 +235,6 @@ removeUserFromSharedAccount: async (userId) => {
     throw new Error(err.message || 'Failed to remove user from shared account.');
   }
 },
-
-  /**
-   * Get a user by username
-   * @param {string} username
-   * @returns {Promise<object|null>} User data or null if not found
-   */
-  getUserByUsername: async (username) => {
-    const query = `SELECT * FROM users WHERE username = $1`;
-    const values = [username];
-
-    try {
-      const result = await pool.query(query, values);
-      return result.rows[0] || null;
-    } catch (err) {
-      console.error('Error fetching user by username:', err);
-      throw new Error('Failed to fetch user by username');
-    }
-  },
 
 
 
