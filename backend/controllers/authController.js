@@ -1,10 +1,9 @@
-// controllers/authController.js
-const bcrypt = require('bcrypt');
-const { generateToken } = require('../helpers/authHelper'); // Om du har denna funktion för att generera token
-const UserModel = require('../Models/UserModel'); // Ersätt med rätt väg till din UserModel
+import bcrypt from 'bcrypt';
+import { generateToken } from '../middleware/authMiddleware.js'; // Se till att du importerar den rätta vägen
+import UserModel from '../Models/UserModel.js'; // Ersätt med rätt väg till din UserModel
 
 // === ROUTER: Register User ===
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
     const { username, password, role, first_name, last_name, email } = req.body;
 
@@ -61,7 +60,7 @@ const registerUser = async (req, res) => {
 };
 
 // === ROUTER: Login ===
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { username, password, rememberMe } = req.body;
 
   try {
@@ -89,46 +88,5 @@ const loginUser = async (req, res) => {
   }
 };
 
-// // // GET route for resetting the password
-// // app.get('/reset-password', async (req, res) => {
-// //   const { token } = req.query;
-
-// //   try {
-// //     const storedToken = await UserModel.validateToken(token);
-// //     if (!storedToken) {
-// //       return res.status(400).json({ message: 'Invalid or expired token' });
-// //     }
-// //     res.status(200).json({ message: 'Token is valid' });
-// //   } catch (error) {
-// //     console.error("Error validating token:", error.message);
-// //     res.status(500).json({ message: 'Internal server error' });
-// //   }
-// // });
-
-
-// // // POST route to reset password
-// // app.post('/api/reset-password', async (req, res) => {
-// //   const { token, newPassword } = req.body;
-
-// //   if (!token || !newPassword) {
-// //     return res.status(400).json({ message: 'Invalid or missing data.' });
-// //   }
-
-// //   try {
-// //     // Validate the token and reset the password
-// //     const user = await UserModel.validateToken(token);
-// //     if (!user) {
-// //       return res.status(400).json({ message: 'Invalid or expired token.' });
-// //     }
-
-// //     await UserModel.resetPassword(user.id, newPassword); // Reset password
-
-// //     res.status(200).json({ message: 'Password has been successfully reset.' });
-// //   } catch (err) {
-// //     console.error('Error during password reset:', err.message);
-// //     res.status(400).json({ message: err.message });
-// //   }
-// // });
-
-
-module.exports = { registerUser, loginUser };
+// Export the functions
+export default { registerUser, loginUser };

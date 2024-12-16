@@ -69,28 +69,29 @@ const RequestsBySharedAccount = () => {
     }
   }, [sharedAccountId]);
 
-  // Update request status dynamically
-  const handleUpdateRequestStatus = async (requestId, newStatus) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:5000/api/update-request-status`,
-        { requestId, newStatus },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
 
-      if (response.status === 200) {
-        setRequests((prevRequests) =>
-          prevRequests.map((request) =>
-            request.request_id === requestId ? { ...request, status: newStatus } : request
-          )
-        );
-        setMessage(`Request ${newStatus === 'approved' ? 'approved' : 'rejected'}!`);
-        setTimeout(() => setMessage(null), 3000);
-      }
-    } catch (error) {
-      setError(`Failed to ${newStatus === 'approved' ? 'approve' : 'reject'} the request.`);
+// Update request status dynamically
+const handleUpdateRequestStatus = async (requestId, newStatus) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:5000/api/update-request-status`,
+      { requestId, newStatus },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (response.status === 200) {
+      setRequests((prevRequests) =>
+        prevRequests.map((request) =>
+          request.request_id === requestId ? { ...request, status: newStatus } : request
+        )
+      );
+      setMessage(`Request ${newStatus === 'approved' ? 'approved' : 'rejected'}!`);
+      setTimeout(() => setMessage(null), 3000);
     }
-  };
+  } catch (error) {
+    setError(`Failed to ${newStatus === 'approved' ? 'approve' : 'reject'} the request.`);
+  }
+};
 
   if (loading) {
     return (

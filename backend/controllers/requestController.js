@@ -1,9 +1,8 @@
-const UserModel = require('../Models/UserModel');  // Se till att importera rätt modell
-const authenticateJWT = require('../middleware/authenticateJWT');  // Se till att importera JWT autentisering
+// Import necessary dependencies
+import UserModel from '../Models/UserModel.js'; // Assuming the path to UserModel is correct
 
-
-// API-rutt för att hämta förfrågningar baserat på shared_account_id
-const getRequests = async (req, res) => {
+// === API Route to Get Requests by Shared Account ID ===
+export const getRequests = async (req, res) => {
   const { sharedAccountId } = req.params;
 
   if (!sharedAccountId || isNaN(sharedAccountId)) {
@@ -12,7 +11,7 @@ const getRequests = async (req, res) => {
 
   try {
     const requests = await UserModel.getRequestsBySharedAccount(sharedAccountId);
-    
+
     if (requests.length === 0) {
       return res.status(404).json({ message: 'Inga förfrågningar hittades för det här kontot' });
     }
@@ -24,12 +23,12 @@ const getRequests = async (req, res) => {
   }
 };
 
-// Approve request route
-const approveRequest = async (req, res) => {
-  const { requestId, status } = req.body;
+// === Approve Request Route ===
+export const approveRequest = async (req, res) => {
+  const { requestId } = req.body;
 
   try {
-    const updatedRequest = await UserModel.approveRequest(requestId, status, req.user.shared_account_id);
+    const updatedRequest = await UserModel.approveRequest(requestId, req.user.shared_account_id);
     res.status(200).json(updatedRequest);
   } catch (error) {
     console.error('Error approving request:', error);
@@ -37,12 +36,12 @@ const approveRequest = async (req, res) => {
   }
 };
 
-// Reject request route
-const rejectRequest = async (req, res) => {
-  const { requestId, status } = req.body;
+// === Reject Request Route ===
+export const rejectRequest = async (req, res) => {
+  const { requestId } = req.body;
 
   try {
-    const updatedRequest = await UserModel.rejectRequest(requestId, status, req.user.shared_account_id);
+    const updatedRequest = await UserModel.rejectRequest(requestId, req.user.shared_account_id);
     res.status(200).json(updatedRequest);
   } catch (error) {
     console.error('Error rejecting request:', error);
@@ -50,13 +49,14 @@ const rejectRequest = async (req, res) => {
   }
 };
 
-// Update request status route
-const updateRequestStatus = async (req, res) => {
+// === POST Route: Update Request Status ===
+export const updateRequestStatus = async (req, res) => {
   const { requestId, newStatus } = req.body;
 
   try {
+    // Ensure the new status is either 'approved' or 'rejected'
     if (!['approved', 'rejected'].includes(newStatus)) {
-      return res.status(400).json({ message: 'Invalid status value' });
+      return res.status(400).json({ message: 'Ogiltigt statusvärde' });
     }
 
     const updatedRequest = await UserModel.updateRequestStatus(
@@ -66,38 +66,32 @@ const updateRequestStatus = async (req, res) => {
     );
 
     if (!updatedRequest) {
-      return res.status(404).json({ message: 'Request not found or unauthorized' });
+      return res.status(404).json({ message: 'Förfrågningen hittades inte eller är otillåten' });
     }
 
-    res.status(200).json({ message: 'Request status updated successfully', updatedRequest });
+    res.status(200).json({ message: 'Förfrågningens status har uppdaterats', updatedRequest });
   } catch (error) {
     console.error('Error updating request status:', error);
-    res.status(500).json({ message: 'Error updating request status' });
+    res.status(500).json({ message: 'Fel vid uppdatering av status' });
   }
 };
 
-// POST route to handle password reset request
-const requestPasswordReset = async (req, res) => {
+// === POST Route: Request Password Reset ===
+export const requestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    return res.status(400).json({ error: 'Email is required.' });
+    return res.status(400).json({ error: 'E-postadress krävs.' });
   }
 
   try {
     await UserModel.requestPasswordReset(email);
-    return res.status(200).json({ message: 'Password reset email sent.' });
+    return res.status(200).json({ message: 'Lösenordsåterställnings-e-post har skickats.' });
   } catch (error) {
     console.error('Error in /request-password-reset:', error.message);
-    return res.status(500).json({ error: 'Internal server error.' });
+    return res.status(500).json({ error: 'Internt serverfel.' });
   }
 };
 
-// Export controller functions
-module.exports = {
-  getRequests,
-  approveRequest,
-  rejectRequest,
-  updateRequestStatus,
-  requestPasswordReset
-};
+// Export default
+export default { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset };

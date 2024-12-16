@@ -1,8 +1,8 @@
-// controllers/userController.js
-const UserModel = require('../Models/UserModel'); // Justera sökvägen till din UserModel
+// Importera UserModel med korrekt sökväg
+import UserModel from '../Models/UserModel.js';
 
 // === ROUTER: Get Users by Shared Account ID ===
-const getUsersBySharedAccount = async (req, res) => {
+export const getUsersBySharedAccount = async (req, res) => {
   try {
     const sharedAccountId = req.user.shared_account_id;
 
@@ -22,5 +22,4 @@ const getUsersBySharedAccount = async (req, res) => {
     res.status(500).json({ message: 'An error occurred while fetching users' });
   }
 };
-
-module.exports = { getUsersBySharedAccount };
+export default {getUsersBySharedAccount };

@@ -1,8 +1,8 @@
-// controllers/speakerController.js
-const UserModel = require('../Models/UserModel'); // Ersätt med korrekt väg till din UserModel
+// Importera UserModel med korrekt sökväg
+import UserModel from '../Models/UserModel.js';
 
 // === ROUTER: Add Speaker ===
-const addSpeaker = async (req, res) => {
+export const addSpeaker = async (req, res) => {
   console.log("Add Speaker route hit");
 
   const { speakerUsername } = req.body;
@@ -49,7 +49,7 @@ const addSpeaker = async (req, res) => {
 };
 
 // === ROUTER: Remove Speaker ===
-const removeSpeaker = async (req, res) => {
+export const removeSpeaker = async (req, res) => {
   console.log("Remove Speaker route hit");
 
   const { speakerUsername } = req.body;
@@ -81,4 +81,5 @@ const removeSpeaker = async (req, res) => {
   }
 };
 
-module.exports = { addSpeaker, removeSpeaker };
+// Correct export of the controller functions
+export default { addSpeaker, removeSpeaker };

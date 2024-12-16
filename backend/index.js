@@ -1,11 +1,13 @@
-const express = require('express');
-const cors = require('cors');  // Importera cors
-const app = express();
-const userController = require('./controllers/userController'); // Importera userController
-const requestController = require('./controllers/requestController'); // Importera din controller
-const speakerController = require('./controllers/speakerController'); // Importera speakerController
-const authenticateJWT = require('./middlewares/authenticateJWT'); // Importera din middleware
+import express from 'express';
+import cors from 'cors'; // Importera cors
+import userController from './controllers/userController.js'; // Importera userController
+import { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset } from './controllers/requestController.js'; // Adjust path to your controller file
+import { registerUser, loginUser } from './controllers/authController.js'; // Import the correct path to your controller file
+import speakerController from './controllers/speakerController.js'; // Importera speakerController
+import dotenv from 'dotenv'; // Importera dotenv för att hantera miljövariabler
+import { authenticateJWT, generateToken } from './middleware/authMiddleware.js';
 
+const app = express();
 
 dotenv.config();
 
@@ -38,11 +40,13 @@ app.get('/api/config', (req, res) => {
 // API-rutter
 app.post('/api/add-speaker', authenticateJWT, speakerController.addSpeaker); // Använd addSpeaker-metoden från speakerController
 app.post('/api/remove-speaker', authenticateJWT, speakerController.removeSpeaker); // Använd removeSpeaker-metoden från speakerController
-app.get('/api/requests/:sharedAccountId', requestController.getRequests);
-app.post('/api/approve-request', authenticateJWT, requestController.approveRequest);  // Använd authenticateJWT här
-app.post('/api/reject-request', authenticateJWT, requestController.rejectRequest);  // Använd authenticateJWT här
-app.post('/api/update-request-status', authenticateJWT, requestController.updateRequestStatus);  // Använd authenticateJWT här
-app.post('/request-password-reset', requestController.requestPasswordReset);
+app.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);
+app.post('/api/requests/approve', authenticateJWT, approveRequest);
+app.post('/api/requests/reject', authenticateJWT, rejectRequest);
+app.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
+app.post('/api/request-password-reset', requestPasswordReset);
+app.post('/api/register', registerUser);
+app.post('/api/login', loginUser);
 app.get('/api/users', authenticateJWT, userController.getUsersBySharedAccount); // Använd getUsersBySharedAccount från userController
 
 
