@@ -318,12 +318,12 @@ sendResetEmail: async (email, resetToken) => {
 //   }
 // },
 
-// validateToken: async (token) => {
-//   try {
-//     console.log('Validating token:', token);
+validateToken: async (token) => {
+  try {
+    console.log('Validating token:', token);
 
-//     // Query the database for the token
-//     const result = await pool.query(
+    // Query the database for the token
+    const result = await pool.query(
       'SELECT id, reset_token, reset_token_expires FROM users WHERE reset_token = $1',
       [token]
     );
