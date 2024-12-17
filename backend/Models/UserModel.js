@@ -1,24 +1,4 @@
-import pkg from 'pg';
-const { Pool } = pkg;
-import dotenv from 'dotenv';
-import crypto from 'crypto';
-import sgMail from '@sendgrid/mail';
-
-dotenv.config(); // Read environment variables from .env file
-
-
-// Initialize SendGrid
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-// Create a connection pool to the database with the correct environment variables
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT || 5432, // Default to port 5432 if not specified in .env
-});
-
+import pool from '../database/db.js';
 
 const UserModel = {
     /**
@@ -48,9 +28,11 @@ const UserModel = {
 * @param {string} last_name
 * @param {string} email
 * @param {number|null} sharedAccountId - The ID of the shared account (nullable)
+* @param {string|null} phone_number - The phone number of the user (nullable)
+* @param {string|null} company_name - The company name of the user (nullable)
 * @returns {Promise<object>} Newly created user
 */
-createUser: async (username, hashedPassword, role, first_name, last_name, email, sharedAccountId = null) => {
+createUser: async (username, hashedPassword, role, first_name, last_name, email, sharedAccountId = null, phone_number = null, company_name = null) => {
   try {
     // Validera lösenordslängd (minst 8 tecken)
     if (hashedPassword.length < 8) {
@@ -69,8 +51,6 @@ createUser: async (username, hashedPassword, role, first_name, last_name, email,
       throw new Error('Username already exists');
     }
 
-
-
     // Om rollen är "user_account" och inget sharedAccountId finns, skapa ett nytt delat konto
     if (role === "user_account" && !sharedAccountId) {
       console.log("Creating new shared account for role 'user_account'...");
@@ -87,13 +67,21 @@ createUser: async (username, hashedPassword, role, first_name, last_name, email,
       console.log("New shared_account_id created:", sharedAccountId);
     }
 
+    // Validera att sharedAccountId finns (om det inte är null)
+    if (sharedAccountId) {
+      const sharedAccountCheck = await pool.query('SELECT * FROM shared_accounts WHERE id = $1', [sharedAccountId]);
+      if (sharedAccountCheck.rows.length === 0) {
+        throw new Error(`Shared account with ID ${sharedAccountId} does not exist.`);
+      }
+    }
+
     // Skapa användaren i databasen
     const query = `
-      INSERT INTO users (username, password, role, first_name, last_name, email, shared_account_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING id, username, role, first_name, last_name, email, shared_account_id
+      INSERT INTO users (username, password, role, first_name, last_name, email, shared_account_id, phone_number, company_name)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      RETURNING id, username, role, first_name, last_name, email, shared_account_id, phone_number, company_name
     `;
-    const values = [username, hashedPassword, role, first_name, last_name, email, sharedAccountId];
+    const values = [username, hashedPassword, role, first_name, last_name, email, sharedAccountId, phone_number, company_name];
 
     const result = await pool.query(query, values);
     console.log("User successfully created:", result.rows[0]);
@@ -104,6 +92,7 @@ createUser: async (username, hashedPassword, role, first_name, last_name, email,
     throw new Error(err.message || "Failed to create user.");
   }
 },
+
 
 
 

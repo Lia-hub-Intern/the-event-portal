@@ -1,47 +1,94 @@
 import bcrypt from 'bcrypt';
+import pool from '../database/db.js';
 import { generateToken } from '../middleware/authMiddleware.js'; // Se till att du importerar den rätta vägen
-import UserModel from '../Models/UserModel.js'; // Ersätt med rätt väg till din UserModel
+import UserModel from '../models/UserModel.js'; // Ersätt med rätt väg till din UserModel
 
 // === ROUTER: Register User ===
 export const registerUser = async (req, res) => {
   try {
-    const { username, password, role, first_name, last_name, email } = req.body;
+    const {
+      username,
+      password,
+      role,
+      first_name,
+      last_name,
+      email,
+      phone_number,
+      company_name,
+      sharedAccountId,
+    } = req.body;
 
-    // Validera att alla obligatoriska fält finns
+    // Validate required fields except for phone_number and company_name
     if (!username || !password || !role || !first_name || !last_name || !email) {
-      return res.status(400).json({ message: 'All fields are required' });
+      return res.status(400).json({ message: 'All fields except phone number and company name are required' });
     }
 
-    // Validera lösenordslängd (minst 8 tecken)
+    // Validate password length (minimum 8 characters)
     if (password.length < 8) {
       return res.status(400).json({ message: 'Password must be at least 8 characters long' });
     }
 
-    // Validera e-postformat (enkel RegEx för e-post)
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: 'Invalid email format' });
     }
 
-    // Kontrollera om användaren redan finns
+    // Validate phone number format (basic validation for digits only, optional)
+    if (phone_number && !/^\d{10,15}$/.test(phone_number)) {
+      return res
+        .status(400)
+        .json({ message: 'Invalid phone number. Use 10-15 digits without spaces or special characters.' });
+    }
+
+    // Check if the username already exists
     const existingUserByUsername = await UserModel.getUserByUsername(username);
     if (existingUserByUsername) {
       return res.status(400).json({ message: 'Username already exists' });
     }
 
-    // Hasha lösenordet
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Om rollen är "user_account" och inget sharedAccountId finns, skapa ett nytt delat konto
+if (role === "user_account" && !sharedAccountId) {
+  console.log("Creating new shared account for role 'user_account'...");
+  
+  // Declare sharedAccountId with let so it can be reassigned
+  let sharedAccountId;
+  
+  const createSharedAccountQuery = `
+    INSERT INTO shared_accounts DEFAULT VALUES RETURNING id
+  `;
+  
+  const sharedAccountResult = await pool.query(createSharedAccountQuery);
+  sharedAccountId = sharedAccountResult.rows[0]?.id;
 
-    // Skapa ny användare
+  if (!sharedAccountId) {
+    throw new Error("Failed to retrieve shared_account_id after creation.");
+  }
+  console.log("New shared_account_id created:", sharedAccountId);
+}
+
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);  // This is fine since we're not reassigning it
+
+    // Ensure phone_number and company_name are not empty strings
+    const validPhoneNumber = phone_number || null;
+    const validCompanyName = company_name || null;
+
+    // Create a new user
     const newUser = await UserModel.createUser(
       username,
       hashedPassword,
       role,
       first_name,
       last_name,
-      email
+      email,
+      sharedAccountId,
+      validPhoneNumber,
+      validCompanyName
     );
 
+    // Respond with success message
     res.status(201).json({
       message: 'Registration successful! Please log in to continue.',
       user: {
@@ -51,6 +98,8 @@ export const registerUser = async (req, res) => {
         first_name: newUser.first_name,
         last_name: newUser.last_name,
         email: newUser.email,
+        phone_number: newUser.phone_number,
+        company_name: newUser.company_name,
       },
     });
   } catch (error) {
@@ -58,6 +107,11 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: 'Error during registration. Please try again later.' });
   }
 };
+
+
+
+
+
 
 // === ROUTER: Login ===
 export const loginUser = async (req, res) => {

@@ -26,6 +26,8 @@ export default function Register() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const [message, setMessage] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const [errors, setErrors] = useState({});
@@ -67,7 +69,7 @@ export default function Register() {
       const response = await fetch('http://localhost:5000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, role, first_name: firstName, last_name: lastName, email }),
+        body: JSON.stringify({ username, password, role, first_name: firstName, last_name: lastName, email, phone_number: phoneNumber, company_name: companyName }),
       });
 
       const data = await response.json();
@@ -224,6 +226,26 @@ export default function Register() {
             sx={{ mb: 2 }}
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword}
+          />
+          <TextField
+            label="Phone Number"
+            type="text"
+            fullWidth
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            sx={{ mb: 2 }}
+            error={!!errors.phoneNumber}
+            helperText={errors.phoneNumber}
+          />
+          <TextField
+            label="Company Name"
+            type="text"
+            fullWidth
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            sx={{ mb: 2 }}
+            error={!!errors.companyName}
+            helperText={errors.companyName}
           />
           <FormControl fullWidth sx={{ mb: 2 }}>
             <InputLabel id="role-label">Role</InputLabel>

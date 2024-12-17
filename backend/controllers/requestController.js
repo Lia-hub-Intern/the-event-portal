@@ -1,5 +1,6 @@
 // Import necessary dependencies
-import UserModel from '../Models/UserModel.js'; // Assuming the path to UserModel is correct
+import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
+
 
 // === API Route to Get Requests by Shared Account ID ===
 export const getRequests = async (req, res) => {

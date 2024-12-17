@@ -1,5 +1,5 @@
 // Importera UserModel med korrekt sökväg
-import UserModel from '../Models/UserModel.js';
+import UserModel from '../models/UserModel.js';
 
 // === ROUTER: Get Users by Shared Account ID ===
 export const getUsersBySharedAccount = async (req, res) => {
