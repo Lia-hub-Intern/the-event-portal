@@ -1,6 +1,6 @@
 const { Pool } = pkg;
 import pkg from 'pg';
-import sgMail from '@sendgrid/mail';
+
 import dotenv from 'dotenv';
 
 dotenv.config(); // Read environment variables from .env file
@@ -15,7 +15,6 @@ const pool = new Pool({
   });
 
   
-// Initialize SendGrid
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 
   export default pool;

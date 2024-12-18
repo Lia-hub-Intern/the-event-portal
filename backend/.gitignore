@@ -24,7 +24,4 @@ dist-ssr
 *.sw?
 
 
-# Ignore environment variables
-.env
-
-.DS_Store
+# Ignore environment variables (put .env here)

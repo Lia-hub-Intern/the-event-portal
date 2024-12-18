@@ -14,32 +14,33 @@ function ForgotPassword() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Define API URL from environment variables with fallback
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
-  console.log("API URL:", apiUrl);
+
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(""); // Reset message on submit
+    setMessage("");
     setLoading(true);
-  
-    // Validate email input
-    if (!email) {
-      setMessage("Email address is required.");
+
+    if (!email || !isValidEmail(email)) {
+      setMessage("Please enter a valid email address.");
       setLoading(false);
       return;
     }
-  
+
     try {
-      // Anropa backend-rutten '/request-password-reset' istället
       const response = await fetch(`${apiUrl}/request-password-reset`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-  
-      const data = await response.json();
-  
+
+      const data = await response.json().catch(() => ({
+        message: "Invalid server response.",
+      }));
+
       if (response.ok) {
         setMessage("Password reset link sent! Please check your email.");
       } else {
@@ -51,10 +52,9 @@ function ForgotPassword() {
       setLoading(false);
     }
   };
-  
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" sx={{ padding: 2 }}>
       <Paper sx={{ padding: 3, marginTop: 8 }}>
         <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
           Forgot Password

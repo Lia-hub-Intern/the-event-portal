@@ -1,4 +1,20 @@
 import pool from '../database/db.js';
+import sgMail from '@sendgrid/mail';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv'; 
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
+
+export const generateToken = (email) => {
+  const payload = { email };
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+  return token;
+};
+
+// Initialize SendGrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const UserModel = {
     /**
@@ -19,39 +35,40 @@ const UserModel = {
       }
   },
   
-/**
-* Create a new user in the database
-* @param {string} username
-* @param {string} hashedPassword
-* @param {string} role
-* @param {string} first_name
-* @param {string} last_name
-* @param {string} email
-* @param {number|null} sharedAccountId - The ID of the shared account (nullable)
-* @param {string|null} phone_number - The phone number of the user (nullable)
-* @param {string|null} company_name - The company name of the user (nullable)
-* @returns {Promise<object>} Newly created user
-*/
+
+  /**
+ * Create a new user in the database
+ * @param {string} username
+ * @param {string} hashedPassword
+ * @param {string} role
+ * @param {string} first_name
+ * @param {string} last_name
+ * @param {string} email
+ * @param {number|null} sharedAccountId - The ID of the shared account (nullable)
+ * @param {string|null} phone_number - The phone number of the user (nullable)
+ * @param {string|null} company_name - The company name of the user (nullable)
+ * @returns {Promise<object>} Newly created user
+ */
 createUser: async (username, hashedPassword, role, first_name, last_name, email, sharedAccountId = null, phone_number = null, company_name = null) => {
   try {
-    // Validera lösenordslängd (minst 8 tecken)
+    // Validate password length (at least 8 characters)
     if (hashedPassword.length < 8) {
       throw new Error('Password must be at least 8 characters long');
     }
 
-    // Validera e-postformat (enkel RegEx för e-post)
+    // Validate email format (simple regex for email)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       throw new Error('Invalid email format');
     }
 
-    // Kontrollera om användarnamnet redan finns
+    // Check if the username already exists
     const existingUserByUsername = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
     if (existingUserByUsername.rows.length > 0) {
       throw new Error('Username already exists');
     }
 
-    // Om rollen är "user_account" och inget sharedAccountId finns, skapa ett nytt delat konto
+    // If the role is "user_account" and no sharedAccountId is provided, create a new shared account
     if (role === "user_account" && !sharedAccountId) {
       console.log("Creating new shared account for role 'user_account'...");
       const createSharedAccountQuery = `
@@ -67,7 +84,7 @@ createUser: async (username, hashedPassword, role, first_name, last_name, email,
       console.log("New shared_account_id created:", sharedAccountId);
     }
 
-    // Validera att sharedAccountId finns (om det inte är null)
+    // Validate that the sharedAccountId exists (if it's not null)
     if (sharedAccountId) {
       const sharedAccountCheck = await pool.query('SELECT * FROM shared_accounts WHERE id = $1', [sharedAccountId]);
       if (sharedAccountCheck.rows.length === 0) {
@@ -75,13 +92,23 @@ createUser: async (username, hashedPassword, role, first_name, last_name, email,
       }
     }
 
-    // Skapa användaren i databasen
+    // Create the user in the database without reset_token and reset_token_expires
     const query = `
       INSERT INTO users (username, password, role, first_name, last_name, email, shared_account_id, phone_number, company_name)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING id, username, role, first_name, last_name, email, shared_account_id, phone_number, company_name
     `;
-    const values = [username, hashedPassword, role, first_name, last_name, email, sharedAccountId, phone_number, company_name];
+    const values = [
+      username, 
+      hashedPassword, 
+      role, 
+      first_name, 
+      last_name, 
+      email, 
+      sharedAccountId, 
+      phone_number, 
+      company_name
+    ];
 
     const result = await pool.query(query, values);
     console.log("User successfully created:", result.rows[0]);
@@ -93,8 +120,7 @@ createUser: async (username, hashedPassword, role, first_name, last_name, email,
   }
 },
 
-
-
+  
 
 /**
  * Hämta alla förfrågningar för ett specifikt delat konto
@@ -247,55 +273,61 @@ removeUserFromSharedAccount: async (userId) => {
   },
 
   // Function to send password reset email
-sendResetEmail: async (email, resetToken) => {
-  const resetLink = `http://localhost:5000/reset-password?token=${resetToken}`;
+  sendResetEmail: async (email, resetToken) => {
+    const resetLink = `http://localhost:5000/reset-password?token=${resetToken}`;
   
-  const msg = {
-    to: email,
-    from: 'heb95der@gmail.com', // Use the verified sender email
-    subject: 'Password Reset Request',
-    text: `Please click the following link to reset your password: ${resetLink}`,
-  };
+    const msg = {
+      to: email,
+      from: {
+        email: process.env.SENDER_EMAIL,
+      },
+      subject: 'Password Reset Request',
+      text: `Please click the following link to reset your password: ${resetLink}`,
+    };
   
-  
-  try {
-    // Send the email using SendGrid
-    await sgMail.send(msg);
-    console.log('Password reset email sent');
-  } catch (error) {
-    // Log the full error response for better debugging
-    console.error('Error during password reset email:', error.response ? error.response.body : error.message);
-    throw new Error('Error during password reset email');
-  }
-},
+    try {
+      await sgMail.send(msg);
+      console.log('Password reset email sent');
+    } catch (error) {
+      console.error('Error during password reset email:', error.response ? error.response.body : error.message);
+      throw new Error('Error during password reset email');
+    }
+  },
 
-// // Function to request password reset
-// requestPasswordReset: async (email) => {
-//   try {
-//     const query = 'SELECT id, email FROM users WHERE email = $1';
-//     const result = await pool.query(query, [email]);
+  // Funktion för att hantera lösenordsåterställning
+  requestPasswordReset: async (email) => {
+    try {
+      // Kontrollera om användaren finns
+      const query = 'SELECT id, email FROM users WHERE email = $1';
+      const result = await pool.query(query, [email]);
 
-//     if (result.rows.length === 0) {
-//       throw new Error('No user found with this email address.');
-//     }
+      if (result.rows.length === 0) {
+        throw new Error('Ingen användare med denna e-postadress hittades.');
+      }
 
-//     const user = result.rows[0];
+      const user = result.rows[0];
 
-//     const resetToken = crypto.randomBytes(20).toString('hex');
-//     const expiresAt = new Date(Date.now() + 3600000); // 1 hour expiry
+      // Generera reset-token och utgångstid
+      const resetToken = crypto.randomBytes(20).toString('hex');
+      const expiresAt = new Date(Date.now() + 3600000); // 1 timme framåt
 
-//     const updateQuery = 'UPDATE users SET reset_token = $1, reset_token_expires = $2 WHERE id = $3';
-//     await pool.query(updateQuery, [resetToken, expiresAt, user.id]);
+      // Uppdatera databasen
+      const updateQuery = `
+        UPDATE users 
+        SET reset_token = $1, reset_token_expires = $2 
+        WHERE id = $3
+      `;
+      await pool.query(updateQuery, [resetToken, expiresAt, user.id]);
 
-//     // Send reset email using the UserModel function
-//     await UserModel.sendResetEmail(user.email, resetToken);  // Corrected here
-//     console.log('Reset link sent to email:', user.email);
+      // Skicka återställningslänk via e-post
+      await UserModel.sendResetEmail(user.email, resetToken);
+    } catch (error) {
+      console.error('Error in UserModel.requestPasswordReset:', error.message);
+      throw error;
+    }
+  },
 
-//   } catch (err) {
-//     console.error('Error during password reset request:', err.message);
-//     throw new Error('Error during password reset request.');
-//   }
-// },
+
 
 validateToken: async (token) => {
   try {

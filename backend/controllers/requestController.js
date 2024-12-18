@@ -1,7 +1,6 @@
 // Import necessary dependencies
 import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
 
-
 // === API Route to Get Requests by Shared Account ID ===
 export const getRequests = async (req, res) => {
   const { sharedAccountId } = req.params;
@@ -86,11 +85,13 @@ export const requestPasswordReset = async (req, res) => {
   }
 
   try {
+    // Kalla på UserModel för att hantera lösenordsåterställning
     await UserModel.requestPasswordReset(email);
+
     return res.status(200).json({ message: 'Lösenordsåterställnings-e-post har skickats.' });
   } catch (error) {
-    console.error('Error in /request-password-reset:', error.message);
-    return res.status(500).json({ error: 'Internt serverfel.' });
+    console.error('Error in requestPasswordReset:', error.message);
+    return res.status(500).json({ error: error.message || 'Internt serverfel.' });
   }
 };
 

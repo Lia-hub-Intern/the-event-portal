@@ -36,7 +36,6 @@ app.get('/api/config', (req, res) => {
 });
 
 
-
 // API-rutter
 app.post('/api/add-speaker', authenticateJWT, speakerController.addSpeaker); // Använd addSpeaker-metoden från speakerController
 app.post('/api/remove-speaker', authenticateJWT, speakerController.removeSpeaker); // Använd removeSpeaker-metoden från speakerController
@@ -44,9 +43,9 @@ app.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);
 app.post('/api/requests/approve', authenticateJWT, approveRequest);
 app.post('/api/requests/reject', authenticateJWT, rejectRequest);
 app.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
-app.post('/api/request-password-reset', requestPasswordReset);
 app.post('/api/register', registerUser);
 app.post('/api/login', loginUser);
+app.post('/request-password-reset', requestPasswordReset); // Lägg till rätt POST-rutt här
 app.get('/api/users', authenticateJWT, userController.getUsersBySharedAccount); // Använd getUsersBySharedAccount från userController
 
 
