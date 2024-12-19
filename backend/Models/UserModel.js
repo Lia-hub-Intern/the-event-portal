@@ -3,6 +3,8 @@ import sgMail from '@sendgrid/mail';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'; 
+import bcrypt from 'bcrypt';
+
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
@@ -327,81 +329,98 @@ removeUserFromSharedAccount: async (userId) => {
     }
   },
 
+  // validateToken: async (token) => {
+  //   try {
+  //     console.log('Validating token:', token);
+  
+  //     // Query the database for the token
+  //     const result = await pool.query(
+  //       'SELECT id, reset_token, reset_token_expires FROM users WHERE reset_token = $1',
+  //       [token]
+  //     );
+  
+  //     if (result.rows.length === 0) {
+  //       throw new Error('Invalid or expired token');
+  //     }
+  
+  //     const user = result.rows[0];
+  //     const tokenExpirationDate = new Date(user.reset_token_expires);
+  
+  //     // Check if the token is expired
+  //     if (new Date() > tokenExpirationDate) {
+  //       throw new Error('Token has expired');
+  //     }
+  
+  //     // Convert expiration date to local time (Stockholm)
+  //     const localExpirationTime = tokenExpirationDate.toLocaleTimeString('sv-SE', {
+  //       timeZone: 'Europe/Stockholm',
+  //       hour: '2-digit',
+  //       minute: '2-digit',
+  //     });
+  
+  //     return { user, localExpirationTime };
+  //   } catch (err) {
+  //     console.error('Error during token validation:', err.message);
+  //     throw new Error(`Error during token validation: ${err.message}`);
+  //   }
+  // },
 
 
-validateToken: async (token) => {
+// Funktion för att validera token och återställa lösenordet
+resetPassword: async (token, newPassword) => {
   try {
-    console.log('Validating token:', token);
+    console.log('Received token:', token);
 
-    // Query the database for the token
+    // Validera token
     const result = await pool.query(
-      'SELECT id, reset_token, reset_token_expires FROM users WHERE reset_token = $1',
+      'SELECT id, reset_token_expires FROM users WHERE reset_token = $1',
       [token]
     );
+    console.log('User fetched by token:', result.rows);
 
     if (result.rows.length === 0) {
-      console.log('Token not found or expired.');
-      throw new Error('Invalid or expired token');
+      throw new Error('Ogiltig eller utgången token');
     }
 
     const user = result.rows[0];
+    console.log('User ID for password reset:', user.id);
+
     const tokenExpirationDate = new Date(user.reset_token_expires);
 
-    // Check if the token is expired
     if (new Date() > tokenExpirationDate) {
-      console.log('Token has expired');
-      throw new Error('Token has expired');
+      throw new Error('Token har gått ut');
     }
 
-    // Convert to local time (e.g., Stockholm time)
-    const localExpirationTime = tokenExpirationDate.toLocaleTimeString('sv-SE', {
-      timeZone: 'Europe/Stockholm',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-
-    console.log('Token expiration time in local timezone:', localExpirationTime);
-
-    // Send the local expiration time back to the frontend
-    return { user, localExpirationTime };
-  } catch (err) {
-    console.error('Error during token validation:', err.message);
-    throw new Error(`Error during token validation: ${err.message}`);
-  }
-},
-
-
-resetPassword: async (userId, newPassword) => {
-  try {
+    // Validera lösenord
     if (!newPassword || newPassword.length < 8) {
-      throw new Error('Password must be at least 8 characters long');
+      throw new Error('Lösenordet måste vara minst 8 tecken långt');
     }
 
-    // Hash the new password
+    // Hasha lösenordet
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     console.log('Hashed password:', hashedPassword);
 
-    // Update password in the database
-    const result = await pool.query(
-      'UPDATE users SET password = $1, reset_token = NULL, reset_token_expires = NULL WHERE id = $2 AND reset_token IS NOT NULL RETURNING id',
-      [hashedPassword, userId]
-    );
+    // Uppdatera lösenordet i databasen
+    const updateQuery = `
+      UPDATE users
+      SET password = $1, reset_token = NULL, reset_token_expires = NULL
+      WHERE id = $2
+    `;
+    console.log('Running SQL query:', updateQuery);
+    console.log('With parameters:', [hashedPassword, user.id]);
 
-    // Check if the user was updated
-    if (result.rowCount === 0) {
-      console.log('No user found with the given ID or the reset token was already cleared');
-      throw new Error('User not found or invalid ID');
+    const updateResult = await pool.query(updateQuery, [hashedPassword, user.id]);
+
+    if (updateResult.rowCount === 0) {
+      throw new Error('Uppdateringen misslyckades, ingen användare matchar ID');
     }
 
-    console.log('Password updated for user ID:', userId);
-    return { message: 'Password reset successfully' };
-  } catch (err) {
-    console.error('Error during password reset:', err.message);
-    throw new Error('Error during password reset');
+    return { message: 'Lösenordet har återställts!' };
+  } catch (error) {
+    console.error('Detailed error in UserModel.resetPassword:', error);
+    throw error;
   }
 },
-
-
 
   /**
    * Update the user's shared_account_id

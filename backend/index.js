@@ -1,13 +1,15 @@
 import express from 'express';
 import cors from 'cors'; // Importera cors
-import userController from './controllers/userController.js'; // Importera userController
-import { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset } from './controllers/requestController.js'; // Adjust path to your controller file
+import { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset} from './controllers/requestController.js'; // Adjust path to your controller file
 import { registerUser, loginUser } from './controllers/authController.js'; // Import the correct path to your controller file
 import speakerController from './controllers/speakerController.js'; // Importera speakerController
+import  { resetPassword, getUsersBySharedAccount } from './controllers/userController.js'; // Import your controller
 import dotenv from 'dotenv'; // Importera dotenv för att hantera miljövariabler
 import { authenticateJWT, generateToken } from './middleware/authMiddleware.js';
 
 const app = express();
+
+app.use(express.urlencoded({ extended: true })); // För att hantera formulärdat
 
 dotenv.config();
 
@@ -46,7 +48,10 @@ app.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
 app.post('/api/register', registerUser);
 app.post('/api/login', loginUser);
 app.post('/request-password-reset', requestPasswordReset); // Lägg till rätt POST-rutt här
-app.get('/api/users', authenticateJWT, userController.getUsersBySharedAccount); // Använd getUsersBySharedAccount från userController
+app.route('/reset-password')
+  .get(resetPassword)  // Visa formulär
+  .post(resetPassword); // Hantera lösenordsändring
+app.get('/api/users', authenticateJWT,getUsersBySharedAccount); // Använd getUsersBySharedAccount från userController
 
 
 // === Start server ===

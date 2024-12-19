@@ -95,5 +95,23 @@ export const requestPasswordReset = async (req, res) => {
   }
 };
 
+export const resetPassword = async (req, res) => {
+  const { userId, newPassword } = req.body; // Expecting userId and newPassword in the request body
+
+  if (!userId || !newPassword) {
+    return res.status(400).json({ message: 'User ID and new password are required' });
+  }
+
+  try {
+    // Call the resetPassword method from userModel
+    const result = await UserModel.resetPassword(userId, newPassword);
+
+    // Return success response
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('Error in resetPasswordController:', error.message);
+    return res.status(500).json({ message: 'Error resetting password' });
+  }
+};
 // Export default
-export default { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset };
+export default { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset, resetPassword };
