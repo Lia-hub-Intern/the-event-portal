@@ -1,5 +1,8 @@
 // Import necessary dependencies
 import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
+import pool from '../database/db.js'; // Assuming the path to the database connection is correct
+import { generateResetToken } from '../models/UserModel.js';
+
 
 // === API Route to Get Requests by Shared Account ID ===
 export const getRequests = async (req, res) => {
@@ -76,42 +79,52 @@ export const updateRequestStatus = async (req, res) => {
   }
 };
 
-// === POST Route: Request Password Reset ===
+// Function for requesting password reset
 export const requestPasswordReset = async (req, res) => {
-  const { email } = req.body;
-
-  if (!email) {
-    return res.status(400).json({ error: 'E-postadress krävs.' });
-  }
-
   try {
-    // Kalla på UserModel för att hantera lösenordsåterställning
-    await UserModel.requestPasswordReset(email);
+    const { email, username } = req.body;
+    
+    // Log the incoming request to see what is being received
+    console.log('Received email:', email);
+    console.log('Received username:', username);
 
-    return res.status(200).json({ message: 'Lösenordsåterställnings-e-post har skickats.' });
+    // Query the user based on email and username, including the email field
+    const userResult = await pool.query('SELECT id, username, email FROM users WHERE email = $1 AND username = $2', [email, username]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Log the user object to verify email field
+    console.log("User object:", user);
+
+    // Generate reset token
+    const resetToken = generateResetToken(user.email, user.id);
+
+    // Log the token for debugging
+    console.log('Generated resetToken:', resetToken);
+
+    // Store the token and expiration time in the database
+    const expiresAt = new Date(Date.now() + 3600000); // 1 hour expiration
+    await pool.query('UPDATE users SET reset_token = $1, reset_token_expires = $2 WHERE id = $3', [resetToken, expiresAt, user.id]);
+
+    // Log the details before sending the reset email
+    console.log("Sending reset email with:", { email: user.email, resetToken, username: user.username });
+
+    // Send reset email
+    await UserModel.sendResetEmail(user.email, resetToken, user.username);
+
+    // Send a successful response
+    return res.status(200).json({ message: 'Password reset link sent! Please check your email.' });
   } catch (error) {
-    console.error('Error in requestPasswordReset:', error.message);
-    return res.status(500).json({ error: error.message || 'Internt serverfel.' });
+    console.error('Error during password reset:', error.message);
+    return res.status(500).json({ message: 'Failed to process the request' });
   }
 };
 
-export const resetPassword = async (req, res) => {
-  const { userId, newPassword } = req.body; // Expecting userId and newPassword in the request body
 
-  if (!userId || !newPassword) {
-    return res.status(400).json({ message: 'User ID and new password are required' });
-  }
 
-  try {
-    // Call the resetPassword method from userModel
-    const result = await UserModel.resetPassword(userId, newPassword);
 
-    // Return success response
-    return res.status(200).json(result);
-  } catch (error) {
-    console.error('Error in resetPasswordController:', error.message);
-    return res.status(500).json({ message: 'Error resetting password' });
-  }
-};
 // Export default
-export default { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset, resetPassword };
+export default { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset,};

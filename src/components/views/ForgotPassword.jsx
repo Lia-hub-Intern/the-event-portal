@@ -10,37 +10,40 @@ import {
 } from "@mui/material";
 
 function ForgotPassword() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
+  // Email validation regex pattern
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setLoading(true);
-
+  
+    // Validate email and username
     if (!email || !isValidEmail(email)) {
       setMessage("Please enter a valid email address.");
-      setLoading(false);
       return;
     }
-
+    if (!username) {
+      setMessage("Please enter your username.");
+      return;
+    }
+  
+    setLoading(true); // Start loading state
+  
     try {
       const response = await fetch(`${apiUrl}/request-password-reset`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, username }), // Send email and username
       });
-
-      const data = await response.json().catch(() => ({
-        message: "Invalid server response.",
-      }));
-
+  
+      const data = await response.json();
       if (response.ok) {
         setMessage("Password reset link sent! Please check your email.");
       } else {
@@ -49,9 +52,11 @@ function ForgotPassword() {
     } catch (error) {
       setMessage("Network error: " + error.message);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading state
     }
   };
+  
+  
 
   return (
     <Container maxWidth="xs" sx={{ padding: 2 }}>
@@ -60,6 +65,15 @@ function ForgotPassword() {
           Forgot Password
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <TextField
+            label="Enter your username"
+            variant="outlined"
+            fullWidth
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            sx={{ mb: 2 }}
+          />
           <TextField
             label="Enter your email"
             variant="outlined"

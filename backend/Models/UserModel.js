@@ -7,13 +7,16 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();
 
+
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
 
-export const generateToken = (email) => {
-  const payload = { email };
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+// Function to generate a token
+export const generateResetToken = (email, userId) => {
+  const payload = { email, userId };  // Include email and userId for identification
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // Token expires in 1 hour
   return token;
 };
+
 
 // Initialize SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -274,118 +277,105 @@ removeUserFromSharedAccount: async (userId) => {
     }
   },
 
-  // Function to send password reset email
-  sendResetEmail: async (email, resetToken) => {
-    const resetLink = `http://localhost:5000/reset-password?token=${resetToken}`;
+// Funktion för att skicka återställningslänk via e-post
+sendResetEmail: async (email, resetToken, username) => {
+  if (!email || !resetToken || !username) {
+    console.log("Missing email, resetToken, or username:", { email, resetToken, username });  // Log the missing values
+    throw new Error('Missing email, resetToken, or username.');
+  }
+
+  const resetLink = `http://localhost:5000/reset-password?token=${resetToken}&username=${username}`;
   
-    const msg = {
-      to: email,
-      from: {
-        email: process.env.SENDER_EMAIL,
-      },
-      subject: 'Password Reset Request',
-      text: `Please click the following link to reset your password: ${resetLink}`,
-    };
-  
-    try {
-      await sgMail.send(msg);
-      console.log('Password reset email sent');
-    } catch (error) {
-      console.error('Error during password reset email:', error.response ? error.response.body : error.message);
-      throw new Error('Error during password reset email');
-    }
-  },
+  console.log("Sending reset email with the following details: ", { email, resetToken, username });
 
-  // Funktion för att hantera lösenordsåterställning
-  requestPasswordReset: async (email) => {
-    try {
-      // Kontrollera om användaren finns
-      const query = 'SELECT id, email FROM users WHERE email = $1';
-      const result = await pool.query(query, [email]);
+  const msg = {
+    to: email,
+    from: process.env.SENDER_EMAIL,
+    subject: 'Password Reset Request',
+    text: `Please click the following link to reset your password: ${resetLink}`,
+    html: `<p>Please click the following link to reset your password:</p><a href="${resetLink}">Reset Password</a>`,
+  };
 
-      if (result.rows.length === 0) {
-        throw new Error('Ingen användare med denna e-postadress hittades.');
-      }
-
-      const user = result.rows[0];
-
-      // Generera reset-token och utgångstid
-      const resetToken = crypto.randomBytes(20).toString('hex');
-      const expiresAt = new Date(Date.now() + 3600000); // 1 timme framåt
-
-      // Uppdatera databasen
-      const updateQuery = `
-        UPDATE users 
-        SET reset_token = $1, reset_token_expires = $2 
-        WHERE id = $3
-      `;
-      await pool.query(updateQuery, [resetToken, expiresAt, user.id]);
-
-      // Skicka återställningslänk via e-post
-      await UserModel.sendResetEmail(user.email, resetToken);
-    } catch (error) {
-      console.error('Error in UserModel.requestPasswordReset:', error.message);
-      throw error;
-    }
-  },
-
-  // validateToken: async (token) => {
-  //   try {
-  //     console.log('Validating token:', token);
-  
-  //     // Query the database for the token
-  //     const result = await pool.query(
-  //       'SELECT id, reset_token, reset_token_expires FROM users WHERE reset_token = $1',
-  //       [token]
-  //     );
-  
-  //     if (result.rows.length === 0) {
-  //       throw new Error('Invalid or expired token');
-  //     }
-  
-  //     const user = result.rows[0];
-  //     const tokenExpirationDate = new Date(user.reset_token_expires);
-  
-  //     // Check if the token is expired
-  //     if (new Date() > tokenExpirationDate) {
-  //       throw new Error('Token has expired');
-  //     }
-  
-  //     // Convert expiration date to local time (Stockholm)
-  //     const localExpirationTime = tokenExpirationDate.toLocaleTimeString('sv-SE', {
-  //       timeZone: 'Europe/Stockholm',
-  //       hour: '2-digit',
-  //       minute: '2-digit',
-  //     });
-  
-  //     return { user, localExpirationTime };
-  //   } catch (err) {
-  //     console.error('Error during token validation:', err.message);
-  //     throw new Error(`Error during token validation: ${err.message}`);
-  //   }
-  // },
-
-
-// Funktion för att validera token och återställa lösenordet
-resetPassword: async (token, newPassword) => {
   try {
-    console.log('Received token:', token);
+    await sgMail.send(msg);  // Send email
+    console.log('Password reset email sent');
+  } catch (error) {
+    console.error('Error during password reset email:', error.response ? error.response.body : error.message);
+    throw new Error('Error during password reset email');
+  }
+},
 
-    // Validera token
-    const result = await pool.query(
-      'SELECT id, reset_token_expires FROM users WHERE reset_token = $1',
-      [token]
-    );
-    console.log('User fetched by token:', result.rows);
+  
+
+requestPasswordReset: async (username, email) => {
+  try {
+    console.log("Reset password requested for:", username, email);  // Log input parameters
+
+    // Validate both username and email are provided
+    if (!username || !email) {
+      throw new Error('Användarnamn och e-postadress krävs');
+    }
+
+    const query = `
+      SELECT id, username, email 
+      FROM users 
+      WHERE username = $1 AND email = $2
+    `;
+    const result = await pool.query(query, [username.trim(), email.trim()]);
 
     if (result.rows.length === 0) {
-      throw new Error('Ogiltig eller utgången token');
+      console.log("No matching user found.");
+      throw new Error('Ingen användare hittades med angivet användarnamn och e-postadress.');
     }
 
     const user = result.rows[0];
-    console.log('User ID for password reset:', user.id);
+    console.log("User found:", user);
+
+    // Generate reset-token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    const expiresAt = new Date(Date.now() + 3600000); // 1 hour
+
+    // Update the database with reset-token
+    const updateQuery = `
+      UPDATE users 
+      SET reset_token = $1, reset_token_expires = $2 
+      WHERE id = $3
+    `;
+    await pool.query(updateQuery, [resetToken, expiresAt, user.id]);
+
+    // Log before sending email
+    console.log("Sending reset email with:", user.email, resetToken, user.username); // Log values before email
+
+    // Send reset link via email
+    await sendResetEmail(user.email, resetToken, user.username); // Send both email and username
+
+  } catch (error) {
+    console.error("Error in requestPasswordReset:", error.message);
+    throw error;
+  }
+},
+
+
+resetPassword: async (token, username, newPassword) => {
+  try {
+    console.log('Validating token and username...');
+
+    // Validera token och användarnamn
+    const result = await pool.query(
+      'SELECT id, reset_token, reset_token_expires FROM users WHERE reset_token = $1 AND username = $2',
+      [token, username]
+    );
+
+    if (result.rows.length === 0) {
+      throw new Error('Ogiltig eller utgången token, eller felaktigt användarnamn.');
+    }
+
+    const user = result.rows[0];
+    console.log('User found:', user);
 
     const tokenExpirationDate = new Date(user.reset_token_expires);
+    console.log('Token expiration date:', tokenExpirationDate);
+    console.log('Current date:', new Date());
 
     if (new Date() > tokenExpirationDate) {
       throw new Error('Token har gått ut');
@@ -398,7 +388,6 @@ resetPassword: async (token, newPassword) => {
 
     // Hasha lösenordet
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    console.log('Hashed password:', hashedPassword);
 
     // Uppdatera lösenordet i databasen
     const updateQuery = `
@@ -406,21 +395,16 @@ resetPassword: async (token, newPassword) => {
       SET password = $1, reset_token = NULL, reset_token_expires = NULL
       WHERE id = $2
     `;
-    console.log('Running SQL query:', updateQuery);
-    console.log('With parameters:', [hashedPassword, user.id]);
+    await pool.query(updateQuery, [hashedPassword, user.id]);
 
-    const updateResult = await pool.query(updateQuery, [hashedPassword, user.id]);
-
-    if (updateResult.rowCount === 0) {
-      throw new Error('Uppdateringen misslyckades, ingen användare matchar ID');
-    }
-
-    return { message: 'Lösenordet har återställts!' };
+    return { message: 'The password has been successfully reset!' };
   } catch (error) {
-    console.error('Detailed error in UserModel.resetPassword:', error);
+    console.error('Error in UserModel.resetPassword:', error.message);
     throw error;
   }
 },
+
+
 
   /**
    * Update the user's shared_account_id

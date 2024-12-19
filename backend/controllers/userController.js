@@ -24,42 +24,57 @@ export const getUsersBySharedAccount = async (req, res) => {
 };
 
 
-// Hantera lösenordsåterställning
+// Handle password reset
 export const resetPassword = async (req, res) => {
   const token = req.method === 'GET' ? req.query.token : req.body.token;
+  const username = req.method === 'GET' ? req.query.username : req.body.username;
   const newPassword = req.body.newPassword;
 
   if (req.method === 'GET') {
-    // Skicka formuläret för lösenordsåterställning
-    if (!token) {
-      return res.status(400).send('<h1>Ogiltig länk</h1>');
+    // Render password reset form
+    if (!token || !username) {
+      return res.status(400).send('<h1>Invalid or missing link</h1>');
     }
 
     return res.send(`
       <form action="/reset-password" method="POST">
         <input type="hidden" name="token" value="${token}" />
-        <label for="password">Nytt lösenord:</label>
-        <input type="password" id="password" name="newPassword" required />
-        <button type="submit">Återställ lösenord</button>
+        <input type="hidden" name="username" value="${username}" />
+        <label for="password">New password:</label>
+        <input type="password" id="password" name="newPassword" required minlength="8" />
+        <button type="submit">Reset password</button>
       </form>
     `);
   }
 
   if (req.method === 'POST') {
-    // Hantera lösenordsåterställning
+    // Handle password reset
     try {
-      if (!token || !newPassword) {
-        return res.status(400).send('<h1>Token och nytt lösenord krävs</h1>');
+      if (!token || !username || !newPassword) {
+        return res.status(400).send('<h1>Token, username, and new password are required</h1>');
       }
 
-      const result = await UserModel.resetPassword(token, newPassword);
+      if (newPassword.length < 8) {
+        return res
+          .status(400)
+          .send('<h1>Password must be at least 8 characters long</h1>');
+      }
+
+      // Call UserModel to reset the password
+      const result = await UserModel.resetPassword(token, username, newPassword);
       return res.send(`<h1>${result.message}</h1>`);
     } catch (error) {
       console.error('Error in resetPassword:', error.message);
-      return res.status(400).send(`<h1>Fel: ${error.message}</h1>`);
+      return res
+        .status(400)
+        .send(`<h1>Error: ${error.message || 'Something went wrong.'}</h1>`);
     }
   }
+
+  // If method is not GET or POST
+  return res.status(405).send('<h1>Method not allowed</h1>');
 };
+
 
 
 
