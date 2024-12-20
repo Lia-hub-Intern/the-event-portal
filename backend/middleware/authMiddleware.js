@@ -14,6 +14,15 @@ export const generateToken = (user) => {
   return token;
 };
 
+
+// Function to generate a token
+export const generateResetToken = (email, userId) => {
+  const payload = { email, userId };  // Include email and userId for identification
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // Token expires in 1 hour
+  return token;
+};
+
+
 // === Authentication Middleware ===
 export const authenticateJWT = (req, res, next) => {
   let token = req.headers['authorization']?.split(' ')[1];

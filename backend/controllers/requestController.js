@@ -1,7 +1,7 @@
 // Import necessary dependencies
 import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
 import pool from '../database/db.js'; // Assuming the path to the database connection is correct
-import { generateResetToken } from '../models/UserModel.js';
+import { generateResetToken } from '../middleware/authMiddleware.js '
 
 
 // === API Route to Get Requests by Shared Account ID ===

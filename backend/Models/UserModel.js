@@ -1,21 +1,10 @@
 import pool from '../database/db.js';
 import sgMail from '@sendgrid/mail';
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'; 
 import bcrypt from 'bcrypt';
 
 dotenv.config();
-
-
-const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
-
-// Function to generate a token
-export const generateResetToken = (email, userId) => {
-  const payload = { email, userId };  // Include email and userId for identification
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // Token expires in 1 hour
-  return token;
-};
 
 
 // Initialize SendGrid
