@@ -7,10 +7,14 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# Backend and Frontend
+**/node_modules/
+**/.env
+
 dist
 dist-ssr
 *.local
+build/
 
 # Editor directories and files
 .vscode/*
@@ -22,6 +26,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
+*.user
+.codegpt/
 
 # Ignore environment variables (put .env here)

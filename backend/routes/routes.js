@@ -1,10 +1,10 @@
 import express from 'express';
-import { 
-  getRequests, 
-  approveRequest, 
-  rejectRequest, 
-  updateRequestStatus, 
-  requestPasswordReset 
+import {
+  getRequests,
+  approveRequest,
+  rejectRequest,
+  updateRequestStatus,
+  requestPasswordReset
 } from '../controllers/requestController.js'
 import { registerUser, loginUser } from '../controllers/authController.js';
 import speakerController from '../controllers/speakerController.js';
@@ -16,6 +16,9 @@ const router = express.Router();
 // Speaker routes
 router.post('/api/add-speaker', authenticateJWT, speakerController.addSpeaker);
 router.post('/api/remove-speaker', authenticateJWT, speakerController.removeSpeaker);
+router.get('/api/BeASpeaker', authenticateJWT, (req, res) => {
+  res.json({ message: 'Welcome to the Be A Speaker page!' });
+});
 
 // Request routes
 router.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);

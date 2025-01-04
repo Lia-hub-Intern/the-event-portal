@@ -41,6 +41,7 @@ export default function Navbar({ navBarLinks }) {
     if (window.confirm("Are you sure you want to logout?")) {
       logout();
       handleMenuClose();
+      navigate("/"); // Navigate to the home page
     }
   };
 
@@ -160,17 +161,17 @@ export default function Navbar({ navBarLinks }) {
                   </MenuItem>
                 ),
                 // Add the Request link here
-      user?.role !== "speaker" && (
-        <MenuItem
-        key="requests"
-        component={NavLink}
-        to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId
-        onClick={handleMenuClose}
-      >
-        View Requests
-      </MenuItem>
-      
-      ),
+                user?.role !== "speaker" && (
+                  <MenuItem
+                    key="requests"
+                    component={NavLink}
+                    to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId
+                    onClick={handleMenuClose}
+                  >
+                    View Requests
+                  </MenuItem>
+
+                ),
                 <MenuItem key="logout" onClick={handleLogout}>
                   Logout
                 </MenuItem>,
