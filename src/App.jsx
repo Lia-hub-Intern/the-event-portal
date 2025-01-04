@@ -19,7 +19,7 @@ import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import UsersList from "./components/views/UsersList";
 import AddSpeakerForm from "./components/views/AddSpeakerForm";
 import RequestForm from "./components/views/RequestForm";
-import RequestsBySharedAccount from "./components/views/RequestsBySharedAccount"; 
+import RequestsBySharedAccount from "./components/views/RequestsBySharedAccount";
 import ForgotPassword from "./components/views/ForgotPassword"
 import "dayjs/locale/en-gb";
 import { useAuth } from "./context/AuthContext"; // Import auth context
@@ -27,7 +27,7 @@ import { useAuth } from "./context/AuthContext"; // Import auth context
 // ProtectedRoute component to restrict access
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth(); // Get isAuthenticated from auth context
-  
+
   if (!isAuthenticated) {
     return (
       <Box sx={{ textAlign: 'center', padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: 3 }}>

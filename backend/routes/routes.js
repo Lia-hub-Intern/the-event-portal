@@ -1,10 +1,10 @@
 import express from 'express';
-import { 
-  getRequests, 
-  approveRequest, 
-  rejectRequest, 
-  updateRequestStatus, 
-  requestPasswordReset, 
+import {
+  getRequests,
+  approveRequest,
+  rejectRequest,
+  updateRequestStatus,
+  requestPasswordReset,
   sendRequest
 } from '../controllers/requestController.js'
 import { registerUser, loginUser } from '../controllers/authController.js';
@@ -18,7 +18,7 @@ const router = express.Router();
 router.post('/api/add-speaker', authenticateJWT, speakerController.addSpeaker);
 router.post('/api/remove-speaker', authenticateJWT, speakerController.removeSpeaker);
 router.get('/api/getSpeakers', speakerController.getSpeakers);
-
+router.get('/api/BeASpeaker', authenticateJWT, speakerController.beASpeaker);
 
 // Request routes
 router.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);
@@ -40,5 +40,18 @@ router.route('/reset-password')
 
 // User routes
 router.get('/api/users', authenticateJWT, getUsersBySharedAccount);
+
+// Event Registration routes 
+//router.post('/api/event-registration/register', authenticateJWT, EventRegistrationController.registerInterest);
+//router.get('/api/event-registration/:user_id/:event_id', authenticateJWT, EventRegistrationController.getRegistrations);
+//router.delete("/api/delete", authenticateJWT, EventRegistrationController.deleteRegistration);
+//router.put("/api/update", authenticateJWT, EventRegistrationController.updateRegistration);
+
+
+// Event Registration routes (for simplicity ot testing)
+router.post('/api/event-registration/register', EventRegistrationController.registerInterest);
+router.get('/api/event-registration/:user_id/:event_id', EventRegistrationController.getRegistrations);
+//router.delete("/api/delete", authenticateJWT, EventRegistrationController.deleteRegistration);
+//router.put("/api/update", authenticateJWT, EventRegistrationController.updateRegistration);
 
 export default router;

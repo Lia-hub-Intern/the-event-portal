@@ -12,7 +12,7 @@ import {
   Grid,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; // Custom hook for auth context
 
 export default function Login() {
@@ -21,6 +21,7 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(false); // "Remember me" state
   const navigate = useNavigate();
+  const location = useLocation(); // Access location to get referrer
   const { login } = useAuth(); // Custom login function from AuthContext
 
   const handleSubmit = async (e) => {
@@ -33,8 +34,12 @@ export default function Login() {
 
       if (isAuthenticated) {
         setMessage("Login successful!");
+
+        // Get the referrer path from state or default to "/dashboard"
+        const redirectPath = location.state?.from || "/dashboard";
+        const redirectState = location.state?.from?.state || null;
         setTimeout(() => {
-          navigate("/dashboard"); // Redirect to dashboard after successful login
+          navigate(redirectPath, { state: redirectState }); // Redirect to intended page with state
         }, 2000);
       } else {
         setMessage("Login failed: Invalid credentials");
@@ -113,22 +118,22 @@ export default function Login() {
           </Button>
         </Box>
         <Grid container justifyContent="space-between" sx={{ marginTop: 1 }}>
-        <Grid item component={NavLink} to={"/forgot-password"} sx={{ textDecoration: "none" }}>
-  <Typography
-    color="primary"
-    sx={{
-      fontSize: 14,
-      transition: "0.2s",
-      "&:hover": {
-        transform: "scale(1.05)",
-        color: "primary.dark",
-        fontWeight: 500,
-      },
-    }}
-  >
-    Forgot password?
-  </Typography>
-</Grid>
+          <Grid item component={NavLink} to={"/forgot-password"} sx={{ textDecoration: "none" }}>
+            <Typography
+              color="primary"
+              sx={{
+                fontSize: 14,
+                transition: "0.2s",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  color: "primary.dark",
+                  fontWeight: 500,
+                },
+              }}
+            >
+              Forgot password?
+            </Typography>
+          </Grid>
           <Grid item component={NavLink} to={"/register"} sx={{ textDecoration: "none" }}>
             <Typography
               color="primary"
