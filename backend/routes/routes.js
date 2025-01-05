@@ -10,7 +10,7 @@ import { registerUser, loginUser } from '../controllers/authController.js';
 import speakerController from '../controllers/speakerController.js';
 import { resetPassword, getUsersBySharedAccount } from '../controllers/userController.js';
 import { authenticateJWT } from '../middleware/authMiddleware.js';
-
+import EventRegistrationController from '../controllers/eventRegistrationController.js';
 const router = express.Router();
 
 // Speaker routes
@@ -38,5 +38,18 @@ router.route('/reset-password')
 
 // User routes
 router.get('/api/users', authenticateJWT, getUsersBySharedAccount);
+
+// Event Registration routes
+//router.post('/api/event-registration/register', authenticateJWT, EventRegistrationController.registerInterest);
+//router.get('/api/event-registration/:user_id/:event_id', authenticateJWT, EventRegistrationController.getRegistrations);
+//router.delete("/delete", authenticateJWT, EventRegistrationController.deleteRegistration);
+//router.put("/update", authenticateJWT, EventRegistrationController.updateRegistration);
+
+
+// Event Registration routes
+router.post('/api/event-registration/register', EventRegistrationController.registerInterest);
+router.get('/api/event-registration/:user_id/:event_id', EventRegistrationController.getRegistrations);
+router.delete("/delete", EventRegistrationController.deleteRegistration);
+router.put("/update", EventRegistrationController.updateRegistration);
 
 export default router;
