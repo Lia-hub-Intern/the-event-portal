@@ -81,9 +81,7 @@ export default function App() {
             <Route
               path="/EventRegistration"
               element={
-                <ProtectedRoute>
-                  <EventRegistration />
-                </ProtectedRoute>
+                <EventRegistration />
               }
             />
             <Route path="/UsersList" element={<UsersList />} />
