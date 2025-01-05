@@ -38,8 +38,14 @@ export default function Login() {
         // Get the referrer path from state or default to "/dashboard"
         const redirectPath = location.state?.from || "/dashboard";
         const redirectState = location.state?.from?.state || null;
+        const eventData = location.state?.event; // Get the event data from state
+
         setTimeout(() => {
-          navigate(redirectPath, { state: redirectState }); // Redirect to intended page with state
+          if (redirectPath === "/EventRegistration" && eventData) {
+            navigate(redirectPath, { state: { event: eventData } });
+          } else {
+            navigate(redirectPath, { state: redirectState }); // Redirect to intended page with state
+          }
         }, 2000);
       } else {
         setMessage("Login failed: Invalid credentials");

@@ -1,9 +1,32 @@
-import { useLocation } from 'react-router-dom';
-import { Container, Typography, Button, Card, CardContent, Box } from '@mui/material';
+import { useState } from "react";
+import { useLocation, useNavigate, } from 'react-router-dom';
+import { Container, Typography, Button, Card, CardContent, Box, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+import { useAuth } from "../../context/AuthContext";
 
 const EventRegistration = () => {
-  const location = useLocation();
+  const { isAuthenticated } = useAuth(); // Check if the user is authenticated
+  const navigate = useNavigate(); // Initialize navigation
+  const location = useLocation(); // Get current location
   const event = location.state?.event;
+
+  const [checkedFields, setCheckedFields] = useState({
+    visitor: false,
+    stand: false,
+    speaker: false,
+    sponsorship: false,
+    other: false,
+  });
+
+  // Handle checkbox change
+  const handleChange = (event) => {
+    const { name, checked } = event.target;
+    setCheckedFields((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
+
+  const handleSubmit = async () => { }
 
   if (!event) {
     return <div>No event selected!</div>; // Show a message if no event is passed in state
@@ -11,6 +34,16 @@ const EventRegistration = () => {
 
   // Placeholder for registration logic
   const handleRegister = () => {
+    if (!isAuthenticated) {
+      // Redirect to login if not authenticated
+      navigate("/login", {
+        state: {
+          from: location.pathname,
+          event: event, // Pass the event data along
+        },
+      });
+      return;
+    }
     // Add registration logic here
     console.log("User registered for event:", event.title);
   };
@@ -64,6 +97,62 @@ const EventRegistration = () => {
             >
               {event.description}
             </Typography>
+
+            <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
+              Registration Options
+            </Typography>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="visitor"
+                    checked={checkedFields.visitor}
+                    onChange={handleChange}
+                  />
+                }
+                label="Attending as a visitor"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="stand"
+                    checked={checkedFields.stand}
+                    onChange={handleChange}
+                  />
+                }
+                label="Booking a stand"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="speaker"
+                    checked={checkedFields.speaker}
+                    onChange={handleChange}
+                  />
+                }
+                label="Speaking in a speaker"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="sponsorship"
+                    checked={checkedFields.sponsorship}
+                    onChange={handleChange}
+                  />
+                }
+                label="Sponsorship opportunities"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="other"
+                    checked={checkedFields.other}
+                    onChange={handleChange}
+                  />
+                }
+                label="Other"
+              />
+            </FormGroup>
 
             {/* Button for registration */}
             <Box sx={{ display: "flex", justifyContent: "center" }}>
