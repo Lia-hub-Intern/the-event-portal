@@ -48,10 +48,8 @@ router.get('/api/users', authenticateJWT, getUsersBySharedAccount);
 
 // Event Registration routes
 router.post('/api/event-registration/register', EventRegistrationController.registerInterest);
-//router.get('/api/event-registration', EventRegistrationController.getRegistrations);
 router.get('/api/event-registration/:user_id/:event_id', EventRegistrationController.getRegistrations);
-
-//router.delete("/delete", EventRegistrationController.deleteRegistration);
-//router.put("/update", EventRegistrationController.updateRegistration);
+router.delete("/delete", EventRegistrationController.deleteRegistration);
+router.put("/update", EventRegistrationController.updateRegistration);
 
 export default router;

@@ -28,3 +28,4 @@ build/
 *.sw?
 *.user
 .codegpt/
+.codegpt

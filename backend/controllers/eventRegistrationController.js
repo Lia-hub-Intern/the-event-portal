@@ -1,17 +1,34 @@
-import InterestModel from "../models/InterestModel.js"; // Assuming you have a model for interests
-import EventRegistrationModel from "../models/EventRegistrationModel.js";
-// Controller for Event Registration
+import InterestModel from "../models/InterestModel.js";
+import EventRegistrationModel from "../Models/EventRegistrationModel.js";
+import EventModel from "../Models/EventModel.js";
+import UserModel from '../models/UserModel.js';
+
+// === ROUTER: Register user for event ===
 const EventRegistrationController = {
-  // Create or update registration
+  // Register user interests for an event
   registerInterest: async (req, res) => {
     const { user_id, event_id, interests } = req.body;
 
+    // Validate request data
     if (!user_id || !event_id || !Array.isArray(interests)) {
-      return res.status(400).json({ message: "Invalid request data." });
+      return res.status(400).json({ message: "Invalid request data. Ensure user_id, event_id, and interests are provided." });
     }
 
     try {
+      // Check if the user exists
+      const userExists = await UserModel.getUserById(user_id);
+      if (!userExists) {
+        return res.status(404).json({ message: `User with ID ${user_id} does not exist.` });
+      }
+
+      // Check if the event exists
+      const eventExists = await EventModel.getEventById(event_id);
+      if (!eventExists) {
+        return res.status(404).json({ message: `Event with ID ${event_id} does not exist.` });
+      }
+
       const registeredInterests = [];
+      const skippedInterests = [];
 
       for (const interest of interests) {
         // Get interest_id from interest_type
@@ -21,6 +38,19 @@ const EventRegistrationController = {
           return res.status(400).json({ message: `Invalid interest: ${interest}` });
         }
 
+        // Check for existing registration
+        const existingRegistration = await EventRegistrationModel.getRegistration({
+          user_id,
+          event_id,
+          interest_id: interestRecord.id,
+        });
+
+        if (existingRegistration) {
+          skippedInterests.push(interest); // Add to skipped list if already registered
+          continue;
+        }
+
+        // Create new registration
         const result = await EventRegistrationModel.createRegistration({
           user_id,
           event_id,
@@ -28,87 +58,63 @@ const EventRegistrationController = {
         });
 
         if (result) {
-          registeredInterests.push(result);
+          registeredInterests.push({ interest: interest, registration: result });
         }
       }
 
+      if (registeredInterests.length === 0 && skippedInterests.length > 0) {
+        return res.status(201).json({
+          message: "Registration already exists."
+        });
+      }
+
       res.status(201).json({
-        message: "Registration successful.",
+        message: "Registration processed.",
         registeredInterests,
+        skippedInterests,
       });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({
+        message: "An error occurred while processing the registration.",
+        error: error.message,
+      });
     }
   },
 
-  // Get registrations for a user and event
+  // Retrieve all registrations for a user and event
   getRegistrations: async (req, res) => {
-    const { user_id, event_id } = req.params;
+    const { user_id, event_id } = req.params; // Extract parameters from URL
 
+    // Validate request parameters
     if (!user_id || !event_id) {
-      return res.status(400).json({ message: "User ID and Event ID are required." });
+      return res.status(400).json({ message: "Missing user_id or event_id." });
     }
 
     try {
-      const registrations = await EventRegistrationModel.getRegistrationsByEventAndUser(
-        user_id,
-        event_id
-      );
-
-      res.status(200).json(registrations);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
-
-  // DELETE: Remove a user's interest in an event
-  deleteRegistration: async (req, res) => {
-    const { user_id, event_id, interest_id } = req.body;
-
-    if (!user_id || !event_id || !interest_id) {
-      return res.status(400).json({ message: "User ID, Event ID, and Interest ID are required." });
-    }
-
-    try {
-      const deleted = await EventRegistrationModel.deleteRegistration({ user_id, event_id, interest_id });
-
-      if (deleted) {
-        res.status(200).json({ message: "Registration deleted successfully." });
-      } else {
-        res.status(404).json({ message: "Registration not found." });
-      }
-    } catch (error) {
-      res.status(500).json({ message: "An error occurred while deleting the registration." });
-    }
-  },
-
-  // PUT: Update a user's interest in an event
-  updateRegistration: async (req, res) => {
-    const { user_id, event_id, old_interest_id, new_interest_id } = req.body;
-
-    if (!user_id || !event_id || !old_interest_id || !new_interest_id) {
-      return res.status(400).json({ message: "Invalid request data." });
-    }
-
-    try {
-      // Delete the old interest
-      const deleted = await EventRegistrationModel.deleteRegistration({ user_id, event_id, interest_id: old_interest_id });
-      if (!deleted) {
-        return res.status(404).json({ message: "Old registration not found." });
+      const userExists = await UserModel.getUserById(user_id);
+      if (!userExists) {
+        return res.status(404).json({ message: `User with ID ${user_id} does not exist.` });
       }
 
-      // Add the new interest
-      const newRegistration = await EventRegistrationModel.createRegistration({
-        user_id,
-        event_id,
-        interest: new_interest_id,
+      const eventExists = await EventModel.getEventById(event_id);
+      if (!eventExists) {
+        return res.status(404).json({ message: `Event with ID ${event_id} does not exist.` });
+      }
+
+      const registrations = await EventRegistrationModel.getRegistrationsByEventAndUser(user_id, event_id);
+
+      res.status(200).json({
+        message: "Registrations retrieved successfully.",
+        registrations,
       });
-
-      res.status(200).json({ message: "Registration updated successfully.", newRegistration });
     } catch (error) {
-      res.status(500).json({ message: "An error occurred while updating the registration." });
+      res.status(500).json({
+        message: "An error occurred while retrieving registrations.",
+        error: error.message,
+      });
     }
   },
 };
 
 export default EventRegistrationController;
+

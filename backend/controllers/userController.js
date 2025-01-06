@@ -75,7 +75,28 @@ export const resetPassword = async (req, res) => {
   return res.status(405).send('<h1>Method not allowed</h1>');
 };
 
+export const getUsersById = async (req, res) => {
+  try {
+    // Extract user_id from req.user
+    const user_id = req.user?.user_id;
+
+    // Validate user_id
+    if (!user_id) {
+      return res.status(400).json({ message: 'User ID is missing' });
+    }
+
+    const user = await UserModel.getUserById(user_id);
+
+    if (!user) {
+      return res.status(404).json({ message: `No user found for ID: ${user_id}` });
+    }
+
+    return res.status(200).json({ data: user });
+  } catch (error) {
+    console.error('Error fetching user:', error.message);
+    return res.status(500).json({ message: 'An error occurred while fetching the user' });
+  }
+};
 
 
-
-export default {getUsersBySharedAccount, resetPassword };
+export default { getUsersBySharedAccount, resetPassword, getUsersById };
