@@ -4,8 +4,7 @@ import {
   approveRequest,
   rejectRequest,
   updateRequestStatus,
-  requestPasswordReset,
-  sendRequest
+  requestPasswordReset
 } from '../controllers/requestController.js'
 import { registerUser, loginUser } from '../controllers/authController.js';
 import speakerController from '../controllers/speakerController.js';
@@ -17,16 +16,15 @@ const router = express.Router();
 // Speaker routes
 router.post('/api/add-speaker', authenticateJWT, speakerController.addSpeaker);
 router.post('/api/remove-speaker', authenticateJWT, speakerController.removeSpeaker);
-router.get('/api/getSpeakers', speakerController.getSpeakers);
-router.get('/api/BeASpeaker', authenticateJWT, speakerController.beASpeaker);
+router.get('/api/BeASpeaker', authenticateJWT, (req, res) => {
+  res.json({ message: 'Welcome to the Be A Speaker page!' });
+});
 
 // Request routes
 router.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);
 router.post('/api/requests/approve', authenticateJWT, approveRequest);
 router.post('/api/requests/reject', authenticateJWT, rejectRequest);
 router.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
-router.post('/api/requests', sendRequest);
-
 
 // Authentication routes
 router.post('/api/register', registerUser);
@@ -41,21 +39,17 @@ router.route('/reset-password')
 // User routes
 router.get('/api/users', authenticateJWT, getUsersBySharedAccount);
 
-
-// Event Registration routes 
+// Event Registration routes
 //router.post('/api/event-registration/register', authenticateJWT, EventRegistrationController.registerInterest);
 //router.get('/api/event-registration/:user_id/:event_id', authenticateJWT, EventRegistrationController.getRegistrations);
-//router.delete("/api/delete", authenticateJWT, EventRegistrationController.deleteRegistration);
-//router.put("/api/update", authenticateJWT, EventRegistrationController.updateRegistration);
+//router.delete("/delete", authenticateJWT, EventRegistrationController.deleteRegistration);
+//router.put("/update", authenticateJWT, EventRegistrationController.updateRegistration);
 
 
-// Event Registration routes (for simplicity ot testing)
+// Event Registration routes
 router.post('/api/event-registration/register', EventRegistrationController.registerInterest);
-//router.get('/api/event-registration', EventRegistrationController.getRegistrations);
 router.get('/api/event-registration/:user_id/:event_id', EventRegistrationController.getRegistrations);
-
-//router.delete("/delete", EventRegistrationController.deleteRegistration);
-//router.put("/update", EventRegistrationController.updateRegistration);
-
+router.delete("/delete", EventRegistrationController.deleteRegistration);
+router.put("/update", EventRegistrationController.updateRegistration);
 
 export default router;

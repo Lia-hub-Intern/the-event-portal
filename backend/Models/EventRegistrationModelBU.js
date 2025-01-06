@@ -75,21 +75,9 @@ const EventRegistrationModel = {
     const values = [user_id, event_id];
 
     try {
-      if (!user_id || !event_id) {
-        throw new Error("Missing user_id or event_id.");
-      }
-
       const result = await pool.query(query, values);
-
-      if (result.rows.length === 0) {
-        console.warn(`No registrations found for user_id: ${user_id}, event_id: ${event_id}`);
-      }
-
       return result.rows;
     } catch (error) {
-      if (error.message.includes("missing FROM-clause entry")) {
-        throw new Error("Invalid table or column name in query.");
-      }
       throw new Error("Error retrieving registrations: " + error.message);
     }
   },
