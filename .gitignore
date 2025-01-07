@@ -27,5 +27,3 @@ build/
 *.sln
 *.sw?
 *.user
-.codegpt/
-.codegpt

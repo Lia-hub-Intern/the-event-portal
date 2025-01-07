@@ -39,16 +39,15 @@ router.route('/reset-password')
 // User routes
 router.get('/api/users', authenticateJWT, getUsersBySharedAccount);
 
-// Event Registration routes
+// Event Registration routes 
 //router.post('/api/event-registration/register', authenticateJWT, EventRegistrationController.registerInterest);
 //router.get('/api/event-registration/:user_id/:event_id', authenticateJWT, EventRegistrationController.getRegistrations);
 //router.delete("/delete", authenticateJWT, EventRegistrationController.deleteRegistration);
 //router.put("/update", authenticateJWT, EventRegistrationController.updateRegistration);
 
 
-// Event Registration routes
+// Event Registration routes (for simplicity ot testing)
 router.post('/api/event-registration/register', EventRegistrationController.registerInterest);
-//router.get('/api/event-registration', EventRegistrationController.getRegistrations);
 router.get('/api/event-registration/:user_id/:event_id', EventRegistrationController.getRegistrations);
 
 //router.delete("/delete", EventRegistrationController.deleteRegistration);

@@ -1,0 +1,95 @@
+-- Table: shared_accounts
+CREATE TABLE public.shared_accounts (
+    id SERIAL PRIMARY KEY
+);
+
+-- Table: users
+CREATE TABLE public.users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50),
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    shared_account_id INTEGER REFERENCES public.shared_accounts(id) ON DELETE SET NULL,
+    email VARCHAR(255) NOT NULL,
+    company_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(15) NOT NULL,
+    reset_token VARCHAR(255),
+    reset_token_expires TIMESTAMP
+);
+
+-- Table: requests
+CREATE TABLE public.requests (
+    id SERIAL PRIMARY KEY,
+    shared_account_id INTEGER NOT NULL REFERENCES public.shared_accounts(id),
+    speaker_id INTEGER REFERENCES public.users(id) ON DELETE SET NULL,
+    event_details TEXT NOT NULL,
+    status VARCHAR(50) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table 4: events as PeterM
+CREATE TABLE public.events (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL, 
+    date VARCHAR(100),
+    location VARCHAR(100),
+    speakers TEXT,
+    url TEXT,
+    CONSTRAINT unique_event UNIQUE (title, date)
+);
+
+-- Table 5: public.interest
+CREATE TABLE interest (
+    id SERIAL PRIMARY KEY,
+    interest_type VARCHAR(255) UNIQUE NOT NULL -- e.g., "visitor", "stand", "speaker", etc.
+);
+
+-- Table 6: public.category 
+CREATE TABLE category (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table 7: user_event_interest
+CREATE TABLE user_event_interest (
+    id SERIAL PRIMARY KEY, -- Auto-incrementing ID for the mapping
+    user_id INTEGER NOT NULL REFERENCES public.users(id) ON DELETE CASCADE, -- Links to users
+    event_id INTEGER NOT NULL REFERENCES public.events(id) ON DELETE CASCADE, -- Links to events
+    interest_id INTEGER NOT NULL REFERENCES public.interest(id) ON DELETE CASCADE, -- Links to interest
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of the mapping creation
+    CONSTRAINT unique_user_event_interest UNIQUE (user_id, event_id, interest_id) -- Prevent duplicate mappings
+);
+
+-- Create indexes for user_event_interest table
+CREATE INDEX idx_user_event_interest_user_id ON user_event_interest (user_id);
+CREATE INDEX idx_user_event_interest_event_id ON user_event_interest (event_id);
+CREATE INDEX idx_user_event_interest_interest_id ON user_event_interest (interest_id);
+CREATE INDEX idx_user_event_interest_composite ON user_event_interest (user_id, event_id, interest_id);
+
+===========================================
+INSERT INTO public.interest (interest_type)
+VALUES 
+  ('visitor'),
+  ('stand'),
+  ('speaker'),
+  ('sponsor'),
+  ('other')
+ON CONFLICT (interest_type) DO NOTHING;
+
+=============================================
+POSTMAN TESTING
+* Method: POST
+URL: http://localhost:5000/api/event-registration/register
+
+Body (JSON):
+{
+  "user_id":  ,
+  "event_id": ,
+  "interests": ["visitor", "stand"]
+}
+
+* Method: GET
+URL: http://localhost:5000/api/event-registration/{user_id}/{event_id}
