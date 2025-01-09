@@ -516,7 +516,42 @@ updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
     throw new Error('Failed to update request status');
   }
 },
+// === Lägg till en ny förfrågan i databasen ===
+createRequest: async (requestData) => {
+  const { speaker_id, event_details, user_id, status } = requestData;
 
+  const query = `
+    INSERT INTO requests (speaker_id, event_details, user_id, status)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *;
+  `;
+
+  const values = [speaker_id, event_details, user_id, status];
+
+  try {
+    const result = await db.query(query, values);
+    return result.rows[0];
+  } catch (error) {
+    throw new Error('Fel vid skapandet av förfrågan: ' + error.message);
+  }
+},
+
+
+// Method to get all speakers
+getSpeakers : async () => {
+  try {
+    const query = `
+      SELECT id, first_name, last_name
+      FROM users
+      WHERE role = 'speaker'
+    `;
+    const result = await pool.query(query);
+    return result.rows; // Returnera alla talare som JSON
+  } catch (error) {
+    console.error("Error fetching speakers from database:", error.message);
+    throw new Error("Failed to fetch speakers");
+  }
+},
 
 
 };

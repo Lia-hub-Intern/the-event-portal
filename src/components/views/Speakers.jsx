@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import SocialMediaLinks from "./SocialMediaLinks"; 
+import SocialMediaLinks from "./SocialMediaLinks";
 import { listSpeakers } from "../functions/Functions";
 import {
   Box,
@@ -14,8 +14,10 @@ import {
   CardActionArea,
   Grid,
   MenuItem,
+  Button,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; // För att använda Link-komponenten för navigation
 import HeaderSida from "./HeaderSida";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -63,6 +65,17 @@ export default function Speakers({ title }) {
   return (
     <>
       <HeaderSida headerTitle={"Meet Our Speakers"} headerImage={Image} />
+      
+      {/* Knapp för att navigera till requestform placerad högst upp */}
+      <Box sx={{ textAlign: "center", marginBottom: "2rem" }}>
+  <Link to="/requestform">
+    <Button variant="contained" color="primary">
+      Send a Request
+    </Button>
+  </Link>
+</Box>
+
+
       <Grid
         container
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -188,12 +201,12 @@ export default function Speakers({ title }) {
                   <Typography variant="body2">{item.description}</Typography>
                 </CardContent>
               </CardActionArea>
-           
-              <SocialMediaLinks 
-                facebook={item.facebook} 
-                twitter={item.twitter} 
-                instagram={item.instagram} 
-                linkedin={item.linkedin} 
+
+              <SocialMediaLinks
+                facebook={item.facebook}
+                twitter={item.twitter}
+                instagram={item.instagram}
+                linkedin={item.linkedin}
               />
             </Card>
           ))}

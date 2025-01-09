@@ -79,6 +79,31 @@ export const updateRequestStatus = async (req, res) => {
   }
 };
 
+// === POST Route: Skicka en ny förfrågan ===
+export const sendRequest = async (req, res) => {
+  const { speakerId, eventDetails } = req.body;
+
+  if (!speakerId || !eventDetails) {
+    return res.status(400).json({ message: 'Saknas information för att skapa förfrågan' });
+  }
+
+  try {
+    // Skapa en ny förfrågan
+    const newRequest = await UserModel.createRequest({
+      speaker_id: speakerId,
+      event_details: eventDetails,
+      user_id: req.user.id, // Identifierar användaren som skickade förfrågan
+      status: 'pending', // Standardstatus för nya förfrågningar
+    });
+
+    res.status(201).json({ message: 'Förfrågan skickades framgångsrikt', newRequest });
+  } catch (error) {
+    console.error('Error creating request:', error);
+    res.status(500).json({ message: 'Fel vid skapandet av förfrågan' });
+  }
+};
+
+
 // Function for requesting password reset
 export const requestPasswordReset = async (req, res) => {
   try {
@@ -125,6 +150,3 @@ export const requestPasswordReset = async (req, res) => {
 
 
 
-
-// Export default
-export default { getRequests, approveRequest, rejectRequest, updateRequestStatus, requestPasswordReset,};

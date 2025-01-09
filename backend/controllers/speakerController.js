@@ -81,5 +81,19 @@ export const removeSpeaker = async (req, res) => {
   }
 };
 
+// === ROUTER: Get All Speakers ===
+export const getSpeakers = async (req, res) => {
+  try {
+    const speakers = await UserModel.getSpeakers();
+    return res.status(200).json(speakers);
+  } catch (error) {
+    console.error("Error in getSpeakers controller:", error.message);
+    return res.status(500).json({ message: "Failed to fetch speakers" });
+  }
+};
+
+
+
+
 // Correct export of the controller functions
-export default { addSpeaker, removeSpeaker };
+export default { addSpeaker, removeSpeaker, getSpeakers };

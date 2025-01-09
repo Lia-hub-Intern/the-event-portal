@@ -142,5 +142,3 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// Export the functions
-export default { registerUser, loginUser };

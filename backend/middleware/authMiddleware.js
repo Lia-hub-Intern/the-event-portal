@@ -42,5 +42,3 @@ export const authenticateJWT = (req, res, next) => {
   });
 };
 
-// Export default
-export default { generateToken, authenticateJWT };

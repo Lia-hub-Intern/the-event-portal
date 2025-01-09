@@ -25,6 +25,7 @@ app.get('/protected-route', authenticateJWT, (req, res) => {
   res.json({ message: 'You have access to this protected route', user: req.user });
 });
 
+
 // API URL endpoint
 app.get('/api/config', (req, res) => {
   res.json({

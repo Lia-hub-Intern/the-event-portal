@@ -18,6 +18,7 @@ import EventRegistration from "./components/views/EventRegistration";
 import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import UsersList from "./components/views/UsersList";
 import AddSpeakerForm from "./components/views/AddSpeakerForm";
+import RequestForm from "./components/views/RequestForm";
 import RequestsBySharedAccount from "./components/views/RequestsBySharedAccount"; 
 import ForgotPassword from "./components/views/ForgotPassword"
 import "dayjs/locale/en-gb";
@@ -86,6 +87,7 @@ export default function App() {
               element={<Partners title="Become one of our partners" />}
             />
             <Route path="/beaspeaker" element={<BeASpeaker />} />
+            <Route path="/requestform" element={<RequestForm />} />
             <Route path="/add-speaker" element={<AddSpeakerForm />} />
             <Route path="/about" element={<About />} />
             <Route path="/requests/:sharedAccountId" element={<RequestsBySharedAccount />} />

@@ -4,7 +4,8 @@ import {
   approveRequest, 
   rejectRequest, 
   updateRequestStatus, 
-  requestPasswordReset 
+  requestPasswordReset, 
+  sendRequest
 } from '../controllers/requestController.js'
 import { registerUser, loginUser } from '../controllers/authController.js';
 import speakerController from '../controllers/speakerController.js';
@@ -16,12 +17,15 @@ const router = express.Router();
 // Speaker routes
 router.post('/api/add-speaker', authenticateJWT, speakerController.addSpeaker);
 router.post('/api/remove-speaker', authenticateJWT, speakerController.removeSpeaker);
+router.get('/api/getSpeakers', speakerController.getSpeakers);
+
 
 // Request routes
 router.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);
 router.post('/api/requests/approve', authenticateJWT, approveRequest);
 router.post('/api/requests/reject', authenticateJWT, rejectRequest);
 router.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
+router.post('/api/requests', authenticateJWT, sendRequest);
 
 // Authentication routes
 router.post('/api/register', registerUser);
