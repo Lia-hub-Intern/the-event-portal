@@ -79,6 +79,7 @@ export const updateRequestStatus = async (req, res) => {
   }
 };
 
+// === Lägg till en ny förfrågan i databasen ===
 // === POST Route: Skicka en ny förfrågan ===
 export const sendRequest = async (req, res) => {
   const { speakerId, eventDetails } = req.body;
@@ -88,12 +89,24 @@ export const sendRequest = async (req, res) => {
   }
 
   try {
+    // Hämta speaker data för att få shared_account_id
+    const speakerQuery = 'SELECT shared_account_id FROM users WHERE id = $1';
+    const speakerResult = await pool.query(speakerQuery, [speakerId]);
+
+    // Kontrollera om talaren finns och har ett shared_account_id
+    const speaker = speakerResult.rows[0];
+    if (!speaker) {
+      return res.status(404).json({ message: 'Talaren hittades inte' });
+    }
+
+    const sharedAccountId = speaker.shared_account_id;
+
     // Skapa en ny förfrågan
     const newRequest = await UserModel.createRequest({
       speaker_id: speakerId,
       event_details: eventDetails,
-      user_id: req.user.id, // Identifierar användaren som skickade förfrågan
       status: 'pending', // Standardstatus för nya förfrågningar
+      shared_account_id: sharedAccountId // Lägg till shared_account_id
     });
 
     res.status(201).json({ message: 'Förfrågan skickades framgångsrikt', newRequest });
@@ -102,6 +115,10 @@ export const sendRequest = async (req, res) => {
     res.status(500).json({ message: 'Fel vid skapandet av förfrågan' });
   }
 };
+
+
+
+
 
 
 // Function for requesting password reset

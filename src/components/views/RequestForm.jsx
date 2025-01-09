@@ -36,27 +36,28 @@ const RequestForm = () => {
   // Send a request to the server
   const sendRequest = async (speakerId, eventDetails) => {
     try {
-      const response = await fetch("http://localhost:5173/api/requests", {
-        method: "POST",
+      const response = await fetch('http://localhost:5000/api/requests', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ speakerId, eventDetails }),
       });
-
+  
       const data = await response.json();
+  
       if (response.ok) {
-        alert("Request sent successfully!");
-        setSelectedSpeaker(null);
-        setEventDetails("");
+        alert('Förfrågan skickades framgångsrikt!');
       } else {
-        alert("Error: " + data.message);
+        alert('Fel: ' + data.message);
       }
     } catch (error) {
-      console.error("Error sending request:", error);
-      alert("An error occurred while sending the request. Please try again later.");
+      console.error('Error sending request:', error);
+      alert('Ett fel inträffade vid skickandet av förfrågan. Försök igen senare.');
     }
   };
+  
+  
 
   // Handle form submission
   const handleSubmit = async (e) => {

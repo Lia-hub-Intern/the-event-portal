@@ -95,5 +95,6 @@ export const getSpeakers = async (req, res) => {
 
 
 
+
 // Correct export of the controller functions
 export default { addSpeaker, removeSpeaker, getSpeakers };
