@@ -1,10 +1,15 @@
-import express from "express"
-import { callEvents } from "../controller/callEvents.js"
+import express from 'express';
+import { getEvents } from '../Controller/getEvents.js';
+import { callEvents } from '../Controller/callEvents.js';
 
+const router = express.Router();
 
-const routes = express.Router()
+// Route to get events
+router.get('/api/events', getEvents);
 
-routes.post('/generate', (req, res) => {
-    callEvents(req, res)
-})
-export default routes
+// Route to generate events
+router.post('/generate', (req, res) => {
+  callEvents(req, res);
+});
+
+export default router;
