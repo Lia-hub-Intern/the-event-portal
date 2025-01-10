@@ -517,7 +517,7 @@ updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
   }
 },
 
-// === Lägg till en ny förfrågan i databasen ===
+// === Add a new request to the database ===
 createRequest: async (requestData) => {
   const { speaker_id, event_details, status, shared_account_id } = requestData;
 
@@ -531,12 +531,13 @@ createRequest: async (requestData) => {
 
   try {
     const result = await pool.query(query, values);
+    console.log('Request created:', result.rows[0]);
     return result.rows[0];
   } catch (error) {
-    throw new Error('Fel vid skapandet av förfrågan: ' + error.message);
+    console.error('Error creating the request:', error.message);
+    throw new Error('Error creating the request: ' + error.message);
   }
 },
-
 
 
 // Method to get all speakers

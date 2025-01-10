@@ -79,42 +79,44 @@ export const updateRequestStatus = async (req, res) => {
   }
 };
 
-// === Lägg till en ny förfrågan i databasen ===
-// === POST Route: Skicka en ny förfrågan ===
+
+// === POST Route: Send a new request ===
 export const sendRequest = async (req, res) => {
   const { speakerId, eventDetails } = req.body;
 
   if (!speakerId || !eventDetails) {
-    return res.status(400).json({ message: 'Saknas information för att skapa förfrågan' });
+    return res.status(400).json({ message: 'Missing information to create the request' });
   }
 
   try {
-    // Hämta speaker data för att få shared_account_id
+    // Fetch speaker data to get the shared_account_id
     const speakerQuery = 'SELECT shared_account_id FROM users WHERE id = $1';
     const speakerResult = await pool.query(speakerQuery, [speakerId]);
 
-    // Kontrollera om talaren finns och har ett shared_account_id
+    // Check if the speaker exists and has a shared_account_id
     const speaker = speakerResult.rows[0];
     if (!speaker) {
-      return res.status(404).json({ message: 'Talaren hittades inte' });
+      return res.status(404).json({ message: 'Speaker not found' });
     }
 
     const sharedAccountId = speaker.shared_account_id;
 
-    // Skapa en ny förfrågan
+    // Create a new request
     const newRequest = await UserModel.createRequest({
       speaker_id: speakerId,
       event_details: eventDetails,
-      status: 'pending', // Standardstatus för nya förfrågningar
-      shared_account_id: sharedAccountId // Lägg till shared_account_id
+      status: 'pending', // Default status for new requests
+      shared_account_id: sharedAccountId // Add the shared_account_id
     });
 
-    res.status(201).json({ message: 'Förfrågan skickades framgångsrikt', newRequest });
+    // Send only the new request data to the frontend
+    res.status(201).json({ newRequest });
   } catch (error) {
-    console.error('Error creating request:', error);
-    res.status(500).json({ message: 'Fel vid skapandet av förfrågan' });
+    console.error('Error creating the request:', error);
+    res.status(500).json({ message: 'Error creating the request' });
   }
 };
+
 
 
 

@@ -6,6 +6,7 @@ import {
   Typography,
   Container,
   Autocomplete,
+  Alert,
 } from "@mui/material";
 
 const RequestForm = () => {
@@ -13,6 +14,8 @@ const RequestForm = () => {
   const [selectedSpeaker, setSelectedSpeaker] = useState(null); // Store selected speaker
   const [eventDetails, setEventDetails] = useState(""); // Store event details
   const [error, setError] = useState(""); // Store error messages
+  const [successMessage, setSuccessMessage] = useState(""); // Store success message
+  const [isRequestSent, setIsRequestSent] = useState(false); // Flag to track if request is sent
 
   // Fetch speakers from the API
   useEffect(() => {
@@ -36,28 +39,30 @@ const RequestForm = () => {
   // Send a request to the server
   const sendRequest = async (speakerId, eventDetails) => {
     try {
-      const response = await fetch('http://localhost:5000/api/requests', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/api/requests", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ speakerId, eventDetails }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        alert('Förfrågan skickades framgångsrikt!');
+        setSuccessMessage("Request sent successfully!");
+        setError("");
+        setSelectedSpeaker(null);
+        setEventDetails("");
+        setIsRequestSent(true); // Set flag to true after a successful request
       } else {
-        alert('Fel: ' + data.message);
+        setError(data.message);
       }
     } catch (error) {
-      console.error('Error sending request:', error);
-      alert('Ett fel inträffade vid skickandet av förfrågan. Försök igen senare.');
+      console.error("Error sending request:", error);
+      setError("An error occurred while sending the request. Please try again later.");
     }
   };
-  
-  
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -65,7 +70,7 @@ const RequestForm = () => {
     if (selectedSpeaker && eventDetails) {
       await sendRequest(selectedSpeaker.id, eventDetails);
     } else {
-      alert("Please select a speaker and fill out all fields.");
+      setError("Please select a speaker and fill out all fields.");
     }
   };
 
@@ -79,85 +84,128 @@ const RequestForm = () => {
           justifyContent: "center",
           padding: { xs: 4, sm: 6 },
           boxShadow: 3,
-          borderRadius: 2,
+          borderRadius: 3,
           backgroundColor: "background.paper",
           marginTop: 4,
           marginBottom: 4,
           width: "100%",
           minHeight: "80vh",
+          border: "1px solid #ddd", // Added border for extra contrast
         }}
       >
-        <Typography variant="h5" sx={{ marginBottom: 4, textAlign: "center" }}>
-          Submit a Request
-        </Typography>
+        {/* Show the title and form only if the request has not been sent */}
+        {!isRequestSent && (
+          <>
+            <Typography
+              variant="h5"
+              sx={{
+                textAlign: "center",
+                marginBottom: 4,
+                color: "#333",
+                fontWeight: "bold",
+              }}
+            >
+              Submit a Request
+            </Typography>
 
-        {error && (
-          <Typography variant="body1" color="error" sx={{ marginBottom: 2 }}>
-            {error}
-          </Typography>
-        )}
+            {/* Error Message */}
+            {error && (
+              <Alert severity="error" sx={{ marginBottom: 2 }}>
+                {error}
+              </Alert>
+            )}
 
-        <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-          {/* Autocomplete for selecting speaker */}
-          <Autocomplete
-            value={selectedSpeaker}
-            onChange={(e, newValue) => setSelectedSpeaker(newValue)}
-            options={speakers}
-            getOptionLabel={(option) =>
-              `${option.first_name} ${option.last_name}`
-            }
-            renderInput={(params) => (
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+              {/* Autocomplete for selecting speaker */}
+              <Autocomplete
+                value={selectedSpeaker}
+                onChange={(e, newValue) => setSelectedSpeaker(newValue)}
+                options={speakers}
+                getOptionLabel={(option) =>
+                  `${option.first_name} ${option.last_name}`
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select Speaker"
+                    required
+                    fullWidth
+                    sx={{
+                      marginTop: 3,
+                      marginBottom: 3,
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "12px",
+                        padding: "12px", // Adjusted padding for better input experience
+                      },
+                    }}
+                  />
+                )}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+              />
+
+              {/* Textarea for event description */}
               <TextField
-                {...params}
-                label="Select Speaker"
-                required
+                label="Event Description"
+                multiline
+                rows={6}
                 fullWidth
+                value={eventDetails}
+                onChange={(e) => setEventDetails(e.target.value)}
+                required
                 sx={{
                   marginTop: 3,
                   marginBottom: 3,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "12px", // Rounded corners
+                    padding: "12px", // Adjusted padding for better textarea experience
+                  },
                 }}
               />
-            )}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-          />
 
-          {/* Textarea for event description */}
-          <TextField
-            label="Event Description"
-            multiline
-            rows={6}
-            fullWidth
-            value={eventDetails}
-            onChange={(e) => setEventDetails(e.target.value)}
-            required
-            sx={{
-              marginTop: 3,
-              marginBottom: 3,
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "8px",
-                padding: "10px",
-              },
-            }}
-          />
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  backgroundColor: "#1976d2",
+                  color: "#fff",
+                  padding: "14px 0", // Increased padding for a better button size
+                  fontSize: "1.1rem", // Slightly larger text
+                  borderRadius: 3, // Rounded button corners
+                  "&:hover": {
+                    backgroundColor: "#1565c0", // Darker blue on hover
+                  },
+                }}
+              >
+                Submit Request
+              </Button>
+            </form>
+          </>
+        )}
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
+        {/* Show the success message if the request has been sent */}
+        {isRequestSent && (
+          <Alert
+            severity="success"
             sx={{
-              backgroundColor: "primary.main",
-              "&:hover": {
-                backgroundColor: "primary.dark",
-              },
-              padding: "12px",
+              marginBottom: 2,
+              borderRadius: 4,
               fontSize: "1rem",
-              marginTop: 2,
+              backgroundColor: "#A5D6A7",
+              color: "#2C6B2F",
+              fontWeight: "500",
+              padding: "12px 24px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
             }}
           >
-            Submit Request
-          </Button>
-        </form>
+            {successMessage}
+          </Alert>
+        )}
       </Box>
     </Container>
   );
