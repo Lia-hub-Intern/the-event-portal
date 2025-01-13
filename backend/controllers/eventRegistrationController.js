@@ -117,4 +117,3 @@ const EventRegistrationController = {
 };
 
 export default EventRegistrationController;
-

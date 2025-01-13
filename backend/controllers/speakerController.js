@@ -92,9 +92,10 @@ export const getSpeakers = async (req, res) => {
   }
 };
 
-
-
-
+// === ROUTER: Be A Speaker ===
+export const beASpeaker = (req, res) => {
+  return res.status(200).json({ message: 'Welcome to the Be A Speaker page!' });
+};
 
 // Correct export of the controller functions
-export default { addSpeaker, removeSpeaker, getSpeakers };
+export default { addSpeaker, removeSpeaker, getSpeakers, beASpeaker };
