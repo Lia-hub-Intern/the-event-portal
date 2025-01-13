@@ -147,19 +147,27 @@ const handleUpdateRequestStatus = async (requestId, newStatus) => {
                         {request.speaker_first_name} {request.speaker_last_name}
                       </TableCell>
                       <TableCell>
-                        <Button
-                          variant="contained"
-                          color={request.status === 'approved' ? 'secondary' : 'primary'}
-                          onClick={() =>
-                            handleUpdateRequestStatus(
-                              request.request_id,
-                              request.status === 'approved' ? 'rejected' : 'approved'
-                            )
-                          }
-                        >
-                          {request.status === 'approved' ? 'Reject' : 'Approve'}
-                        </Button>
-                      </TableCell>
+  {request.status !== 'approved' && (
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={() => handleUpdateRequestStatus(request.request_id, 'approved')}
+    >
+      Approve
+    </Button>
+  )}
+  {request.status !== 'rejected' && (
+    <Button
+      variant="contained"
+      color="secondary"
+      sx={{ marginLeft: '10px' }}
+      onClick={() => handleUpdateRequestStatus(request.request_id, 'rejected')}
+    >
+      Reject
+    </Button>
+  )}
+</TableCell>
+
                     </TableRow>
                   ))}
                 </TableBody>
