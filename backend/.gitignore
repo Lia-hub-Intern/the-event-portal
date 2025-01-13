@@ -25,3 +25,4 @@ dist-ssr
 
 
 # Ignore environment variables (put .env here)
+.env
