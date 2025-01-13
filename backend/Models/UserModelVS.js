@@ -517,52 +517,12 @@ const UserModel = {
     }
   },
 
-  // === Add a new request to the database ===
-  createRequest: async (requestData) => {
-    const { speaker_id, event_details, status, shared_account_id } = requestData;
-
-    const query = `
-    INSERT INTO requests (speaker_id, event_details, status, shared_account_id)
-    VALUES ($1, $2, $3, $4)
-    RETURNING *;
-  `;
-
-    const values = [speaker_id, event_details, status, shared_account_id];
-
-    try {
-      const result = await pool.query(query, values);
-      console.log('Request created:', result.rows[0]);
-      return result.rows[0];
-    } catch (error) {
-      console.error('Error creating the request:', error.message);
-      throw new Error('Error creating the request: ' + error.message);
-    }
-  },
-
-
-  // Method to get all speakers
-  getSpeakers: async () => {
-    try {
-      const query = `
-      SELECT id, first_name, last_name, shared_account_id
-      FROM users
-      WHERE role = 'speaker'
-    `;
-      const result = await pool.query(query);
-      return result.rows; // Returnera alla talare som JSON
-    } catch (error) {
-      console.error("Error fetching speakers from database:", error.message);
-      throw new Error("Failed to fetch speakers");
-    }
-  },
-
-
   getUserById: async (userId) => {
     const query = `
-      SELECT * 
-      FROM users
-      WHERE id = $1;
-    `;
+    SELECT * 
+    FROM users
+    WHERE id = $1;
+  `;
     const values = [userId];
 
     try {

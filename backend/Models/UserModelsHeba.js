@@ -557,25 +557,7 @@ const UserModel = {
   },
 
 
-  getUserById: async (userId) => {
-    const query = `
-      SELECT * 
-      FROM users
-      WHERE id = $1;
-    `;
-    const values = [userId];
 
-    try {
-      const result = await pool.query(query, values);
-      if (result.rows.length === 0) {
-        return null; // No user found with the given ID
-      }
-      return result.rows[0]; // Return the user object
-    } catch (err) {
-      console.error('Error fetching user by ID:', err.message);
-      throw new Error('Failed to fetch user by ID');
-    }
-  },
 
 };
 

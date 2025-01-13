@@ -18,7 +18,6 @@ import EventRegistration from "./components/views/EventRegistration";
 import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import UsersList from "./components/views/UsersList";
 import AddSpeakerForm from "./components/views/AddSpeakerForm";
-import RequestForm from "./components/views/RequestForm";
 import RequestsBySharedAccount from "./components/views/RequestsBySharedAccount";
 import ForgotPassword from "./components/views/ForgotPassword"
 import "dayjs/locale/en-gb";
@@ -28,6 +27,7 @@ import { useAuth } from "./context/AuthContext"; // Import auth context
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth(); // Get isAuthenticated from auth context
   const location = useLocation(); // Get the current location
+
   if (!isAuthenticated) {
     return (
       <Box sx={{ textAlign: 'center', padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: 3 }}>
@@ -44,7 +44,8 @@ function ProtectedRoute({ children }) {
             component={Link}
             to="/login"
             state={{ from: location.pathname }}
-          >Log in
+          >
+            Log in
           </Button>
           <Button variant="outlined" color="primary" component={Link} to="/register">
             Create an Account
@@ -89,8 +90,13 @@ export default function App() {
               path="/partners"
               element={<Partners title="Become one of our partners" />}
             />
-            <Route path="/beaspeaker" element={<BeASpeaker />} />
-            <Route path="/requestform" element={<RequestForm />} />
+            <Route path="/beaspeaker"
+              element={
+                <ProtectedRoute>
+                  <BeASpeaker />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/add-speaker" element={<AddSpeakerForm />} />
             <Route path="/about" element={<About />} />
             <Route path="/requests/:sharedAccountId" element={<RequestsBySharedAccount />} />
