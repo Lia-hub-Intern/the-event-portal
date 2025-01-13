@@ -54,7 +54,7 @@ const EventRegistration = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "70vh",
+        height: "80vh",
       }}
     >
       <Box
