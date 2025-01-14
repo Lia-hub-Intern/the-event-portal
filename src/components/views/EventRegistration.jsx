@@ -130,7 +130,7 @@ const EventRegistration = () => {
                     onChange={handleChange}
                   />
                 }
-                label="Speaking in a speaker"
+                label="Speaking in a theatre"
               />
               <FormControlLabel
                 control={
