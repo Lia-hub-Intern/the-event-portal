@@ -114,6 +114,56 @@ const EventRegistrationController = {
       });
     }
   },
+
+  deleteEventRegistrations: async (req, res) => {
+    const { event_id } = req.params;
+
+    try {
+      console.log('Event ID:', event_id); // Debug log  
+      const deletedCount = await EventRegistrationModel.deleteAllRegistrationsForEvent(event_id);
+
+      if (deletedCount === 0) {
+        return res.status(404).json({ message: `No registrations found for event ID: ${event_id}` });
+      }
+      res.status(200).json({
+        message: `Successfully deleted ${deletedCount} registrations for event ID: ${event_id}`,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  deleteSpecificEventRegistrations: async (req, res) => {
+    const { user_id, event_id, interest_id } = req.body;
+
+    if (!user_id || !event_id || !interest_id) {
+      return res.status(400).json({ message: 'user_id, event_id, and interest_id are required.' });
+    }
+
+    try {
+      const deletedRegistration = await EventRegistrationModel.deleteSpecificRegistrationForEvent({
+        user_id,
+        event_id,
+        interest_id,
+      });
+
+      if (deletedRegistration) {
+        res.status(200).json({
+          message: 'Specific registration deleted successfully.',
+          data: {
+            user_id: deletedRegistration.user_id,
+            event_id: deletedRegistration.event_id,
+            interest_id: deletedRegistration.interest_id,
+            interest_type: deletedRegistration.interest_type,
+          },
+        });
+      } else {
+        res.status(404).json({ message: 'Registration not found.' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 };
 
 export default EventRegistrationController;

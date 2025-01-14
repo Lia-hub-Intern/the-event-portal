@@ -95,30 +95,61 @@ const EventRegistrationModel = {
   },
 
   /**
-   * Delete a registration for a specific user, event, and interest
-   * @param {object} registrationData - The registration data to delete
-   * @param {number} registrationData.user_id - The ID of the user
-   * @param {number} registrationData.event_id - The ID of the event
-   * @param {number} registrationData.interest_id - The ID of the interest type
-   * @returns {Promise<boolean>} True if the registration was deleted, false otherwise
-   * @throws {Error} If the registration could not be deleted
+   * Delete all registrations for a specific event
+   * @param {number} event_id - The ID of the event to delete registrations for
+   * @returns {Promise<number>} The number of registrations deleted
+   * @throws {Error} If the registrations could not be deleted
    */
-  deleteRegistration: async ({ user_id, event_id, interest_id }) => {
+  deleteAllRegistrationsForEvent: async (event_id) => {
+    const query = `
+        DELETE FROM user_event_interest
+        WHERE event_id = $1
+        RETURNING *;
+      `;
+
+    const values = [Number(event_id)]; // Ensure event_id is treated as a number
+
+    try {
+      if (!event_id) {
+        throw new Error("Event ID is required to delete registrations.");
+      }
+
+      console.log('Query:', query); // Debug log
+      console.log('Values:', values); // Debug log
+
+      const result = await pool.query(query, values);
+      return result.rowCount; // Returns the number of deleted rows
+    } catch (error) {
+      throw new Error("Error deleting registrations for event: " + error.message);
+    }
+  },
+
+  /**
+ * Delete a registration for a specific user, event, and interest
+ * @param {object} registrationData - The registration data to delete
+ * @param {number} registrationData.user_id - The ID of the user
+ * @param {number} registrationData.event_id - The ID of the event
+ * @param {number} registrationData.interest_id - The ID of the interest type
+ * @returns {Promise<boolean>} True if the registration was deleted, false otherwise
+ * @throws {Error} If the registration could not be deleted
+ */
+  deleteSpecificRegistrationForEvent: async ({ user_id, event_id, interest_id }) => {
     const query = `
       DELETE FROM user_event_interest
       WHERE user_id = $1 AND event_id = $2 AND interest_id = $3
-      RETURNING *;
+      RETURNING user_id, event_id, interest_id,
+                (SELECT interest_type FROM interest WHERE id = $3) AS interest_type;
     `;
 
     const values = [user_id, event_id, interest_id];
 
     try {
       const result = await pool.query(query, values);
-      return result.rowCount > 0;
+      return result.rows[0]; // Return the deleted row with additional details
     } catch (error) {
       throw new Error("Error deleting registration: " + error.message);
     }
-  },
+  }
 };
 
 export default EventRegistrationModel;
