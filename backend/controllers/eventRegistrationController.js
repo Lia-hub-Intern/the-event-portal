@@ -1,6 +1,6 @@
 import InterestModel from "../models/interestModel.js";
-import EventRegistrationModel from "../Models/eventRegistrationModel.js";
-import EventModel from "../Models/eventModel.js";
+import EventRegistrationModel from '../models/eventRegistrationModel.js';
+import EventModel from "../models/eventModel.js";
 import UserModel from '../models/UserModel.js';
 
 // === ROUTER: Register user for event ===
@@ -202,4 +202,3 @@ const EventRegistrationController = {
 };
 
 export default EventRegistrationController;
-
