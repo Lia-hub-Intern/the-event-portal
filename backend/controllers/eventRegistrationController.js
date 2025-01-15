@@ -115,6 +115,7 @@ const EventRegistrationController = {
     }
   },
 
+  // Delete all registrations for event for all users
   deleteEventRegistrations: async (req, res) => {
     const { event_id } = req.params;
 
@@ -133,6 +134,7 @@ const EventRegistrationController = {
     }
   },
 
+  // Delete specific registrations for event 
   deleteSpecificEventRegistrations: async (req, res) => {
     const { user_id, event_id, interest_id } = req.body;
 
@@ -149,7 +151,7 @@ const EventRegistrationController = {
 
       if (deletedRegistration) {
         res.status(200).json({
-          message: 'Specific registration deleted successfully.',
+          message: 'Registration deleted successfully.',
           data: {
             user_id: deletedRegistration.user_id,
             event_id: deletedRegistration.event_id,
@@ -162,6 +164,39 @@ const EventRegistrationController = {
       }
     } catch (error) {
       res.status(500).json({ message: error.message });
+    }
+  },
+
+  //Update interest registration
+  updateEventInterests: async (req, res) => {
+    const { user_id, event_id, new_interest_ids } = req.body;
+
+    if (!user_id || !event_id || !Array.isArray(new_interest_ids)) {
+      return res.status(400).json({
+        message: 'user_id, event_id, and new_interest_ids (array) are required.',
+      });
+    }
+
+    try {
+      // Call the model function to update interests
+      const result = await EventRegistrationModel.updateEventInterests({
+        user_id,
+        event_id,
+        new_interest_ids,
+      });
+
+      res.status(200).json(result);
+    } catch (error) {
+      if (error.message.includes("No registration found")) {
+        return res.status(404).json({
+          message: `No registration found for user_id: ${user_id} and event_id: ${event_id}.`,
+        });
+      }
+
+      res.status(500).json({
+        message: 'An error occurred while updating interests.',
+        error: error.message,
+      });
     }
   }
 };

@@ -149,6 +149,78 @@ const EventRegistrationModel = {
     } catch (error) {
       throw new Error("Error deleting registration: " + error.message);
     }
+  },
+
+  /**
+  * Update interest types for a specific user and event
+  * @param {object} registrationData - The data required to update interests
+  * @param {number} registrationData.user_id - The ID of the user
+  * @param {number} registrationData.event_id - The ID of the event
+  * @param {number[]} registrationData.new_interest_ids - An array of new interest IDs to be updated
+  * @returns {Promise<object>} The updated registration data including current and removed interests
+  * @throws {Error} If the update could not be performed
+  */
+  updateEventInterests: async ({ user_id, event_id, new_interest_ids }) => {
+    try {
+      // Step 1: Fetch current interests
+      const currentInterestsQuery = `
+        SELECT uei.interest_id, i.interest_type
+        FROM user_event_interest uei
+        JOIN interest i ON uei.interest_id = i.id
+        WHERE uei.user_id = $1 AND uei.event_id = $2;
+      `;
+      const currentInterestsResult = await pool.query(currentInterestsQuery, [user_id, event_id]);
+      const currentInterests = currentInterestsResult.rows;
+
+      // Step 2: Determine interests to add and remove
+      const currentInterestIds = currentInterests.map(row => row.interest_id);
+      const toAdd = new_interest_ids.filter(id => !currentInterestIds.includes(id));
+      const toRemove = currentInterestIds.filter(id => !new_interest_ids.includes(id));
+
+      // Step 3: Remove interests no longer selected
+      let removedInterests = [];
+      if (toRemove.length > 0) {
+        const removeQuery = `
+          DELETE FROM user_event_interest
+          WHERE user_id = $1 AND event_id = $2 AND interest_id = ANY($3::int[])
+          RETURNING interest_id;
+        `;
+        const removeResult = await pool.query(removeQuery, [user_id, event_id, toRemove]);
+        const removedIds = removeResult.rows.map(row => row.interest_id);
+
+        // Fetch interest types for removed IDs
+        const removedInterestsQuery = `
+          SELECT id AS interest_id, interest_type
+          FROM interest
+          WHERE id = ANY($1::int[]);
+        `;
+        const removedInterestsResult = await pool.query(removedInterestsQuery, [removedIds]);
+        removedInterests = removedInterestsResult.rows;
+      }
+
+      // Step 4: Add newly selected interests
+      if (toAdd.length > 0) {
+        const addQuery = `
+          INSERT INTO user_event_interest (user_id, event_id, interest_id)
+          SELECT $1, $2, unnest($3::int[])
+          ON CONFLICT DO NOTHING;
+        `;
+        await pool.query(addQuery, [user_id, event_id, toAdd]);
+      }
+
+      // Step 5: Fetch updated interests
+      const updatedInterestsResult = await pool.query(currentInterestsQuery, [user_id, event_id]);
+      const updatedInterests = updatedInterestsResult.rows;
+
+      // Step 6: Combine and return the results
+      return {
+        message: "Interests updated successfully.",
+        currentInterests: updatedInterests, // All current interests after update
+        removedInterests: removedInterests, // Interest(s) removed during the update
+      };
+    } catch (error) {
+      throw new Error("Error updating interests: " + error.message);
+    }
   }
 };
 

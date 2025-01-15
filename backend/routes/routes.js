@@ -46,7 +46,6 @@ router.post('/api/event-registration/register', authenticateJWT, EventRegistrati
 router.get('/api/event-registration/:user_id/:event_id', authenticateJWT, EventRegistrationController.getRegistrations);
 router.delete('/api/event-registration/all/:event_id', authenticateJWT, EventRegistrationController.deleteEventRegistrations);
 router.delete('/api/event-registration/specific', authenticateJWT, EventRegistrationController.deleteSpecificEventRegistrations);
-//router.put('/api/event-registration/update', authenticateJWT, EventRegistrationController.updateRegistration);
-
+router.put('/api/event-registration/update', authenticateJWT, EventRegistrationController.updateEventInterests);
 
 export default router;
