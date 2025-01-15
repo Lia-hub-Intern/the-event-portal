@@ -1,5 +1,5 @@
-import InterestModel from "../models/InterestModel.js";
-import EventRegistrationModel from "../Models/EventRegistrationModel.js";
+import InterestModel from "../models/interestModel.js";
+import EventRegistrationModel from "../Models/eventRegistrationModel.js";
 import EventModel from "../Models/EventModel.js";
 import UserModel from '../models/UserModel.js';
 
