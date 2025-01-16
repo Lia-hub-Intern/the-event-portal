@@ -3,26 +3,28 @@ CssBaseline: Material UI provides an optional CssBaseline component. It fixes so
 CssBaseline includes a set of CSS rules that set values ​​for properties like font, margins, padding, and more. These rules are applied to the entire application and ensure that all components have a consistent appearance.
 */
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { theme } from "./components/styles/Themes.jsx";
+import { AuthProvider } from "./context/AuthContext"; // Import AuthProvider
 
-import { HashRouter } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { theme } from './components/styles/Themes.jsx';
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
-		<ThemeProvider theme={theme}>
-			<HashRouter>
-				<CssBaseline /> {/** Reset all base styles and use Roboto font */}
-				<App />
-			</HashRouter>
-		</ThemeProvider>
-	</React.StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <AuthProvider> {/* Wrap App with AuthProvider */}
+        <BrowserRouter>
+          <CssBaseline />
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
+  </React.StrictMode>
 );
