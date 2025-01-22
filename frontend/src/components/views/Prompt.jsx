@@ -105,7 +105,7 @@ export default function EventSearch() {
                     {event.date}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {event.location.join(', ')}
+                    {Array.isArray(event.location) ? event.location.join(', ') : event.location}
                   </Typography>
                   <Button
                     variant="contained"
