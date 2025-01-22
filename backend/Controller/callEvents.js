@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import pool from "../db.js";
 import SerpApi from "google-search-results-nodejs";
+import dayjs from "dayjs";
 
 dotenv.config();
 
@@ -48,14 +49,26 @@ export const callEvents = async (req, res) => {
 
     const events = searchResults.events_results.map((event) => ({
       title: event.title,
-      date: event.date.start_date,
-      location: event.address,
+      date: dayjs(event.date.start_date).format('YYYY-MM-DD'),
+      location: Array.isArray(event.address) ? event.address.join(', ') : event.address || 'Location not specified',
       speakers: event.speakers || 'TBA',
       url: event.link,
-      image: event.image || 'https://via.placeholder.com/150', // Default image if none is provided
+      image: event.image || 'https://via.placeholder.com/150',
     }));
 
     console.log("Processed events:", events);
+
+    // Save events to the database
+    for (const event of events) {
+      try {
+        await pool.query(
+          'INSERT INTO events (title, date, location, speakers, url, image) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (title) DO NOTHING',
+          [event.title, event.date, event.location, event.speakers, event.url, event.image]
+        );
+      } catch (dbError) {
+        console.error("Error saving event to database:", dbError.message);
+      }
+    }
 
     res.status(200).json({ events });
 
