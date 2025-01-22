@@ -130,6 +130,20 @@ export default function Navbar({ navBarLinks }) {
                 </Typography>
               </Button>
             ))}
+            <Button
+              component={NavLink}
+              to="/bulkpitch"
+              sx={{
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                },
+              }}
+            >
+              <Typography variant="h6" sx={{ textTransform: "capitalize" }}>
+                Bulk Pitch
+              </Typography>
+            </Button>
           </Box>
           {/* Theme toggle button added by Abenezer */}
           <IconButton color="inherit" onClick={toggleTheme}>

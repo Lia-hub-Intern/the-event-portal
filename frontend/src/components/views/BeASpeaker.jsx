@@ -13,6 +13,7 @@ import {
   Checkbox,
   Link,
 } from "@mui/material";
+import { NavLink } from "react-router-dom"; // Import NavLink for navigation
 
 // Example country data with phone prefixes
 const countries = [
@@ -314,6 +315,15 @@ export default function BeASpeaker() {
               sx={{ marginTop: "10px" }}
             >
               Submit
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              component={NavLink}
+              to="/bulkpitch"
+              sx={{ marginTop: "10px" }}
+            >
+              Pitch to Multiple Events
             </Button>
           </Box>
         </Box>

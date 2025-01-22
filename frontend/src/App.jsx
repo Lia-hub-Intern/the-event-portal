@@ -33,6 +33,7 @@ import Partners from "./components/views/Partners";
 import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import "dayjs/locale/en-gb";
 import Prompt from "./components/views/Prompt";
+import BulkPitch from "./components/views/BulkPitch"; // Import BulkPitch component
 
 /**
  * This function is the main function of the application.
@@ -66,6 +67,7 @@ export default function App() {
             <Route path="/beaspeaker" element={<BeASpeaker />} />
             <Route path="/about" element={<About />} />
             <Route path="/prompt" element={<Prompt />} />
+            <Route path="/bulkpitch" element={<BulkPitch />} /> {/* Add route for BulkPitch component */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>
