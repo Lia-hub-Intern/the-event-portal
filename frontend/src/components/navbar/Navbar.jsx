@@ -145,6 +145,9 @@ export default function Navbar({ navBarLinks }) {
               <PersonIcon />
             </IconButton>
           </Tooltip>
+          <Button component={NavLink} to="/profile" color="inherit">
+            Profile
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer

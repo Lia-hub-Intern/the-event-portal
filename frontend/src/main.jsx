@@ -10,16 +10,15 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-
 import { BrowserRouter } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
-import { ThemeToggleProvider } from "./contexts/ThemeContext"; // Added by Abenezer Anglo
+import { ThemeToggleProvider } from "./contexts/ThemeContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeToggleProvider> {/* Added by Abenezer Anglo */}
+    <ThemeToggleProvider>
       <BrowserRouter>
-        <CssBaseline /> {/** Reset all base styles and use Roboto font */}
+        <CssBaseline />
         <App />
       </BrowserRouter>
     </ThemeToggleProvider>

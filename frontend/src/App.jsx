@@ -15,7 +15,7 @@
  *
  */
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Container, CssBaseline } from "@mui/material"; /**This way the page updates faster */
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -33,6 +33,7 @@ import Partners from "./components/views/Partners";
 import ScrollToTopButton from "./components/views/ScrollToTopButton";
 import "dayjs/locale/en-gb";
 import Prompt from "./components/views/Prompt";
+import UserProfile from './components/views/UserProfile';
 
 /**
  * This function is the main function of the application.
@@ -50,22 +51,14 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/speakers"
-              element={<Speakers title="Find the speaker of your interest" />}
-            />
-            <Route
-              path="/events"
-              element={<Events title="Participate in the next events" />}
-            />
+            <Route path="/speakers" element={<Speakers title="Find the speaker of your interest" />} />
+            <Route path="/events" element={<Events title="Participate in the next events" />} />
             <Route path="/conference" element={<Conference />} />
-            <Route
-              path="/partners"
-              element={<Partners title="Become one of our partners" />}
-            />
+            <Route path="/partners" element={<Partners title="Become one of our partners" />} />
             <Route path="/beaspeaker" element={<BeASpeaker />} />
             <Route path="/about" element={<About />} />
             <Route path="/prompt" element={<Prompt />} />
+            <Route path="/profile" element={<UserProfile />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>
