@@ -265,10 +265,10 @@ export default function Events({ title }) {
                   transform: "scale(1.05)",
                 },
                 width: { xs: "38vh", sm: "70vh" },
-                height: { xs: "66vh", sm: "95vh" },
                 marginLeft: { sm: "1rem" },
                 marginTop: "2rem",
                 textDecoration: "none",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
               }}
             >
               {/** Encloses the area of ​​all content */}
@@ -303,7 +303,7 @@ export default function Events({ title }) {
                     backgroundColor: "white",
                     padding: "10px",
                     borderRadius: "10px",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                    border: "1px solid #ccc",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
