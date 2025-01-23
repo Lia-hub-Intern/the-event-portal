@@ -169,14 +169,18 @@ export default function Speakres({ title }) {
                   transform: "scale(1.05)",
                 },
                 width: { xs: "38vh", sm: "50vh" },
-                height: { xs: "72vh", sm: "110vh" },
                 marginLeft: { sm: "1rem" },
                 marginTop: "2rem",
                 textDecoration: "none",
               }}
             >
               {/** Encloses the area of ​​all content */}
-              <CardActionArea>
+              <CardActionArea style={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                }}>
                 {/** Encierra la imagen */}
                 <CardMedia
                   component="img"
@@ -191,7 +195,6 @@ export default function Speakres({ title }) {
                 {/** Encloses all text content */}
                 <CardContent
                   sx={{
-                    height: "9rem",
                     justifyContent: "left",
                     justifyItems: "left",
                   }}
