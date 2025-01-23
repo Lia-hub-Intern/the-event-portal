@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # StageFinder
 
 ## Acknowledgments
@@ -211,3 +212,13 @@ We also have meetings every weekday at 10:30 in the "Meeting Room" and if you ne
 Changelog:
 
 2024-11-01 \Svartakatten : Updated the entire main code to the newest version and wrote a new Readme. If you have any questions, you can contact me on Discord "airikrr" or you can see me through the Discord Server as Svartakatten.
+=======
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+>>>>>>> Requestform/Heba
