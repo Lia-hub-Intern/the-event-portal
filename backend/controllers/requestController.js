@@ -1,8 +1,7 @@
 // Import necessary dependencies
 import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
 import pool from '../database/db.js'; // Assuming the path to the database connection is correct
-import { generateResetToken } from '../middleware/authMiddleware.js '
-
+import { generateResetToken, } from '../middleware/authMiddleware.js '
 
 // === API Route to Get Requests by Shared Account ID ===
 export const getRequests = async (req, res) => {
@@ -79,7 +78,6 @@ export const updateRequestStatus = async (req, res) => {
   }
 };
 
-
 // === POST Route: Send a new request ===
 export const sendRequest = async (req, res) => {
   const { speakerId, eventDetails } = req.body;
@@ -89,11 +87,10 @@ export const sendRequest = async (req, res) => {
   }
 
   try {
-    // Fetch speaker data to get the shared_account_id
+    // Försök att hämta speaker från databasen
     const speakerQuery = 'SELECT shared_account_id FROM users WHERE id = $1';
     const speakerResult = await pool.query(speakerQuery, [speakerId]);
 
-    // Check if the speaker exists and has a shared_account_id
     const speaker = speakerResult.rows[0];
     if (!speaker) {
       return res.status(404).json({ message: 'Speaker not found' });
@@ -101,24 +98,31 @@ export const sendRequest = async (req, res) => {
 
     const sharedAccountId = speaker.shared_account_id;
 
-    // Create a new request
-    const newRequest = await UserModel.createRequest({
-      speaker_id: speakerId,
-      event_details: eventDetails,
-      status: 'pending', // Default status for new requests
-      shared_account_id: sharedAccountId // Add the shared_account_id
+    console.log("Creating request with:", {
+      speakerId,
+      eventDetails,
+      sharedAccountId,
+      userId: req.user.userId, // User ID from the token
     });
 
-    // Send only the new request data to the frontend
+    // Skapa ny förfrågan, här använder vi textvärdet "pending"
+    const newRequest = await UserModel.createRequest(
+      {
+        speaker_id: speakerId,
+        event_details: eventDetails,
+        status: 'pending', // Använd textvärdet "pending"
+        shared_account_id: sharedAccountId,
+      },
+      req.user.userId // Använd userId från JWT token
+    );
+
+    // Skicka svar till klienten
     res.status(201).json({ newRequest });
   } catch (error) {
     console.error('Error creating the request:', error);
     res.status(500).json({ message: 'Error creating the request' });
   }
 };
-
-
-
 
 
 

@@ -35,8 +35,8 @@ export default function Login() {
       if (isAuthenticated) {
         setMessage("Login successful!");
 
-        // Get the referrer path from state or default to "/dashboard"
-        const redirectPath = location.state?.from || "/dashboard";
+        // Only redirect to "/RequestForm" if user comes from there
+        const redirectPath = location.state?.from === "/RequestForm" ? "/RequestForm" : "/dashboard"; // Default to "/dashboard"
         const redirectState = location.state?.from?.state || null;
         const eventData = location.state?.event; // Get the event data from state
 

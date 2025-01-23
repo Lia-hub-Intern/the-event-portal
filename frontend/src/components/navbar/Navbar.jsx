@@ -14,13 +14,13 @@ import {
   Divider,
   ListItemText,
 } from "@mui/material";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "../../context/AuthContext";
 import NavListDrawer from "./NavListDrawer";
-import { useParams } from 'react-router-dom'; // Lägg till importen här
+
 
 export default function Navbar({ navBarLinks }) {
   const [open, setOpen] = useState(false);
@@ -35,7 +35,7 @@ export default function Navbar({ navBarLinks }) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const { sharedAccountId } = useParams();
+  const { sharedAccountId } = useParams(); // För att använda sharedAccountId i URL:en
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
@@ -46,8 +46,8 @@ export default function Navbar({ navBarLinks }) {
   };
 
   const handleViewUsersList = () => {
-    navigate("/UsersList"); // Navigera till UsersList-sidan
-    handleMenuClose(); // Stäng menyn
+    navigate("/UsersList"); // Navigate to UsersList page
+    handleMenuClose(); // Close the menu
   };
 
   return (
@@ -55,12 +55,11 @@ export default function Navbar({ navBarLinks }) {
       <AppBar
         sx={{
           position: { xs: "static", sm: "fixed" },
-          backgroundColor: "rgba(57, 73, 171, 1)", // Justera bakgrundsfärgen om nödvändigt
+          backgroundColor: "rgba(57, 73, 171, 1)",
           transition: "background-color 0.3s ease",
         }}
       >
         <Toolbar>
-          {/* Mobile Drawer Button */}
           <IconButton
             color="inherit"
             size="large"
@@ -70,7 +69,6 @@ export default function Navbar({ navBarLinks }) {
             <MenuIcon />
           </IconButton>
 
-          {/* App Logo */}
           <SvgIcon color="inherit" sx={{ display: { xs: "none", sm: "flex" } }}>
             <DiamondIcon />
           </SvgIcon>
@@ -86,7 +84,6 @@ export default function Navbar({ navBarLinks }) {
             StageFinder
           </Typography>
 
-          {/* Desktop Navigation Links */}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navBarLinks.map((item) => (
               <Button
@@ -107,15 +104,9 @@ export default function Navbar({ navBarLinks }) {
             ))}
           </Box>
 
-          {/* User Section */}
           <Box sx={{ display: "flex", alignItems: "center", marginRight: 2 }}>
             {isAuthenticated && (
-              <Typography
-                sx={{
-                  color: "white",
-                  marginRight: 2,
-                }}
-              >
+              <Typography sx={{ color: "white", marginRight: 2 }}>
                 Inloggad som {user?.username || "User"}
               </Typography>
             )}
@@ -130,67 +121,73 @@ export default function Navbar({ navBarLinks }) {
             </Tooltip>
           </Box>
 
-          {/* Account/Logout Menu */}
           <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-            MenuListProps={{
-              "aria-labelledby": "account-menu",
-            }}
-          >
-            {isAuthenticated ? (
-              [
-                <MenuItem disabled key="username">
-                  <ListItemText primary={` ${user?.username || "User"}`} />
-                </MenuItem>,
-                <Divider key="divider" />,
-                user?.role !== "speaker" && (
-                  <MenuItem
-                    key="add-speaker"
-                    component={NavLink}
-                    to="/add-speaker"
-                    onClick={handleMenuClose}
-                  >
-                    Add Speaker
-                  </MenuItem>
-                ),
-                user?.shared_account_id && (
-                  <MenuItem key="view-users-list" onClick={handleViewUsersList}>
-                    View Users List
-                  </MenuItem>
-                ),
-                // Add the Request link here
-                user?.role !== "speaker" && (
-                  <MenuItem
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+  MenuListProps={{
+    "aria-labelledby": "account-menu",
+  }}
+>
+  {isAuthenticated ? [
+    <MenuItem disabled key="username">
+      <ListItemText primary={` ${user?.username || "User"}`} />
+    </MenuItem>,
+    <Divider key="divider" />,
+    user?.role !== "speaker" && (
+      <MenuItem
+        key="add-speaker"
+        component={NavLink}
+        to="/add-speaker"
+        onClick={handleMenuClose}
+      >
+        Add Speaker
+      </MenuItem>
+    ),
+    user?.shared_account_id && (
+      <MenuItem key="view-users-list" onClick={handleViewUsersList}>
+        View Users List
+      </MenuItem>
+    ),
+    user?.role !== "speaker" && (
+      <MenuItem
+        key="requests-form-list"
+        component={NavLink}
+        to="/RequestsPage"
+        onClick={handleMenuClose}
+      >
+        View Requestform List
+      </MenuItem>
+    ),
+    user?.role !== "speaker" && (
+      <MenuItem
                     key="requests"
-                    component={NavLink}
+        component={NavLink}
                     to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId
-                    onClick={handleMenuClose}
-                  >
-                    View Requests
-                  </MenuItem>
+        onClick={handleMenuClose}
+      >
+        View Requests
+      </MenuItem>
+    ),
+    <MenuItem key="logout" onClick={handleLogout}>
+      Logout
+    </MenuItem>
+  ] : (
+    <MenuItem
+      key="login"
+      component={NavLink}
+      to="/login"
+      onClick={handleMenuClose}
+    >
+      Login
+    </MenuItem>
+  )}
+</Menu>
 
-                ),
-                <MenuItem key="logout" onClick={handleLogout}>
-                  Logout
-                </MenuItem>,
-              ]
-            ) : (
-              <MenuItem
-                key="login"
-                component={NavLink}
-                to="/login"
-                onClick={handleMenuClose}
-              >
-                Login
-              </MenuItem>
-            )}
-          </Menu>
+
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Drawer */}
       <Drawer
         open={open}
         anchor="left"

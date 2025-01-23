@@ -23,6 +23,7 @@ import RequestsBySharedAccount from "./components/views/RequestsBySharedAccount"
 import ForgotPassword from "./components/views/ForgotPassword"
 import "dayjs/locale/en-gb";
 import { useAuth } from "./context/AuthContext"; // Import auth context
+import RequestsPage from "./components/views/RequestsPage";
 
 // ProtectedRoute component to restrict access
 function ProtectedRoute({ children }) {
@@ -84,6 +85,7 @@ export default function App() {
               }
             />
             <Route path="/UsersList" element={<UsersList />} />
+            <Route path="/RequestsPage" element={<RequestsPage />} />
             <Route path="/conference" element={<Conference />} />
             <Route
               path="/partners"

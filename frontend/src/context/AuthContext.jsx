@@ -16,6 +16,7 @@ export function AuthProvider({ children }) {
     // Läs token från rätt lagringsutrymme baserat på "Remember Me"
     const token = rememberMeFlag ? localStorage.getItem('token') : sessionStorage.getItem('token');
     const sharedAccountId = rememberMeFlag ? localStorage.getItem('sharedAccountId') : sessionStorage.getItem('sharedAccountId');
+    const userId = rememberMeFlag ? localStorage.getItem('userId') : sessionStorage.getItem('userId');
   
     if (token) {
       try {
@@ -28,7 +29,7 @@ export function AuthProvider({ children }) {
           return;
         }
   
-        setUser(decoded);
+        setUser({ ...decoded, userId });
         setIsAuthenticated(true);
       } catch (error) {
         console.error('Invalid token. Logging out...');
@@ -36,9 +37,8 @@ export function AuthProvider({ children }) {
       }
     }
   }, []);  // Detta körs när komponenten laddas om
-   // Kör endast en gång när komponenten monteras
 
-   const login = async (username, password, rememberMeFlag) => {
+  const login = async (username, password, rememberMeFlag) => {
     try {
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
@@ -53,16 +53,19 @@ export function AuthProvider({ children }) {
       if (response.ok && data.token) {
         const token = data.token;
         const sharedAccountId = data.sharedAccountId;
-  
-        // Spara token i rätt lagringsutrymme baserat på rememberMe
+        const userId = data.userId;  // Assuming the backend sends userId
+        
+        // Spara token och userId i rätt lagringsutrymme baserat på rememberMe
         if (rememberMeFlag) {
           localStorage.setItem('token', token);
           localStorage.setItem('sharedAccountId', sharedAccountId);
           localStorage.setItem('rememberMe', 'true');
+          localStorage.setItem('userId', userId); // Save userId in localStorage
         } else {
           sessionStorage.setItem('token', token);  // Endast för sessionen
           sessionStorage.setItem('sharedAccountId', sharedAccountId);
           sessionStorage.setItem('rememberMe', 'false');
+          sessionStorage.setItem('userId', userId); // Save userId in sessionStorage
         }
   
         setRememberMe(rememberMeFlag);
@@ -70,7 +73,7 @@ export function AuthProvider({ children }) {
         // Dekoda token och uppdatera tillstånd
         const decoded = jwt_decode(token);
         console.log('Decoded token after login:', decoded);
-        setUser(decoded);
+        setUser({ ...decoded, userId });  // Set user along with userId
         setIsAuthenticated(true);
         setMessage('Login successful');
   
@@ -85,7 +88,6 @@ export function AuthProvider({ children }) {
       return false;
     }
   };
-  
 
   const logout = () => {
     console.log("Logging out...");
@@ -94,10 +96,12 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('token');
       localStorage.removeItem('sharedAccountId');
       localStorage.removeItem('rememberMe');
+      localStorage.removeItem('userId');  // Remove userId from localStorage
     } else {
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('sharedAccountId');
       sessionStorage.removeItem('rememberMe');
+      sessionStorage.removeItem('userId');  // Remove userId from sessionStorage
     }
 
     setIsAuthenticated(false);

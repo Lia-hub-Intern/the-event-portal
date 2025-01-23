@@ -174,7 +174,6 @@ const UserModel = {
     }
   },
 
-
   /**
    * Add a user to a shared account
    * @param {number} adminId - The user account ID
@@ -245,26 +244,6 @@ const UserModel = {
     }
   },
 
-
-
-
-  /**
-   * Get all users linked to a shared account.
-   * @param {number} sharedAccountId
-   * @returns {Promise<object[]>} Users list
-   */
-  getUsersBySharedAccount: async (sharedAccountId) => {
-    const query = `SELECT * FROM users WHERE shared_account_id = $1`;
-    const values = [sharedAccountId];
-
-    try {
-      const result = await pool.query(query, values);
-      return result.rows;
-    } catch (err) {
-      console.error('Error fetching users by shared account:', err.message);
-      throw new Error('Failed to fetch shared account users');
-    }
-  },
 
   // Funktion för att skicka återställningslänk via e-post
   sendResetEmail: async (email, resetToken, username) => {
@@ -393,6 +372,42 @@ const UserModel = {
     }
   },
 
+/**
+ * Hämta alla förfrågningar som skapats av en användare (baserat på användarens ID)
+ * @param {number} userId - ID för den inloggade användaren
+ * @returns {Promise<object[]>} Lista med förfrågningar
+ */
+getRequestsByUserId: async (userId) => {
+  const query = `
+    SELECT 
+      r.id AS request_id,
+      r.event_details,
+      r.status,
+      r.created_at
+    FROM 
+      public.requests r
+    WHERE 
+      r.user_id = $1;  -- Hämta förfrågningar där user_id matchar
+  `;
+  const values = [userId];
+
+  try {
+    console.log("Running query with userId:", userId); // Logga userId för felsökning
+    const result = await pool.query(query, values);
+
+    if (result.rows.length === 0) {
+      console.log("No requests found for user ID:", userId);
+      return []; // Returnera en tom lista om inga resultat hittas
+    }
+
+    console.log("Requests found:", result.rows); // Logga de hämtade förfrågningarna för insyn
+    return result.rows;
+  } catch (error) {
+    console.error('Error in getRequestsByUserId:', error); // Logga hela felobjektet för detaljerad felsökning
+    throw new Error('Failed to fetch requests by user ID'); // Specifik felmeddelande vid problem
+  }
+},
+
 
 
   /**
@@ -517,27 +532,28 @@ const UserModel = {
     }
   },
 
-  // === Add a new request to the database ===
-  createRequest: async (requestData) => {
-    const { speaker_id, event_details, status, shared_account_id } = requestData;
+// === Add a new request to the database ===
+createRequest: async (requestData, userId) => {
+  const { speaker_id, event_details, status, shared_account_id } = requestData;
 
-    const query = `
-    INSERT INTO requests (speaker_id, event_details, status, shared_account_id)
-    VALUES ($1, $2, $3, $4)
+  const query = `
+    INSERT INTO requests (user_id, event_details, status, speaker_id, shared_account_id)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
   `;
 
-    const values = [speaker_id, event_details, status, shared_account_id];
+  const values = [userId, event_details, status, speaker_id, shared_account_id];
 
-    try {
-      const result = await pool.query(query, values);
-      console.log('Request created:', result.rows[0]);
-      return result.rows[0];
-    } catch (error) {
-      console.error('Error creating the request:', error.message);
-      throw new Error('Error creating the request: ' + error.message);
-    }
-  },
+  try {
+    const result = await pool.query(query, values);
+    console.log('Request created:', result.rows[0]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error creating the request:', error.message);
+    throw new Error('Error creating the request: ' + error.message);
+  }
+},
+
 
 
   // Method to get all speakers

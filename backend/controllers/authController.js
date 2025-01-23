@@ -112,7 +112,6 @@ if (role === "user_account" && !sharedAccountId) {
 
 
 
-
 // === ROUTER: Login ===
 export const loginUser = async (req, res) => {
   const { username, password, rememberMe } = req.body;
@@ -128,11 +127,14 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const token = generateToken(user);  // Using generateToken to create the JWT
+    // Assuming generateToken is a function that generates a JWT token
+    const token = generateToken(user);
 
+    // Return token, sharedAccountId, userId, and rememberMe flag in the response
     res.status(200).json({
       token,
       sharedAccountId: user.shared_account_id,
+      userId: user.id,  // Add userId here
       rememberMe: rememberMe,  // Return rememberMe flag in response
       message: 'Login successful',
     });
@@ -141,4 +143,3 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Failed to login user' });
   }
 };
-

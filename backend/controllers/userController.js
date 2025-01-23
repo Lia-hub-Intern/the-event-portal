@@ -24,6 +24,35 @@ export const getUsersBySharedAccount = async (req, res) => {
 };
 
 
+export const getUserRequests = async (req, res) => {
+  console.log('Request for user requests received for user ID:', req.params.userId);
+
+  // Se till att userId finns i förfrågan
+  if (!req.params.userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  try {
+    const requests = await UserModel.getRequestsByUserId(req.params.userId);
+    console.log('Fetched requests:', requests);
+    
+    // Returnera JSON data om inga fel finns
+    if (requests.length === 0) {
+      return res.status(404).json({ message: 'No requests found' });
+    }
+
+    res.status(200).json(requests);
+  } catch (err) {
+    console.error('Error in fetching requests:', err);
+    res.status(500).json({ message: 'Error fetching requests' });
+  }
+};
+
+
+
+
+
+
 // Handle password reset
 export const resetPassword = async (req, res) => {
   const token = req.method === 'GET' ? req.query.token : req.body.token;
