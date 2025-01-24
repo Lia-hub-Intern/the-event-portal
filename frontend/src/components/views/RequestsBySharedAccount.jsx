@@ -52,7 +52,7 @@ const RequestsBySharedAccount = () => {
     if (!sharedAccountId) return;
 
     try {
-      const response = await axios.get(`http://localhost:5000/api/requests/${sharedAccountId}`, {
+      const response = await axios.get(`http://localhost:7000/api/requests/${sharedAccountId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRequests(response.data);
@@ -70,28 +70,28 @@ const RequestsBySharedAccount = () => {
   }, [sharedAccountId]);
 
 
-// Update request status dynamically
-const handleUpdateRequestStatus = async (requestId, newStatus) => {
-  try {
-    const response = await axios.post(
-      `http://localhost:5000/api/update-request-status`,
-      { requestId, newStatus },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    if (response.status === 200) {
-      setRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request.request_id === requestId ? { ...request, status: newStatus } : request
-        )
+  // Update request status dynamically
+  const handleUpdateRequestStatus = async (requestId, newStatus) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7000/api/update-request-status`,
+        { requestId, newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      setMessage(`Request ${newStatus === 'approved' ? 'approved' : 'rejected'}!`);
-      setTimeout(() => setMessage(null), 3000);
+
+      if (response.status === 200) {
+        setRequests((prevRequests) =>
+          prevRequests.map((request) =>
+            request.request_id === requestId ? { ...request, status: newStatus } : request
+          )
+        );
+        setMessage(`Request ${newStatus === 'approved' ? 'approved' : 'rejected'}!`);
+        setTimeout(() => setMessage(null), 3000);
+      }
+    } catch (error) {
+      setError(`Failed to ${newStatus === 'approved' ? 'approve' : 'reject'} the request.`);
     }
-  } catch (error) {
-    setError(`Failed to ${newStatus === 'approved' ? 'approve' : 'reject'} the request.`);
-  }
-};
+  };
 
   if (loading) {
     return (
@@ -147,26 +147,26 @@ const handleUpdateRequestStatus = async (requestId, newStatus) => {
                         {request.speaker_first_name} {request.speaker_last_name}
                       </TableCell>
                       <TableCell>
-  {request.status !== 'approved' && (
-    <Button
-      variant="contained"
-      color="primary"
-      onClick={() => handleUpdateRequestStatus(request.request_id, 'approved')}
-    >
-      Approve
-    </Button>
-  )}
-  {request.status !== 'rejected' && (
-    <Button
-      variant="contained"
-      color="secondary"
-      sx={{ marginLeft: '10px' }}
-      onClick={() => handleUpdateRequestStatus(request.request_id, 'rejected')}
-    >
-      Reject
-    </Button>
-  )}
-</TableCell>
+                        {request.status !== 'approved' && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleUpdateRequestStatus(request.request_id, 'approved')}
+                          >
+                            Approve
+                          </Button>
+                        )}
+                        {request.status !== 'rejected' && (
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            sx={{ marginLeft: '10px' }}
+                            onClick={() => handleUpdateRequestStatus(request.request_id, 'rejected')}
+                          >
+                            Reject
+                          </Button>
+                        )}
+                      </TableCell>
 
                     </TableRow>
                   ))}

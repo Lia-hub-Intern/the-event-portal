@@ -25,7 +25,7 @@ const RequestForm = () => {
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-    navigate("/login", { state: { from: "/RequestForm" } });
+      navigate("/login", { state: { from: "/RequestForm" } });
     }
   }, [isAuthenticated, navigate]);
 
@@ -33,7 +33,7 @@ const RequestForm = () => {
   useEffect(() => {
     const fetchSpeakers = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/getSpeakers");
+        const response = await fetch("http://localhost:7000/api/getSpeakers");
         if (!response.ok) {
           throw new Error("Failed to fetch speakers");
         }
@@ -61,7 +61,7 @@ const RequestForm = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/requests", {
+      const response = await fetch("http://localhost:7000/api/requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -15,7 +15,7 @@ function ForgotPassword() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:7000";
 
   // Email validation regex pattern
   const isValidEmail = (email) =>
@@ -23,7 +23,7 @@ function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Validate email and username
     if (!email || !isValidEmail(email)) {
       setMessage("Please enter a valid email address.");
@@ -33,16 +33,16 @@ function ForgotPassword() {
       setMessage("Please enter your username.");
       return;
     }
-  
+
     setLoading(true); // Start loading state
-  
+
     try {
       const response = await fetch(`${apiUrl}/request-password-reset`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, username }), // Send email and username
       });
-  
+
       const data = await response.json();
       if (response.ok) {
         setMessage("Password reset link sent! Please check your email.");
@@ -55,8 +55,8 @@ function ForgotPassword() {
       setLoading(false); // Stop loading state
     }
   };
-  
-  
+
+
 
   return (
     <Container maxWidth="xs" sx={{ padding: 2 }}>

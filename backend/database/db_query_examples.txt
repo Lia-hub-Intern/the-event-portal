@@ -82,7 +82,7 @@ ON CONFLICT (interest_type) DO NOTHING;
 =============================================
 POSTMAN TESTING
 * Method: POST
-URL: http://localhost:5000/api/event-registration/register
+URL: http://localhost:7000/api/event-registration/register
 
 Body (JSON):
 {
@@ -92,4 +92,4 @@ Body (JSON):
 }
 
 * Method: GET
-URL: http://localhost:5000/api/event-registration/{user_id}/{event_id}
+URL: http://localhost:7000/api/event-registration/{user_id}/{event_id}

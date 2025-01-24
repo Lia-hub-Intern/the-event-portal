@@ -12,23 +12,23 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const rememberMeFlag = localStorage.getItem('rememberMe') === 'true';
     setRememberMe(rememberMeFlag);
-  
+
     // Läs token från rätt lagringsutrymme baserat på "Remember Me"
     const token = rememberMeFlag ? localStorage.getItem('token') : sessionStorage.getItem('token');
     const sharedAccountId = rememberMeFlag ? localStorage.getItem('sharedAccountId') : sessionStorage.getItem('sharedAccountId');
     const userId = rememberMeFlag ? localStorage.getItem('userId') : sessionStorage.getItem('userId');
-  
+
     if (token) {
       try {
         const decoded = jwt_decode(token);
         const currentTime = Math.floor(Date.now() / 1000);
-  
+
         if (decoded.exp && decoded.exp < currentTime) {
           console.warn('Token expired. Logging out...');
           logout();
           return;
         }
-  
+
         setUser({ ...decoded, userId });
         setIsAuthenticated(true);
       } catch (error) {
@@ -40,21 +40,21 @@ export function AuthProvider({ children }) {
 
   const login = async (username, password, rememberMeFlag) => {
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch('http://localhost:7000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok && data.token) {
         const token = data.token;
         const sharedAccountId = data.sharedAccountId;
         const userId = data.userId;  // Assuming the backend sends userId
-        
+
         // Spara token och userId i rätt lagringsutrymme baserat på rememberMe
         if (rememberMeFlag) {
           localStorage.setItem('token', token);
@@ -67,16 +67,16 @@ export function AuthProvider({ children }) {
           sessionStorage.setItem('rememberMe', 'false');
           sessionStorage.setItem('userId', userId); // Save userId in sessionStorage
         }
-  
+
         setRememberMe(rememberMeFlag);
-  
+
         // Dekoda token och uppdatera tillstånd
         const decoded = jwt_decode(token);
         console.log('Decoded token after login:', decoded);
         setUser({ ...decoded, userId });  // Set user along with userId
         setIsAuthenticated(true);
         setMessage('Login successful');
-  
+
         return true;
       } else {
         setMessage(data.message || 'Login failed');

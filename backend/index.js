@@ -8,7 +8,7 @@ const app = express();
 
 dotenv.config();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 7000;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -25,11 +25,25 @@ app.get('/protected-route', authenticateJWT, (req, res) => {
   res.json({ message: 'You have access to this protected route', user: req.user });
 });
 
+// Route to show a friendly message
+app.get('/', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>Backend Running</title>
+      </head>
+      <body>
+        <h1>Backend Server is Running Smoothly!</h1>
+        <p>Welcome to the backend server running on port ${PORT}.</p>
+      </body>
+    </html>
+  `);
+});
 
 // API URL endpoint
 app.get('/api/config', (req, res) => {
   res.json({
-    apiUrl: process.env.API_URL || 'http://localhost:5000',
+    apiUrl: process.env.API_URL || 'http://localhost:7000',
   });
 });
 

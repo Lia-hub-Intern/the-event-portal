@@ -26,7 +26,7 @@ const RequestsPage = () => {
         const userId = decodedToken.userId;
 
         axios
-          .get(`http://localhost:5000/api/requests/user-requests/${userId}`, {
+          .get(`http://localhost:7000/api/requests/user-requests/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

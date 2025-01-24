@@ -48,24 +48,24 @@ export const registerUser = async (req, res) => {
     }
 
     // Om rollen är "user_account" och inget sharedAccountId finns, skapa ett nytt delat konto
-if (role === "user_account" && !sharedAccountId) {
-  console.log("Creating new shared account for role 'user_account'...");
-  
-  // Declare sharedAccountId with let so it can be reassigned
-  let sharedAccountId;
-  
-  const createSharedAccountQuery = `
+    if (role === "user_account" && !sharedAccountId) {
+      console.log("Creating new shared account for role 'user_account'...");
+
+      // Declare sharedAccountId with let so it can be reassigned
+      let sharedAccountId;
+
+      const createSharedAccountQuery = `
     INSERT INTO shared_accounts DEFAULT VALUES RETURNING id
   `;
-  
-  const sharedAccountResult = await pool.query(createSharedAccountQuery);
-  sharedAccountId = sharedAccountResult.rows[0]?.id;
 
-  if (!sharedAccountId) {
-    throw new Error("Failed to retrieve shared_account_id after creation.");
-  }
-  console.log("New shared_account_id created:", sharedAccountId);
-}
+      const sharedAccountResult = await pool.query(createSharedAccountQuery);
+      sharedAccountId = sharedAccountResult.rows[0]?.id;
+
+      if (!sharedAccountId) {
+        throw new Error("Failed to retrieve shared_account_id after creation.");
+      }
+      console.log("New shared_account_id created:", sharedAccountId);
+    }
 
 
     // Hash the password

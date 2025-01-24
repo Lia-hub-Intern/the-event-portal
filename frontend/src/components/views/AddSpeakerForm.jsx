@@ -11,7 +11,7 @@ export default function AddSpeakerForm() {
   useEffect(() => {
     const fetchApiUrl = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/config');
+        const response = await fetch('http://localhost:7000/api/config');
         const data = await response.json();
         setApiUrl(data.apiUrl); // Set API URL from response
       } catch (error) {
@@ -37,34 +37,34 @@ export default function AddSpeakerForm() {
     e.preventDefault();
     setMessage('');
     setIsSubmitting(true);
-  
+
     // Validate input fields
     if (!username) {
       setMessage('All fields must be filled in.');
       setIsSubmitting(false);
       return;
     }
-  
+
     if (!apiUrl) {
       setMessage('The API URL is not available.');
       setIsSubmitting(false);
       return;
     }
-  
+
     console.log('Shared Account ID:', sharedAccountId);
     if (!sharedAccountId) {
       setMessage('No shared account available.');
       setIsSubmitting(false);
       return;
     }
-  
+
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (!token) {
       setMessage('No authentication token available.');
       setIsSubmitting(false);
       return;
     }
-  
+
     try {
       // Send request to add a speaker
       const response = await fetch(`${apiUrl}/api/add-speaker`, {
@@ -78,9 +78,9 @@ export default function AddSpeakerForm() {
           sharedAccountId: sharedAccountId, // Send the shared_account_id with the request
         }),
       });
-  
+
       const data = await response.json();
-  
+
       // Handle response
       if (!response.ok) {
         setMessage(data.message || 'Failed to add the speaker.');
@@ -95,7 +95,7 @@ export default function AddSpeakerForm() {
       setIsSubmitting(false);
     }
   };
-  
+
 
   // New function to handle removing speaker from shared account
   const handleRemoveSpeaker = async (e) => {
