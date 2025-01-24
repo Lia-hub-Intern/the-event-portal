@@ -51,7 +51,7 @@ För ytliggare information finner du på (https://www.npmjs.com/package/axios) <
 Grattis! nu har du installerat alla paket för backend och ska nu installera det du behöver för frontend, därför ska du nu skriva i din terminal <br/> "cd .." och sedan "cd frontend" för att lokalisera frontend'et.
 
 Nu är det bara två paket som du behöver installera och det är "npm install" och när du har gjort det behöver du också köra <br/> "npm audit fix --force" igen för att fixa problemen som kan ha följt med.
-"npm install jwt-decode"
+"npm install jwt-decode@3.1.2"
 För ytliggare information finner du på (https://www.npmjs.com/package/jwt-decode) <br/>
 
 Nu är det viktigt att du går in i backend mappen och ersätter "GROQ_API_KEY = #Placeholder för din groqcloud api-nyckel" så att det blir "GROQ_API_KEY = din api nyckel" utan citattecken. kom ihåg att aldrig ladda upp på github med din nyckel på grund av säkerhetsrisker.

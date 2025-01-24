@@ -20,13 +20,15 @@ CREATE TABLE public.users (
 );
 
 -- Table: requests
-CREATE TABLE public.requests (
+CREATE TABLE requests (
     id SERIAL PRIMARY KEY,
-    shared_account_id INTEGER NOT NULL REFERENCES public.shared_accounts(id),
-    speaker_id INTEGER REFERENCES public.users(id) ON DELETE SET NULL,
+    shared_account_id INTEGER REFERENCES shared_accounts(id),
+    speaker_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
     event_details TEXT NOT NULL,
-    status VARCHAR(50) DEFAULT 'Pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    status TEXT DEFAULT 'pending'::request_status,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER REFERENCES users(id),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table 4: events as PeterM
