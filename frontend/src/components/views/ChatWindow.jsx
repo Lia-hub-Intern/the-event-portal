@@ -108,7 +108,6 @@ export default function ChatWindow() {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
-
     return (
         <Box
             sx={{

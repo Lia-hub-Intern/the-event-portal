@@ -25,7 +25,6 @@ export default function Chatbot() {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isOpen]);
-
     return (
         <>
             {isOpen && (
