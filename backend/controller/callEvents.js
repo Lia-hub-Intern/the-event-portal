@@ -26,13 +26,14 @@ export const callEvents = async (req, res) => {
                     content: promptContent,
                 },
             ],
-            model: "llama-3.1-70b-versatile",
+            model: "llama-3.3-70b-versatile",
             temperature: 1,
             max_tokens: 1024,
             top_p: 1,
             stream: false,
             stop: null,
         });
+
 
         const content = response.choices && response.choices[0]?.message?.content;
         console.log("response------->", content || "No content received");
