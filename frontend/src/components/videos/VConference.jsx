@@ -12,6 +12,8 @@
  */
 import ReactPlayer from "react-player";
 import { Box, Grid } from "@mui/material";
+import React from 'react';
+
 
 export default function VConference() {
   return (

@@ -13,6 +13,7 @@
  */
 import Hero from "./Hero";
 import Values from "./Values";
+import React from 'react';
 import UpcomingConferences from "./UpcomingConferences";
 
 import { Container, Box } from "@mui/material";

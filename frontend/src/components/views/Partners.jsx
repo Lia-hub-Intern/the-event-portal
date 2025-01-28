@@ -2,9 +2,9 @@
  * Developer Full Stack: Darwin Rengifo
  *
  * Create Date: 2024-10-20
- *     Program : Pertners.jsx
- *   Path Name : stagefider/frontend/src/components/views
- *       Tools : NodeJS, React, Mterial UI
+ *     Program : Partners.jsx
+ *   Path Name : stagefinder/frontend/src/components/views
+ *       Tools : NodeJS, React, Material UI
  *
  * Description:
  * - Displays a list of partners who contribute to the
@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import HeaderSida from "./HeaderSida";
 import { NavLink } from "react-router-dom";
+import React from 'react';
 
 const Image =
   "https://img.freepik.com/fotos-premium/cierre-apreton-manos-socios-comerciales-oficina_49280-310.jpg?w=826";
@@ -64,77 +65,70 @@ export default function Partners({ title }) {
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         sx={{
           justifyContent: "center",
-          justifyItems: "center",
-          display: { xs: "block", sm: "flex" },
+          alignItems: "center",
+          display: "flex",
         }}
       >
-        <Grid
-          item
+        <Box
           sx={{
-            item: { xs: 12, sm: 6, md: 4 },
-            justifyContent: "center",
-            justifyItems: "center",
+            width: "100%",
+            textAlign: "center",
+            marginBottom: "2rem",
           }}
         >
-          <Box
-            sx={{
-              width: { xs: "20rem", sm: "auto" },
-              marginBottom: "1rem ",
-            }}
-          >
-            <Typography
-              variant="h4"
-              sx={{ marginBottom: "1rem", textAlign: "center" }}
-            >
-              {title} {/** Title sida */}
-            </Typography>
-          </Box>
-        </Grid>
+          <Typography variant="h4" sx={{ textAlign: "center" }}>
+            {title}
+          </Typography>
+        </Box>
 
         <Grid
           container
-          rowSpacing={1}
+          rowSpacing={2}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          sx={{
-            item: { xs: 12, sm: 6, md: 4 },
-            justifyContent: "center",
-            justifyItems: "center",
-          }}
+          sx={{ justifyContent: "center", alignItems: "center" }}
         >
           {listPartners.map((item) => (
-            /** CARD: is the booklet that contains all the contents of the card */
-            <Card
+            <Grid
+              item
               key={item.image}
-              component={NavLink} //react router component
-              to={item.link}
-              onClick={(e) => {
-                e.preventDefault(); // Prevent NavLink default behavior
-                window.open(item.link, "_blank"); // Open link in new tab
-              }}
-              sx={{
-                boxShadow: "none",
-                textDecoration: "none",
-                width: { xs: "30vh", sm: "40vh" },
-                height: { xs: "10vh", sm: "20vh" },
-                marginLeft: { sm: "1rem" },
-                marginTop: "2rem",
-                textDecoration: "none",
-              }}
+              xs={12}
+              sm={6}
+              md={4}
+              sx={{ display: "flex", justifyContent: "center" }}
             >
-              {/** Encloses the area of ​​all content */}
-              <CardActionArea>
-                {/** Enclose the image */}
-                <CardMedia
-                  component="img"
-                  image={item.image}
-                  alt="Card Image"
-                  sx={{
-                    height: { xs: "10vh", sm: "20vh" },
-                    objectFit: "contain",
-                  }}
-                />
-              </CardActionArea>
-            </Card>
+              <Card
+                component={NavLink}
+                to={item.link}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open(item.link, "_blank");
+                }}
+                sx={{
+                  boxShadow: "none",
+                  textDecoration: "none",
+                  width: "100%",
+                  maxWidth: 300,
+                  height: 150,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "1rem",
+                }}
+              >
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    image={item.image}
+                    alt="Partner Logo"
+                    sx={{
+                      maxHeight: 100,
+                      objectFit: "contain",
+                      padding: "1rem",
+                    }}
+                  />
+                </CardActionArea>
+              </Card>
+            </Grid>
           ))}
         </Grid>
       </Grid>

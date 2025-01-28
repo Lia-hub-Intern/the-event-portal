@@ -3,6 +3,7 @@ import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import React from 'react';
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";

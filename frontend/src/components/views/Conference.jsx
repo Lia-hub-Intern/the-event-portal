@@ -25,6 +25,7 @@ import VConference from "../videos/VConference";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useRef } from "react";
+import React from 'react';
 
 /**
  * Conference.jsx

@@ -2,6 +2,7 @@ import { Typography, Box, Grid } from "@mui/material";
 import Slideshow from "./slideshowConfrence";
 import AboutUsImage from "/assets/about-us-hero-image.jpeg";
 import ImageOne from "/assets/about-us-content-image-one.jpeg";
+import React from 'react';
 import ImageTwo from "/assets/about-us-content-image-two.jpeg";
 import ImageThree from "/assets/about-us-content-image-three.jpeg";
 import ImageFour from "/assets/about-us-content-image-four.png";

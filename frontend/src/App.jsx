@@ -5,6 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Navbar from "./components/navbar/Navbar";
 import { navBarLinks } from "./components/functions/Functions";
 import Home from "./components/views/Home";
+import React from 'react';
 import Login from "./components/views/Login";
 import Speakers from "./components/views/Speakers";
 import Events from "./components/views/Events";
