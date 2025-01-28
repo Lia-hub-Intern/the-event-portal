@@ -63,8 +63,8 @@ const UserModel = {
       }
 
       // If the role is "user_account" and no sharedAccountId is provided, create a new shared account
-      if (role === "user_account" && !sharedAccountId) {
-        console.log("Creating new shared account for role 'user_account'...");
+      if (role === "speaker_agent" && !sharedAccountId) {
+        console.log("Creating new shared account for role 'speaker_agent'...");
         const createSharedAccountQuery = `
         INSERT INTO shared_accounts DEFAULT VALUES RETURNING id
       `;
@@ -454,99 +454,226 @@ getRequestsByUserId: async (userId) => {
   },
 
 
-  /**
-   * Approve a request by updating its status to 'approved'
-   * @param {number} requestId - The ID of the request to approve
-   * @param {number} sharedAccountId - The ID of the shared account linked to the request
-   * @returns {Promise<object>} The updated request data
-   */
-  approveRequest: async (requestId, sharedAccountId) => {
-    const query = `
+ /**
+ * Approve a request by updating its status to 'approved'
+ * @param {number} requestId - The ID of the request to approve
+ * @param {number} sharedAccountId - The ID of the shared account linked to the request
+ * @returns {Promise<object>} The updated request data
+ */
+approveRequest: async (requestId, sharedAccountId) => {
+  const query = `
     UPDATE requests
     SET status = 'approved'
     WHERE id = $1 AND shared_account_id = $2
-    RETURNING id, status, shared_account_id
+    RETURNING id, status, shared_account_id, email, event_details
   `;
-    const values = [requestId, sharedAccountId];
-
-    try {
-      const result = await pool.query(query, values);
-      if (result.rows.length === 0) {
-        throw new Error('Request not found or already approved.');
-      }
-      return result.rows[0]; // Return updated request
-    } catch (err) {
-      console.error("Error in approveRequest:", err.message);
-      throw new Error('Failed to approve request');
-    }
-  },
-
-  /**
-   * Reject a request by updating its status to 'rejected'
-   * @param {number} requestId - The ID of the request to reject
-   * @param {number} sharedAccountId - The ID of the shared account linked to the request
-   * @returns {Promise<object>} The updated request data
-   */
-  rejectRequest: async (requestId, sharedAccountId) => {
-    const query = `
-    UPDATE requests
-    SET status = 'rejected'
-    WHERE id = $1 AND shared_account_id = $2 
-    RETURNING id, status, shared_account_id
-  `;
-    const values = [requestId, sharedAccountId];
-
-    try {
-      const result = await pool.query(query, values);
-      return result.rows[0]; // Return updated request
-    } catch (err) {
-      console.error("Error in rejectRequest:", err.message);
-      throw new Error('Failed to reject request');
-    }
-  },
-  /**
-   * Uppdatera status för en förfrågan
-   * @param {number} requestId - ID för förfrågan
-   * @param {string} newStatus - Ny status (approved/rejected)
-   * @param {number} sharedAccountId - ID för delat konto
-   * @returns {Promise<object>} Uppdaterad förfrågan
-   */
-  updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
-    const query = `
-    UPDATE requests
-    SET status = $1
-    WHERE id = $2 AND shared_account_id = $3
-    RETURNING id, status, shared_account_id
-  `;
-    const values = [newStatus, requestId, sharedAccountId];
-
-    try {
-      const result = await pool.query(query, values);
-      if (result.rows.length === 0) {
-        throw new Error('Request not found or unauthorized');
-      }
-      return result.rows[0]; // Returnera uppdaterad förfrågan
-    } catch (err) {
-      console.error("Error in updateRequestStatus:", err.message);
-      throw new Error('Failed to update request status');
-    }
-  },
-
-// === Add a new request to the database ===
-createRequest: async (requestData, userId) => {
-  const { speaker_id, event_details, status, shared_account_id } = requestData;
-
-  const query = `
-    INSERT INTO requests (user_id, event_details, status, speaker_id, shared_account_id)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING *;
-  `;
-
-  const values = [userId, event_details, status, speaker_id, shared_account_id];
+  const values = [requestId, sharedAccountId];
 
   try {
     const result = await pool.query(query, values);
+    
+    if (result.rows.length === 0) {
+      throw new Error('Request not found or already approved.');
+    }
+
+    const updatedRequest = result.rows[0];
+    
+    // Skicka bekräftelsemejl till användaren
+    const { email, event_details } = updatedRequest;
+    const msg = {
+      to: email,
+      from: process.env.SENDER_EMAIL, // Sender's email (from .env)
+      subject: 'Förfrågan Godkänd',
+      text: `Din förfrågan har godkänts. Eventdetaljer:\n\n${event_details}`,
+      html: `<p>Din förfrågan har godkänts. Eventdetaljer:</p><p><strong>${event_details}</strong></p>`,
+    };
+
+    // Skicka e-post
+    await sgMail.send(msg);
+    console.log('Bekräftelse skickad till:', email);
+
+    return updatedRequest; // Return the updated request
+  } catch (err) {
+    console.error("Error in approveRequest:", err.message);
+    throw new Error('Failed to approve request');
+  }
+},
+
+  /**
+ * Reject a request by updating its status to 'rejected'
+ * @param {number} requestId - The ID of the request to reject
+ * @param {number} sharedAccountId - The ID of the shared account linked to the request
+ * @returns {Promise<object>} The updated request data
+ */
+rejectRequest: async (requestId, sharedAccountId) => {
+  const query = `
+    UPDATE requests
+    SET status = 'rejected'
+    WHERE id = $1 AND shared_account_id = $2 
+    RETURNING id, status, shared_account_id, email, event_details
+  `;
+  const values = [requestId, sharedAccountId];
+
+  try {
+    const result = await pool.query(query, values);
+
+    if (result.rows.length === 0) {
+      throw new Error('Request not found or already rejected.');
+    }
+
+    const updatedRequest = result.rows[0];
+    
+    // Skicka e-postmeddelande till användaren
+    const { email, event_details } = updatedRequest;
+    const msg = {
+      to: email,
+      from: process.env.SENDER_EMAIL, // Sender's email (from .env)
+      subject: 'Förfrågan Avvisad',
+      text: `Din förfrågan har avvisats. Eventdetaljer:\n\n${event_details}`,
+      html: `<p>Din förfrågan har avvisats. Eventdetaljer:</p><p><strong>${event_details}</strong></p>`,
+    };
+
+    // Skicka e-post
+    await sgMail.send(msg);
+    console.log('Bekräftelse skickad till:', email);
+
+    return updatedRequest; // Return the updated request
+  } catch (err) {
+    console.error("Error in rejectRequest:", err.message);
+    throw new Error('Failed to reject request');
+  }
+},
+
+updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
+  // Första queryn för att hämta förfrågan och talarens info
+  const requestQuery = `
+    SELECT id, status, email, event_details, speaker_id
+    FROM requests
+    WHERE id = $1 AND shared_account_id = $2
+  `;
+  const requestValues = [requestId, sharedAccountId];
+
+  // SQL query för att hämta talarens namn
+  const speakerQuery = `
+    SELECT first_name, last_name
+    FROM users
+    WHERE id = $1;
+  `;
+  
+  try {
+    // Hämta förfrågan
+    const requestResult = await pool.query(requestQuery, requestValues);
+    
+    if (requestResult.rows.length === 0) {
+      throw new Error('Request not found or unauthorized');
+    }
+
+    const updatedRequest = requestResult.rows[0];
+    const { email, event_details, speaker_id } = updatedRequest;
+
+    // Hämta talarens namn
+    const speakerResult = await pool.query(speakerQuery, [speaker_id]);
+    
+    if (speakerResult.rows.length === 0) {
+      console.error('Speaker not found for ID:', speaker_id);
+      throw new Error('Speaker not found');
+    }
+
+    const speaker = speakerResult.rows[0];
+    const { first_name, last_name } = speaker;
+
+    // Uppdatera förfrågans status
+    const updateQuery = `
+      UPDATE requests
+      SET status = $1
+      WHERE id = $2 AND shared_account_id = $3
+      RETURNING id, status, email, event_details
+    `;
+    const updateValues = [newStatus, requestId, sharedAccountId];
+
+    const updateResult = await pool.query(updateQuery, updateValues);
+
+    if (updateResult.rows.length === 0) {
+      throw new Error('Failed to update request status');
+    }
+
+    // Förbered e-postmeddelandet
+    const msg = {
+      to: email,
+      from: process.env.SENDER_EMAIL, // Använd den e-post som du har definierat i .env-filen
+      subject: `Förfrågan ${newStatus === 'approved' ? 'Godkänd' : 'Avvisad'}`,
+      text: `Your request for speaker ${first_name} ${last_name} has been successfully ${newStatus}. Event details:\n\n${event_details}`,
+      html: `<p>Din förfrågan för talaren <strong>${first_name} ${last_name}</strong> har <strong>${newStatus === 'approved' ? 'Godkänts' : 'Avvisats'}</strong>. Eventdetaljer:</p><p><strong>${event_details}</strong></p>`,
+    };
+
+    // Skicka e-posten
+    await sgMail.send(msg);
+    console.log('Bekräftelse skickad till:', email);
+
+    return updateResult.rows[0]; // Returnera den uppdaterade förfrågan
+  } catch (err) {
+    console.error('Error in updateRequestStatus:', err.message);
+    throw new Error('Failed to update request status');
+  }
+},
+
+
+  
+  
+// === Add a new request to the database ===
+createRequest: async (requestData) => {
+  const { speaker_id, event_details, status, shared_account_id, email } = requestData;
+
+  // SQL query to get speaker's name and shared_account_id
+  const speakerQuery = `
+    SELECT first_name, last_name, shared_account_id
+    FROM users
+    WHERE id = $1;
+  `;
+
+  const values = [speaker_id];
+
+  try {
+    // Fetch speaker from the database
+    const speakerResult = await pool.query(speakerQuery, values);
+    const speaker = speakerResult.rows[0];
+    
+    if (!speaker) {
+      console.error('Speaker not found for ID:', speaker_id);
+      throw new Error('Speaker not found');
+    }
+
+    const { first_name, last_name, shared_account_id } = speaker;
+
+    // Create the request in the database
+    const query = `
+      INSERT INTO requests (event_details, status, speaker_id, shared_account_id, email)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;
+    `;
+
+    const requestValues = [event_details, status, speaker_id, shared_account_id, email];
+    const result = await pool.query(query, requestValues);
     console.log('Request created:', result.rows[0]);
+
+    // Send confirmation email after request is created
+    const msg = {
+      to: email,
+      from: process.env.SENDER_EMAIL, // Sender's email from .env
+      subject: 'Request Confirmation',
+      text: `Your request for speaker ${first_name} ${last_name} has been successfully created. Event details:\n\n${event_details}`,
+      html: `<p>Your request for speaker <strong>${first_name} ${last_name}</strong> has been successfully created. Event details:</p><p><strong>${event_details}</strong></p>`,
+    };
+
+    try {
+      await sgMail.send(msg);
+      console.log('Confirmation email sent to:', email);
+    } catch (emailError) {
+      console.error('Error sending confirmation email:', emailError.message);
+      throw new Error('Error sending confirmation email: ' + emailError.message);
+    }
+
+    // Return the created request object
     return result.rows[0];
   } catch (error) {
     console.error('Error creating the request:', error.message);

@@ -22,10 +22,11 @@ router.get('/api/BeASpeaker', authenticateJWT, speakerController.beASpeaker);
 
 // Request routes
 router.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);
+router.get('/requests/${userId}', authenticateJWT, getRequests);
 router.post('/api/requests/approve', authenticateJWT, approveRequest);
 router.post('/api/requests/reject', authenticateJWT, rejectRequest);
 router.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
-router.post('/api/requests', authenticateJWT, sendRequest);
+router.post('/api/requests', sendRequest);
 
 
 // Authentication routes
