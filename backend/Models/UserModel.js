@@ -28,7 +28,48 @@ const UserModel = {
       throw new Error('Failed to fetch user by username');
     }
   },
+  getUserRequests: async (userId) => {
+    console.log("getUserRequests called with userId:", userId); // Log to check if function is being called
 
+    const query = `
+      SELECT 
+        r.id AS request_id,
+        r.event_details,
+        r.status,
+        u.first_name AS speaker_first_name,
+        u.last_name AS speaker_last_name,
+        r.created_at
+      FROM 
+        public.requests r
+      JOIN 
+        users u ON r.speaker_id = u.id
+      WHERE 
+        r.speaker_id = $1;
+    `;
+  
+    const values = [userId];
+  
+    try {
+      const result = await pool.query(query, values);
+      console.log("Query Result:", result.rows);  // Log result of query
+  
+      if (result.rows.length === 0) {
+        console.log("No requests found for UserId:", userId);
+        return [];  // Return empty array if no requests
+      }
+  
+      return result.rows;  // Return the requests
+    } catch (error) {
+      console.error('Error in getUserRequests:', error.message);
+      console.error('Query:', query);
+      console.error('Values:', values);
+      throw new Error('Failed to fetch requests by UserId');
+    }
+  },
+  
+  
+  
+  
 
   /**
  * Create a new user in the database
@@ -116,13 +157,13 @@ const UserModel = {
 
 
 
-  /**
-   * Hämta alla förfrågningar för ett specifikt delat konto
-   * @param {number} sharedAccountId - ID för det delade kontot
-   * @returns {Promise<object[]>} Lista med förfrågningar
-   */
-  getRequestsBySharedAccount: async (sharedAccountId) => {
-    const query = `
+ /**
+ * Hämta alla förfrågningar för ett specifikt delat konto
+ * @param {number} sharedAccountId - ID för det delade kontot
+ * @returns {Promise<object[]>} Lista med förfrågningar
+ */
+getRequestsBySharedAccount: async (sharedAccountId) => {
+  const query = `
     SELECT 
       r.id AS request_id,
       r.event_details,
@@ -137,23 +178,23 @@ const UserModel = {
     WHERE 
       r.shared_account_id = $1;
   `;
-    const values = [sharedAccountId];
+  const values = [sharedAccountId];
 
-    try {
+  try {
       console.log("Running query with sharedAccountId:", sharedAccountId); // Logga värdet för sharedAccountId
-      const result = await pool.query(query, values);
+    const result = await pool.query(query, values);
 
-      if (result.rows.length === 0) {
-        console.log("No requests found for shared account ID:", sharedAccountId);
+    if (result.rows.length === 0) {
+      console.log("No requests found for shared account ID:", sharedAccountId);
         return []; // Returnera en tom lista om inga resultat hittas
-      }
-
-      return result.rows;
-    } catch (error) {
-      console.error('Error in getRequestsBySharedAccount:', error.message);
-      throw new Error('Failed to fetch requests by shared account ID');
     }
-  },
+
+    return result.rows;
+  } catch (error) {
+    console.error('Error in getRequestsBySharedAccount:', error.message);
+    throw new Error('Failed to fetch requests by shared account ID');
+  }
+},
 
 
   /**
@@ -478,19 +519,19 @@ approveRequest: async (requestId, sharedAccountId) => {
 
     const updatedRequest = result.rows[0];
     
-    // Skicka bekräftelsemejl till användaren
+    // Send confirmation email to the user
     const { email, event_details } = updatedRequest;
     const msg = {
       to: email,
       from: process.env.SENDER_EMAIL, // Sender's email (from .env)
-      subject: 'Förfrågan Godkänd',
-      text: `Din förfrågan har godkänts. Eventdetaljer:\n\n${event_details}`,
-      html: `<p>Din förfrågan har godkänts. Eventdetaljer:</p><p><strong>${event_details}</strong></p>`,
+      subject: 'Request Approved',
+      text: `Your request has been approved. Event details:\n\n${event_details}`,
+      html: `<p>Your request has been approved. Event details:</p><p><strong>${event_details}</strong></p>`,
     };
 
-    // Skicka e-post
+    // Send email
     await sgMail.send(msg);
-    console.log('Bekräftelse skickad till:', email);
+    console.log('Confirmation sent to:', email);
 
     return updatedRequest; // Return the updated request
   } catch (err) {
@@ -499,7 +540,7 @@ approveRequest: async (requestId, sharedAccountId) => {
   }
 },
 
-  /**
+/**
  * Reject a request by updating its status to 'rejected'
  * @param {number} requestId - The ID of the request to reject
  * @param {number} sharedAccountId - The ID of the shared account linked to the request
@@ -523,19 +564,19 @@ rejectRequest: async (requestId, sharedAccountId) => {
 
     const updatedRequest = result.rows[0];
     
-    // Skicka e-postmeddelande till användaren
+    // Send rejection email to the user
     const { email, event_details } = updatedRequest;
     const msg = {
       to: email,
       from: process.env.SENDER_EMAIL, // Sender's email (from .env)
-      subject: 'Förfrågan Avvisad',
-      text: `Din förfrågan har avvisats. Eventdetaljer:\n\n${event_details}`,
-      html: `<p>Din förfrågan har avvisats. Eventdetaljer:</p><p><strong>${event_details}</strong></p>`,
+      subject: 'Request Rejected',
+      text: `Your request has been rejected. Event details:\n\n${event_details}`,
+      html: `<p>Your request has been rejected. Event details:</p><p><strong>${event_details}</strong></p>`,
     };
 
-    // Skicka e-post
+    // Send email
     await sgMail.send(msg);
-    console.log('Bekräftelse skickad till:', email);
+    console.log('Confirmation email sent to:', email);
 
     return updatedRequest; // Return the updated request
   } catch (err) {
@@ -543,6 +584,7 @@ rejectRequest: async (requestId, sharedAccountId) => {
     throw new Error('Failed to reject request');
   }
 },
+
 
 updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
   // Första queryn för att hämta förfrågan och talarens info
@@ -600,15 +642,15 @@ updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
     // Förbered e-postmeddelandet
     const msg = {
       to: email,
-      from: process.env.SENDER_EMAIL, // Använd den e-post som du har definierat i .env-filen
-      subject: `Förfrågan ${newStatus === 'approved' ? 'Godkänd' : 'Avvisad'}`,
+      from: process.env.SENDER_EMAIL, // Use the email defined in the .env file
+      subject: `Request ${newStatus === 'approved' ? 'Approved' : 'Rejected'}`,
       text: `Your request for speaker ${first_name} ${last_name} has been successfully ${newStatus}. Event details:\n\n${event_details}`,
-      html: `<p>Din förfrågan för talaren <strong>${first_name} ${last_name}</strong> har <strong>${newStatus === 'approved' ? 'Godkänts' : 'Avvisats'}</strong>. Eventdetaljer:</p><p><strong>${event_details}</strong></p>`,
+      html: `<p>Your request for speaker <strong>${first_name} ${last_name}</strong> has been <strong>${newStatus === 'approved' ? 'Approved' : 'Rejected'}</strong>. Event details:</p><p><strong>${event_details}</strong></p>`,
     };
-
+    
     // Skicka e-posten
     await sgMail.send(msg);
-    console.log('Bekräftelse skickad till:', email);
+    console.log('Confirmation email sent to:', email);
 
     return updateResult.rows[0]; // Returnera den uppdaterade förfrågan
   } catch (err) {

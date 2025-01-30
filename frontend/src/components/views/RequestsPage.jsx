@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   CircularProgress,
   List,
@@ -18,38 +17,60 @@ const RequestsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
-
-    if (token) {
+    const fetchRequests = async () => {
       try {
+        const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+        console.log("Token being sent:", token);
+    
+        if (!token) {
+          console.log("No token found.");
+          setError("No token found.");
+          setLoading(false);
+          return;
+        }
+    
+        // Decode the token to get user information
         const decodedToken = jwt_decode(token);
-        const userId = decodedToken.userId;
-
-        axios
-          .get(`http://localhost:5000/api/requests/user-requests/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((response) => {
-            setRequests(response.data || []);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.error("Error fetching requests:", err);
-            setError("Failed to fetch requests. Please try again later.");
-            setLoading(false);
-          });
-      } catch (err) {
-        console.error("Token decoding failed:", err);
-        setError("Invalid token. Please log in again.");
-        setLoading(false);
+        console.log("Decoded Token:", decodedToken);  // Log the decoded token to inspect its contents
+    
+        const userId = decodedToken.userId; // Make sure this matches the structure of your token
+        console.log("Decoded userId:", userId);
+    
+        if (!userId) {
+          console.log("No userId found in token.");
+          setError("No userId found in token.");
+          setLoading(false);
+          return;
+        }
+    
+        // Now fetch the requests using the userId
+        const response = await fetch("http://localhost:5000/api/user-requests", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Ensure token is attached correctly
+          },
+        });
+    
+        console.log("Response status:", response.status); // Log response status for more details
+        if (!response.ok) {
+          throw new Error(`Failed to fetch requests. Status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        console.log("Requests fetched:", data);
+        setRequests(data); // Set requests data
+        setLoading(false); // Set loading to false after fetching
+      } catch (error) {
+        console.error("Error fetching requests:", error);
+        setError(error.message); // Set error if any
+        setLoading(false); // Set loading to false even if there was an error
       }
-    } else {
-      setError("No token found. Please log in.");
-      setLoading(false);
-    }
-  }, []);
+    };
+    
+
+    fetchRequests();
+  }, []); // Empty dependency array to run once on mount
 
   return (
     <Container
@@ -106,12 +127,8 @@ const RequestsPage = () => {
                   >
                     {request.event_details || "No event details available"}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    sx={{ marginTop: 1 }}
-                  >
-                    Created: kunna se namn på den amn gjort en request till {new Date(request.created_at).toLocaleString()}
+                  <Typography variant="body2" color="textSecondary" sx={{ marginTop: 1 }}>
+                    Created on: {new Date(request.created_at).toLocaleString()}
                   </Typography>
                   <Box
                     sx={{

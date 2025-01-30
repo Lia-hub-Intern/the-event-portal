@@ -22,16 +22,20 @@ const RequestsBySharedAccount = () => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
   const [sharedAccountId, setSharedAccountId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
   const token = sessionStorage.getItem('token') || localStorage.getItem('token');
 
-  // Decode token and set sharedAccountId
+  // Decode token and set sharedAccountId and user role
   useEffect(() => {
     if (token) {
       try {
         const decodedToken = jwt_decode(token);
         const accountId = decodedToken?.shared_account_id;
+        const role = decodedToken?.role;
+
         setSharedAccountId(accountId);
+        setUserRole(role);
 
         if (!accountId) {
           setError('SharedAccountId is missing or invalid.');
@@ -69,29 +73,28 @@ const RequestsBySharedAccount = () => {
     }
   }, [sharedAccountId]);
 
-
-// Update request status dynamically
-const handleUpdateRequestStatus = async (requestId, newStatus) => {
-  try {
-    const response = await axios.post(
-      `http://localhost:5000/api/update-request-status`,
-      { requestId, newStatus },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    if (response.status === 200) {
-      setRequests((prevRequests) =>
-        prevRequests.map((request) =>
-          request.request_id === requestId ? { ...request, status: newStatus } : request
-        )
+  // Update request status dynamically
+  const handleUpdateRequestStatus = async (requestId, newStatus) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/update-request-status`,
+        { requestId, newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      setMessage(`Request ${newStatus === 'approved' ? 'approved' : 'rejected'}!`);
-      setTimeout(() => setMessage(null), 3000);
+
+      if (response.status === 200) {
+        setRequests((prevRequests) =>
+          prevRequests.map((request) =>
+            request.request_id === requestId ? { ...request, status: newStatus } : request
+          )
+        );
+        setMessage(`Request ${newStatus === 'approved' ? 'approved' : 'rejected'}!`);
+        setTimeout(() => setMessage(null), 3000);
+      }
+    } catch (error) {
+      setError(`Failed to ${newStatus === 'approved' ? 'approve' : 'reject'} the request.`);
     }
-  } catch (error) {
-    setError(`Failed to ${newStatus === 'approved' ? 'approve' : 'reject'} the request.`);
-  }
-};
+  };
 
   if (loading) {
     return (
@@ -134,7 +137,7 @@ const handleUpdateRequestStatus = async (requestId, newStatus) => {
                     <TableCell>Status</TableCell>
                     <TableCell>Created</TableCell>
                     <TableCell>Speaker Name</TableCell>
-                    <TableCell>Actions</TableCell>
+                    {userRole === 'speaker_agent' && <TableCell>Actions</TableCell>}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -146,28 +149,29 @@ const handleUpdateRequestStatus = async (requestId, newStatus) => {
                       <TableCell>
                         {request.speaker_first_name} {request.speaker_last_name}
                       </TableCell>
-                      <TableCell>
-  {request.status !== 'approved' && (
-    <Button
-      variant="contained"
-      color="primary"
-      onClick={() => handleUpdateRequestStatus(request.request_id, 'approved')}
-    >
-      Approve
-    </Button>
-  )}
-  {request.status !== 'rejected' && (
-    <Button
-      variant="contained"
-      color="secondary"
-      sx={{ marginLeft: '10px' }}
-      onClick={() => handleUpdateRequestStatus(request.request_id, 'rejected')}
-    >
-      Reject
-    </Button>
-  )}
-</TableCell>
-
+                      {userRole === 'speaker_agent' && (
+                        <TableCell>
+                          {request.status !== 'approved' && (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => handleUpdateRequestStatus(request.request_id, 'approved')}
+                            >
+                              Approve
+                            </Button>
+                          )}
+                          {request.status !== 'rejected' && (
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              sx={{ marginLeft: '10px' }}
+                              onClick={() => handleUpdateRequestStatus(request.request_id, 'rejected')}
+                            >
+                              Reject
+                            </Button>
+                          )}
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>

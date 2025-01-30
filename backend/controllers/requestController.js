@@ -1,5 +1,5 @@
 // Import necessary dependencies
-import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
+import UserModel from '../Models/UserModel.js'; // Assuming the path to UserModel is correct
 import pool from '../database/db.js'; // Assuming the path to the database connection is correct
 import { generateResetToken, } from '../middleware/authMiddleware.js ';
 import sgMail from '@sendgrid/mail';
@@ -7,25 +7,58 @@ import sgMail from '@sendgrid/mail';
 // Initialize SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// Assuming you're using the authentication middleware to decode the JWT token
+export const fetchUserRequests = async (req, res) => {
+  try {
+    const userId = req.user.userId;  // Access the userId from the authenticated request
+    console.log("Decoded user ID:", userId);
+
+
+    // Check for any issues with the user ID
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is missing." });
+    }
+
+    // Fetch requests for the user from your model/database
+    const requests = await UserModel.getUserRequests(userId);
+
+    // If no requests are found, you might want to return an empty array or a message
+    if (!requests) {
+      return res.status(404).json({ message: "No requests found for this user." });
+    }
+
+    // Send the fetched requests as a response
+    res.json(requests);
+  } catch (err) {
+    console.error("Error fetching requests:", err);
+
+    // Return a 500 error if there was an issue with fetching the requests
+    res.status(500).json({ message: "Error fetching requests.", error: err.message });
+  }
+};
+
+
+
+
 // === API Route to Get Requests by Shared Account ID ===
 export const getRequests = async (req, res) => {
   const { sharedAccountId } = req.params;
 
   if (!sharedAccountId || isNaN(sharedAccountId)) {
-    return res.status(400).json({ error: 'Ogiltigt eller saknat sharedAccountId' });
+    return res.status(400).json({ error: 'Invalid or missing sharedAccountId' });
   }
 
   try {
     const requests = await UserModel.getRequestsBySharedAccount(sharedAccountId);
 
     if (requests.length === 0) {
-      return res.status(404).json({ message: 'Inga förfrågningar hittades för det här kontot' });
+      return res.status(404).json({ message: 'No requests found for this account' });
     }
 
     res.json(requests);
   } catch (error) {
     console.error('Error fetching requests:', error.message);
-    res.status(500).json({ error: 'Ett fel uppstod vid hämtning av förfrågningar' });
+    res.status(500).json({ error: 'An error occurred while fetching the requests' });
   }
 };
 
@@ -34,60 +67,58 @@ export const approveRequest = async (req, res) => {
   const { requestId } = req.body;
 
   try {
-    // Försök att godkänna förfrågan
+    // Attempt to approve the request
     const updatedRequest = await UserModel.approveRequest(requestId, req.user.shared_account_id);
 
     if (!updatedRequest) {
-      return res.status(404).json({ message: 'Förfrågan hittades inte eller är otillåten' });
+      return res.status(404).json({ message: 'Request not found or unauthorized' });
     }
 
-    // Skicka bekräftelse till klienten
+    // Send confirmation to the client
     res.status(200).json({
-      message: 'Förfrågan har godkänts framgångsrikt och en bekräftelse har skickats till användaren.',
+      message: 'Request has been successfully approved, and a confirmation has been sent to the user.',
       updatedRequest,
     });
   } catch (error) {
     console.error('Error approving request:', error);
-    res.status(500).json({ message: 'Fel vid godkännande av förfrågan' });
+    res.status(500).json({ message: 'Error approving the request' });
   }
 };
-
 
 // === Reject Request Route ===
 export const rejectRequest = async (req, res) => {
   const { requestId } = req.body;
 
   try {
-    // Försök att avvisa förfrågan
+    // Attempt to reject the request
     const updatedRequest = await UserModel.rejectRequest(requestId, req.user.shared_account_id);
 
     if (!updatedRequest) {
-      return res.status(404).json({ message: 'Förfrågan hittades inte eller är otillåten' });
+      return res.status(404).json({ message: 'Request not found or unauthorized' });
     }
 
-    // Skicka bekräftelse till klienten
+    // Send confirmation to the client
     res.status(200).json({
-      message: 'Förfrågan har avvisats och en bekräftelse har skickats till användaren.',
+      message: 'Request has been rejected, and a confirmation has been sent to the user.',
       updatedRequest,
     });
   } catch (error) {
     console.error('Error rejecting request:', error);
-    res.status(500).json({ message: 'Fel vid avvisande av förfrågan' });
+    res.status(500).json({ message: 'Error rejecting the request' });
   }
 };
-
 
 // === POST Route: Update Request Status ===
 export const updateRequestStatus = async (req, res) => {
   const { requestId, newStatus } = req.body;
 
   try {
-    // Säkerställ att den nya statusen är godkänd eller avvisad
+    // Ensure the new status is either 'approved' or 'rejected'
     if (!['approved', 'rejected'].includes(newStatus)) {
-      return res.status(400).json({ message: 'Ogiltigt statusvärde' });
+      return res.status(400).json({ message: 'Invalid status value' });
     }
 
-    // Anropa modellen för att uppdatera status och skicka bekräftelsemail
+    // Call the model to update the status and send a confirmation email
     const updatedRequest = await UserModel.updateRequestStatus(
       requestId,
       newStatus,
@@ -95,15 +126,14 @@ export const updateRequestStatus = async (req, res) => {
     );
 
     res.status(200).json({
-      message: `Förfrågan har ${newStatus === 'approved' ? 'godkänts' : 'avvisats'} och bekräftelse har skickats till användaren.`,
+      message: `The request has been ${newStatus === 'approved' ? 'approved' : 'rejected'}, and a confirmation has been sent to the user.`,
       updatedRequest,
     });
   } catch (error) {
     console.error('Error updating request status:', error);
-    res.status(500).json({ message: 'Fel vid uppdatering av status' });
+    res.status(500).json({ message: 'Error updating status' });
   }
 };
-
 
 // === POST Route: Send a new request ===
 export const sendRequest = async (req, res) => {
@@ -147,15 +177,11 @@ export const sendRequest = async (req, res) => {
   }
 };
 
-
-
-
-
 // Function for requesting password reset
 export const requestPasswordReset = async (req, res) => {
   try {
     const { email, username } = req.body;
-    
+
     // Log the incoming request to see what is being received
     console.log('Received email:', email);
     console.log('Received username:', username);
@@ -194,6 +220,3 @@ export const requestPasswordReset = async (req, res) => {
     return res.status(500).json({ message: 'Failed to process the request' });
   }
 };
-
-
-

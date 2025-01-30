@@ -48,7 +48,6 @@ const UsersList = () => {
 
       const token = sessionStorage.getItem('token') || localStorage.getItem('token');
 
-
       console.log("Token from localStorage:", token); // Log the token to check
 
       if (!token) {
@@ -151,7 +150,14 @@ const UsersList = () => {
                 <List>
                   {users.map((userItem, index) => (
                     <ListItem key={index} divider sx={{ "&:hover": { backgroundColor: "rgba(57, 73, 171, 0.1)" } }}>
-                      <ListItemText primary={userItem.username} />
+                      <ListItemText
+                        primary={userItem.username}
+                        secondary={
+                          <Typography sx={{ textAlign: 'right', fontStyle: 'italic', color: 'gray' }}>
+                            {userItem.role}
+                          </Typography>
+                        } // Role aligned to the right
+                      />
                     </ListItem>
                   ))}
                 </List>

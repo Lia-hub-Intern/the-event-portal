@@ -134,7 +134,7 @@ export default function Navbar({ navBarLinks }) {
       <ListItemText primary={` ${user?.username || "User"}`} />
     </MenuItem>,
     <Divider key="divider" />,
-    user?.role === "speaker_agent" && (
+    user?.role !== "speaker" && (
       <MenuItem
         key="add-speaker"
         component={NavLink}
@@ -149,28 +149,28 @@ export default function Navbar({ navBarLinks }) {
         View Users List
       </MenuItem>
     ),
-    
-    user?.role === "speaker_agent" ? (
+    user?.role === "speaker_agent" && (
       <MenuItem
         key="requests"
         component={NavLink}
-        to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId för speaker agent
+        to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId
         onClick={handleMenuClose}
       >
         View Requests
       </MenuItem>
-    ) : (
-      // För icke speaker agents, visa bara egna förfrågningar (utan sharedAccountId)
+    ),
+    
+    (user?.role !== "speaker_agent" && (
       <MenuItem
-        key="myRequest"
+        key="user-requests"
         component={NavLink}
-        to={`/requests/${user.id}`} // Använd användarens egna ID för att visa deras egna förfrågningar
+        to={`/user-requests`}
         onClick={handleMenuClose}
       >
-        View My Request
+        My Requests
       </MenuItem>
-    ),
-
+    )
+  ),
     
     <MenuItem key="logout" onClick={handleLogout}>
       Logout
