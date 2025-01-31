@@ -495,127 +495,152 @@ getRequestsByUserId: async (userId) => {
   },
 
 
- /**
- * Approve a request by updating its status to 'approved'
- * @param {number} requestId - The ID of the request to approve
- * @param {number} sharedAccountId - The ID of the shared account linked to the request
- * @returns {Promise<object>} The updated request data
- */
-approveRequest: async (requestId, sharedAccountId) => {
+// UserModel.js
+ approveRequest: async (requestId, userId) => {
   const query = `
-    UPDATE requests
-    SET status = 'approved'
-    WHERE id = $1 AND shared_account_id = $2
-    RETURNING id, status, shared_account_id, email, event_details
+    SELECT id, status, shared_account_id, email, event_details, speaker_id
+    FROM requests
+    WHERE id = $1
   `;
-  const values = [requestId, sharedAccountId];
-
+  
   try {
-    const result = await pool.query(query, values);
-    
+    const result = await pool.query(query, [requestId]);
+
     if (result.rows.length === 0) {
-      throw new Error('Request not found or already approved.');
+      throw new Error('Request not found.');
     }
 
-    const updatedRequest = result.rows[0];
-    
-    // Send confirmation email to the user
-    const { email, event_details } = updatedRequest;
-    const msg = {
-      to: email,
-      from: process.env.SENDER_EMAIL, // Sender's email (from .env)
-      subject: 'Request Approved',
-      text: `Your request has been approved. Event details:\n\n${event_details}`,
-      html: `<p>Your request has been approved. Event details:</p><p><strong>${event_details}</strong></p>`,
-    };
+    const requestData = result.rows[0];
 
-    // Send email
-    await sgMail.send(msg);
-    console.log('Confirmation sent to:', email);
+    // Kolla om användaren är talarbyrån eller talaren
+    if (userId === requestData.shared_account_id || userId === requestData.speaker_id) {
+      // Godkänn förfrågan genom att uppdatera statusen
+      const updateQuery = `
+        UPDATE requests
+        SET status = 'approved'
+        WHERE id = $1
+        RETURNING id, status, shared_account_id, email, event_details
+      `;
+      
+      const updateResult = await pool.query(updateQuery, [requestId]);
 
-    return updatedRequest; // Return the updated request
+      const updatedRequest = updateResult.rows[0];
+
+      // Skicka bekräftelse via e-post
+      const { email, event_details } = updatedRequest;
+      const msg = {
+        to: email,
+        from: process.env.SENDER_EMAIL,
+        subject: 'Request Approved',
+        text: `Your request has been approved. Event details:\n\n${event_details}`,
+        html: `<p>Your request has been approved. Event details:</p><p><strong>${event_details}</strong></p>`,
+      };
+
+      // Skicka e-post
+      await sgMail.send(msg);
+      console.log('Confirmation sent to:', email);
+
+      return updatedRequest; // Returnerar den uppdaterade förfrågan
+    } else {
+      throw new Error('Unauthorized to approve this request');
+    }
   } catch (err) {
-    console.error("Error in approveRequest:", err.message);
+    console.error('Error in approveRequest:', err.message);
     throw new Error('Failed to approve request');
   }
 },
 
-/**
- * Reject a request by updating its status to 'rejected'
- * @param {number} requestId - The ID of the request to reject
- * @param {number} sharedAccountId - The ID of the shared account linked to the request
- * @returns {Promise<object>} The updated request data
- */
-rejectRequest: async (requestId, sharedAccountId) => {
+
+// UserModel.js
+rejectRequest: async (requestId, userId) => {
   const query = `
-    UPDATE requests
-    SET status = 'rejected'
-    WHERE id = $1 AND shared_account_id = $2 
-    RETURNING id, status, shared_account_id, email, event_details
+    SELECT id, status, shared_account_id, email, event_details, speaker_id
+    FROM requests
+    WHERE id = $1
   `;
-  const values = [requestId, sharedAccountId];
 
   try {
-    const result = await pool.query(query, values);
+    const result = await pool.query(query, [requestId]);
 
     if (result.rows.length === 0) {
-      throw new Error('Request not found or already rejected.');
+      throw new Error('Request not found.');
     }
 
-    const updatedRequest = result.rows[0];
-    
-    // Send rejection email to the user
-    const { email, event_details } = updatedRequest;
-    const msg = {
-      to: email,
-      from: process.env.SENDER_EMAIL, // Sender's email (from .env)
-      subject: 'Request Rejected',
-      text: `Your request has been rejected. Event details:\n\n${event_details}`,
-      html: `<p>Your request has been rejected. Event details:</p><p><strong>${event_details}</strong></p>`,
-    };
+    const requestData = result.rows[0];
 
-    // Send email
-    await sgMail.send(msg);
-    console.log('Confirmation email sent to:', email);
+    // Kontrollera om användaren är talarbyrån eller talaren
+    if (userId === requestData.shared_account_id || userId === requestData.speaker_id) {
+      const updateQuery = `
+        UPDATE requests
+        SET status = 'rejected'
+        WHERE id = $1
+        RETURNING id, status, shared_account_id, email, event_details
+      `;
 
-    return updatedRequest; // Return the updated request
+      const updateResult = await pool.query(updateQuery, [requestId]);
+
+      const updatedRequest = updateResult.rows[0];
+
+      // Skicka e-postbekräftelse
+      const { email, event_details } = updatedRequest;
+      const msg = {
+        to: email,
+        from: process.env.SENDER_EMAIL,
+        subject: 'Request Rejected',
+        text: `Your request has been rejected. Event details:\n\n${event_details}`,
+        html: `<p>Your request has been rejected. Event details:</p><p><strong>${event_details}</strong></p>`,
+      };
+
+      // Skicka e-post
+      await sgMail.send(msg);
+      console.log('Rejection email sent to:', email);
+
+      return updatedRequest; // Returnerar den uppdaterade förfrågan
+    } else {
+      throw new Error('Unauthorized to reject this request');
+    }
   } catch (err) {
-    console.error("Error in rejectRequest:", err.message);
+    console.error('Error in rejectRequest:', err.message);
     throw new Error('Failed to reject request');
   }
 },
 
-
-updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
-  // Första queryn för att hämta förfrågan och talarens info
+// UserModel.js
+updateRequestStatus: async (requestId, newStatus, userId) => {
   const requestQuery = `
-    SELECT id, status, email, event_details, speaker_id
+    SELECT id, status, email, event_details, speaker_id, shared_account_id
     FROM requests
-    WHERE id = $1 AND shared_account_id = $2
+    WHERE id = $1
   `;
-  const requestValues = [requestId, sharedAccountId];
 
-  // SQL query för att hämta talarens namn
   const speakerQuery = `
     SELECT first_name, last_name
     FROM users
     WHERE id = $1;
   `;
-  
+
   try {
     // Hämta förfrågan
-    const requestResult = await pool.query(requestQuery, requestValues);
-    
+    const requestResult = await pool.query(requestQuery, [requestId]);
+
     if (requestResult.rows.length === 0) {
       throw new Error('Request not found or unauthorized');
     }
 
     const updatedRequest = requestResult.rows[0];
-    const { email, event_details, speaker_id } = updatedRequest;
+    const { email, event_details, speaker_id, shared_account_id } = updatedRequest;
+
+    // Logga information för felsökning
+    console.log(`User ID from token: ${userId}, Shared Account ID: ${shared_account_id}, Speaker ID: ${speaker_id}`);
+
+    // Kontrollera om användaren är auktoriserad att uppdatera status
+    if (userId !== shared_account_id && userId !== speaker_id) {
+      throw new Error('Unauthorized to update this request status');
+    }
 
     // Hämta talarens namn
     const speakerResult = await pool.query(speakerQuery, [speaker_id]);
-    
+
     if (speakerResult.rows.length === 0) {
       console.error('Speaker not found for ID:', speaker_id);
       throw new Error('Speaker not found');
@@ -628,10 +653,10 @@ updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
     const updateQuery = `
       UPDATE requests
       SET status = $1
-      WHERE id = $2 AND shared_account_id = $3
+      WHERE id = $2
       RETURNING id, status, email, event_details
     `;
-    const updateValues = [newStatus, requestId, sharedAccountId];
+    const updateValues = [newStatus, requestId];
 
     const updateResult = await pool.query(updateQuery, updateValues);
 
@@ -642,12 +667,12 @@ updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
     // Förbered e-postmeddelandet
     const msg = {
       to: email,
-      from: process.env.SENDER_EMAIL, // Use the email defined in the .env file
+      from: process.env.SENDER_EMAIL,
       subject: `Request ${newStatus === 'approved' ? 'Approved' : 'Rejected'}`,
       text: `Your request for speaker ${first_name} ${last_name} has been successfully ${newStatus}. Event details:\n\n${event_details}`,
       html: `<p>Your request for speaker <strong>${first_name} ${last_name}</strong> has been <strong>${newStatus === 'approved' ? 'Approved' : 'Rejected'}</strong>. Event details:</p><p><strong>${event_details}</strong></p>`,
     };
-    
+
     // Skicka e-posten
     await sgMail.send(msg);
     console.log('Confirmation email sent to:', email);
@@ -658,7 +683,6 @@ updateRequestStatus: async (requestId, newStatus, sharedAccountId) => {
     throw new Error('Failed to update request status');
   }
 },
-
 
   
   

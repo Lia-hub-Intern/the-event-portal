@@ -28,10 +28,7 @@ router.post('/api/requests/approve', authenticateJWT, approveRequest);
 router.post('/api/requests/reject', authenticateJWT, rejectRequest);
 router.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
 router.post('/api/requests', sendRequest);
-router.get('/api/user-requests', authenticateJWT, (req, res, next) => {
-  console.log('API requests route hit');
-  next();
-}, fetchUserRequests);
+router.get('/api/user-requests', authenticateJWT, fetchUserRequests);
 
 
 

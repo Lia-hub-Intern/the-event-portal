@@ -62,21 +62,17 @@ export const getRequests = async (req, res) => {
   }
 };
 
+
 // === Approve Request Route ===
 export const approveRequest = async (req, res) => {
   const { requestId } = req.body;
+  const userId = req.user.id;  // Vi hämtar ID:t från den inloggade användaren
 
   try {
-    // Attempt to approve the request
-    const updatedRequest = await UserModel.approveRequest(requestId, req.user.shared_account_id);
+    const updatedRequest = await UserModel.approveRequest(requestId, userId);
 
-    if (!updatedRequest) {
-      return res.status(404).json({ message: 'Request not found or unauthorized' });
-    }
-
-    // Send confirmation to the client
     res.status(200).json({
-      message: 'Request has been successfully approved, and a confirmation has been sent to the user.',
+      message: 'Request has been successfully approved.',
       updatedRequest,
     });
   } catch (error) {
@@ -85,21 +81,16 @@ export const approveRequest = async (req, res) => {
   }
 };
 
-// === Reject Request Route ===
+
+// Reject Request Route
 export const rejectRequest = async (req, res) => {
   const { requestId } = req.body;
+  const userId = req.user.id;  // Hämta den inloggade användarens ID
 
   try {
-    // Attempt to reject the request
-    const updatedRequest = await UserModel.rejectRequest(requestId, req.user.shared_account_id);
-
-    if (!updatedRequest) {
-      return res.status(404).json({ message: 'Request not found or unauthorized' });
-    }
-
-    // Send confirmation to the client
+    const updatedRequest = await UserModel.rejectRequest(requestId, userId);
     res.status(200).json({
-      message: 'Request has been rejected, and a confirmation has been sent to the user.',
+      message: 'Request has been successfully rejected.',
       updatedRequest,
     });
   } catch (error) {
@@ -111,19 +102,16 @@ export const rejectRequest = async (req, res) => {
 // === POST Route: Update Request Status ===
 export const updateRequestStatus = async (req, res) => {
   const { requestId, newStatus } = req.body;
+  const userId = req.user.userId; // Hämta userId från token
 
   try {
-    // Ensure the new status is either 'approved' or 'rejected'
+    // Kontrollera att den nya statusen är giltig
     if (!['approved', 'rejected'].includes(newStatus)) {
       return res.status(400).json({ message: 'Invalid status value' });
     }
 
-    // Call the model to update the status and send a confirmation email
-    const updatedRequest = await UserModel.updateRequestStatus(
-      requestId,
-      newStatus,
-      req.user.shared_account_id
-    );
+    // Anropa modellen för att uppdatera statusen och skicka bekräftelsemail
+    const updatedRequest = await UserModel.updateRequestStatus(requestId, newStatus, userId);
 
     res.status(200).json({
       message: `The request has been ${newStatus === 'approved' ? 'approved' : 'rejected'}, and a confirmation has been sent to the user.`,
@@ -134,6 +122,8 @@ export const updateRequestStatus = async (req, res) => {
     res.status(500).json({ message: 'Error updating status' });
   }
 };
+
+
 
 // === POST Route: Send a new request ===
 export const sendRequest = async (req, res) => {
