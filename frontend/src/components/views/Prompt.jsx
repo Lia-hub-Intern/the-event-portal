@@ -35,12 +35,13 @@ export default function Prompt() {
     const [cleared, setCleared] = useState(false);
     const [dateStart, setDateStart] = useState(null);
     const [dateEnd, setDateEnd] = useState(null);
-    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [selectedEvents, setSelectedEvents] = useState([]);
     const [email, setEmail] = useState("");
     const [errorEvent, setErrorEvent] = useState({
         error: false,
         message: "",
     });
+    const [showEmailField, setShowEmailField] = useState(false); // To control the email input field visibility
 
     useEffect(() => {
         if (cleared) {
@@ -74,6 +75,7 @@ export default function Prompt() {
                 const responseData = await response.json();
                 const events = textToArray(responseData.data);
                 setResult(events);
+                setShowEmailField(true); // Show email field after generate button is clicked
             } else {
                 const errorResponse = await response.json();
                 setErrorEvent({ error: true, message: errorResponse.error });
@@ -87,15 +89,30 @@ export default function Prompt() {
     }
 
     const handleCheckboxChange = (event, item) => {
-        setSelectedEvent(selectedEvent === item ? null : item);
-        setEmail("");
+        setSelectedEvents((prevSelectedEvents) => {
+            if (prevSelectedEvents.includes(item)) {
+                return prevSelectedEvents.filter((event) => event !== item);
+            } else {
+                return [...prevSelectedEvents, item];
+            }
+        });
     };
 
+    // Funktion för att skicka e-post för alla markerade events
     const handleEmailSubmit = (event) => {
-        event.preventDefault();
-        alert(`Event: ${selectedEvent}, Email: ${email}`);
-        setSelectedEvent(null);
-        setEmail("");
+        event.preventDefault(); // Förhindra att sidan laddas om
+
+        if (email && selectedEvents.length > 0) {
+            // Här skickar vi e-post för alla valda events.
+            alert(`Sending email to: ${email} for events: ${selectedEvents.join(", ")}`);
+
+            // Gör något med emailen, t.ex. skicka den till servern
+            // Reset email state and selected events after sending
+            setEmail("");
+            setSelectedEvents([]);
+        } else {
+            alert("Please enter an email and select at least one event.");
+        }
     };
 
     return (
@@ -246,7 +263,7 @@ export default function Prompt() {
                                         <li key={itemIndex}>
                                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                                 <Checkbox
-                                                    checked={selectedEvent === item}
+                                                    checked={selectedEvents.includes(item)}
                                                     onChange={(e) => handleCheckboxChange(e, item)}
                                                     sx={{
                                                         color: "#7f00ff",
@@ -257,51 +274,6 @@ export default function Prompt() {
                                                     {item}
                                                 </Typography>
                                             </Box>
-                                            {selectedEvent === item && (
-                                                <form
-                                                    onSubmit={handleEmailSubmit}
-                                                    style={{
-                                                        marginTop: "10px",
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                    }}
-                                                >
-                                                    <TextField
-                                                        type="email"
-                                                        placeholder="Enter your email"
-                                                        value={email}
-                                                        onChange={(e) => setEmail(e.target.value)}
-                                                        required
-                                                        size="small"
-                                                        sx={{
-                                                            backgroundColor: "#fff",
-                                                            color: "#000",
-                                                            "& .MuiInputBase-input": {
-                                                                color: "#000",
-                                                            },
-                                                            "& .MuiOutlinedInput-root": {
-                                                                borderRadius: "5px",
-                                                                "& fieldset": {
-                                                                    borderColor: "#ccc",
-                                                                },
-                                                                "&:hover fieldset": {
-                                                                    borderColor: "#7f00ff",        },
-                                                            },
-                                                        }}
-                                                    />
-                                                    <Button
-                                                        type="submit"
-                                                        variant="contained"
-                                                        size="small"
-                                                        sx={{
-                                                            backgroundColor: "#7f00ff",
-                                                            ":hover": { backgroundColor: "#9c27b0" },
-                                                        }}
-                                                    >
-                                                        Submit
-                                                    </Button>
-                                                </form>
-                                            )}
                                         </li>
                                     ))}
                                 </ul>
@@ -322,6 +294,47 @@ export default function Prompt() {
                         </Typography>
                     )}
                 </Box>
+
+                {/* E-mail Input and Submit Button for Multiple Events */}
+                {showEmailField && selectedEvents.length > 0 && (
+                    <Box sx={{ marginTop: "20px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <TextField
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            size="small"
+                            sx={{
+                                backgroundColor: "#fff",
+                                color: "#000",
+                                marginBottom: "10px",
+                                "& .MuiInputBase-input": {
+                                    color: "#000",
+                                },
+                                "& .MuiOutlinedInput-root": {
+                                    borderRadius: "5px",
+                                    "& fieldset": {
+                                        borderColor: "#ccc",
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: "#7f00ff",
+                                    },
+                                },
+                            }}
+                        />
+                        <Button
+                            onClick={handleEmailSubmit}
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#7f00ff",
+                                ":hover": { backgroundColor: "#9c27b0" },
+                            }}
+                        >
+                            Send Email to Selected Events
+                        </Button>
+                    </Box>
+                )}
             </Paper>
         </Box>
     );
