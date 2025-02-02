@@ -1,4 +1,3 @@
-// Import necessary dependencies
 import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
 import pool from '../database/db.js'; // Assuming the path to the database connection is correct
 import { generateResetToken, } from '../middleware/authMiddleware.js '
@@ -124,9 +123,6 @@ export const sendRequest = async (req, res) => {
   }
 };
 
-
-
-
 // Function for requesting password reset
 export const requestPasswordReset = async (req, res) => {
   try {
@@ -170,6 +166,3 @@ export const requestPasswordReset = async (req, res) => {
     return res.status(500).json({ message: 'Failed to process the request' });
   }
 };
-
-
-
