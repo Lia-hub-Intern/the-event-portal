@@ -1,4 +1,3 @@
-// Importera UserModel med korrekt sökväg
 import UserModel from '../models/UserModel.js';
 
 // === ROUTER: Add Speaker ===
@@ -99,5 +98,4 @@ export const beASpeaker = (req, res) => {
 
 // Correct export of the controller functions
 export default { addSpeaker, removeSpeaker, getSpeakers, beASpeaker };
-
 
