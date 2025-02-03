@@ -149,26 +149,29 @@ export default function Navbar({ navBarLinks }) {
         View Users List
       </MenuItem>
     ),
-    user?.role !== "speaker" && (
+    user?.role === "speaker_agent" && (
       <MenuItem
-        key="requests-form-list"
+        key="requests"
         component={NavLink}
-        to="/RequestsPage"
-        onClick={handleMenuClose}
-      >
-        View Requestform List
-      </MenuItem>
-    ),
-    user?.role !== "speaker" && (
-      <MenuItem
-                    key="requests"
-        component={NavLink}
-                    to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId
+        to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId
         onClick={handleMenuClose}
       >
         View Requests
       </MenuItem>
     ),
+    
+    (user?.role !== "speaker_agent" && (
+      <MenuItem
+        key="user-requests"
+        component={NavLink}
+        to={`/user-requests`}
+        onClick={handleMenuClose}
+      >
+        My Requests
+      </MenuItem>
+    )
+  ),
+    
     <MenuItem key="logout" onClick={handleLogout}>
       Logout
     </MenuItem>

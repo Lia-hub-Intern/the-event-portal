@@ -22,7 +22,7 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('speaker');
+  const [role, setRole] = useState('speaker'); // Default role is 'speaker'
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -43,23 +43,23 @@ export default function Register() {
 
     let formErrors = {};
 
-    // Validera lösenordslängd
+    // Validate password length
     if (password.length < 8) {
       formErrors.password = 'Password must be at least 8 characters long.';
     }
 
-    // Validera att lösenorden matchar
+    // Validate password match
     if (password !== confirmPassword) {
       formErrors.confirmPassword = "Passwords don't match.";
     }
 
-    // Validera e-postformat
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       formErrors.email = 'Invalid email format.';
     }
 
-    // Om det finns valideringsfel, sätt felmeddelandena
+    // If there are validation errors, set error messages
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
@@ -69,7 +69,16 @@ export default function Register() {
       const response = await fetch('http://localhost:5000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, role, first_name: firstName, last_name: lastName, email, phone_number: phoneNumber, company_name: companyName }),
+        body: JSON.stringify({ 
+          username, 
+          password, 
+          role, 
+          first_name: firstName, 
+          last_name: lastName, 
+          email, 
+          phone_number: phoneNumber, 
+          company_name: companyName 
+        }),
       });
 
       const data = await response.json();
@@ -84,7 +93,7 @@ export default function Register() {
     }
   };
 
-  // Visa bara meddelandet efter registrering
+  // Show success message after registration
   if (isRegistered) {
     return (
       <Container maxWidth="xs">
@@ -131,7 +140,7 @@ export default function Register() {
     );
   }
 
-  // Rendera formuläret om användaren inte är registrerad
+  // Render the form if user is not registered
   return (
     <Container maxWidth="xs">
       <Paper
@@ -256,6 +265,7 @@ export default function Register() {
               label="Role"
               required
             >
+              <MenuItem value="speaker_agent">Speaker Agent</MenuItem> 
               <MenuItem value="speaker">Speaker</MenuItem>
               <MenuItem value="user_account">User</MenuItem>
             </Select>

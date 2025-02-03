@@ -85,8 +85,11 @@ export default function App() {
               }
             />
             <Route path="/UsersList" element={<UsersList />} />
-            <Route path="/RequestsPage" element={<RequestsPage />} />
+            
             <Route path="/conference" element={<Conference />} />
+  <          Route path="/user-requests" element={<RequestsPage />} />
+
+
             <Route
               path="/partners"
               element={<Partners title="Become one of our partners" />}

@@ -1,93 +1,142 @@
-import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
+// Import necessary dependencies
+import UserModel from '../Models/UserModel.js'; // Assuming the path to UserModel is correct
 import pool from '../database/db.js'; // Assuming the path to the database connection is correct
-import { generateResetToken, } from '../middleware/authMiddleware.js '
+import { generateResetToken, } from '../middleware/authMiddleware.js ';
+import sgMail from '@sendgrid/mail';
+
+// Initialize SendGrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Assuming you're using the authentication middleware to decode the JWT token
+export const fetchUserRequests = async (req, res) => {
+  try {
+    const userId = req.user.userId;  // Access the userId from the authenticated request
+    console.log("Decoded user ID:", userId);
+
+
+    // Check for any issues with the user ID
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is missing." });
+    }
+
+    // Fetch requests for the user from your model/database
+    const requests = await UserModel.getUserRequests(userId);
+
+    // If no requests are found, you might want to return an empty array or a message
+    if (!requests) {
+      return res.status(404).json({ message: "No requests found for this user." });
+    }
+
+    // Send the fetched requests as a response
+    res.json(requests);
+  } catch (err) {
+    console.error("Error fetching requests:", err);
+
+    // Return a 500 error if there was an issue with fetching the requests
+    res.status(500).json({ message: "Error fetching requests.", error: err.message });
+  }
+};
+
+
+
 
 // === API Route to Get Requests by Shared Account ID ===
 export const getRequests = async (req, res) => {
   const { sharedAccountId } = req.params;
 
   if (!sharedAccountId || isNaN(sharedAccountId)) {
-    return res.status(400).json({ error: 'Ogiltigt eller saknat sharedAccountId' });
+    return res.status(400).json({ error: 'Invalid or missing sharedAccountId' });
   }
 
   try {
     const requests = await UserModel.getRequestsBySharedAccount(sharedAccountId);
 
     if (requests.length === 0) {
-      return res.status(404).json({ message: 'Inga förfrågningar hittades för det här kontot' });
+      return res.status(404).json({ message: 'No requests found for this account' });
     }
 
     res.json(requests);
   } catch (error) {
     console.error('Error fetching requests:', error.message);
-    res.status(500).json({ error: 'Ett fel uppstod vid hämtning av förfrågningar' });
+    res.status(500).json({ error: 'An error occurred while fetching the requests' });
   }
 };
+
 
 // === Approve Request Route ===
 export const approveRequest = async (req, res) => {
   const { requestId } = req.body;
+  const userId = req.user.id;  // Vi hämtar ID:t från den inloggade användaren
 
   try {
-    const updatedRequest = await UserModel.approveRequest(requestId, req.user.shared_account_id);
-    res.status(200).json(updatedRequest);
+    const updatedRequest = await UserModel.approveRequest(requestId, userId);
+
+    res.status(200).json({
+      message: 'Request has been successfully approved.',
+      updatedRequest,
+    });
   } catch (error) {
     console.error('Error approving request:', error);
-    res.status(500).json({ message: 'Error approving request' });
+    res.status(500).json({ message: 'Error approving the request' });
   }
 };
 
-// === Reject Request Route ===
+
+// Reject Request Route
 export const rejectRequest = async (req, res) => {
   const { requestId } = req.body;
+  const userId = req.user.id;  // Hämta den inloggade användarens ID
 
   try {
-    const updatedRequest = await UserModel.rejectRequest(requestId, req.user.shared_account_id);
-    res.status(200).json(updatedRequest);
+    const updatedRequest = await UserModel.rejectRequest(requestId, userId);
+    res.status(200).json({
+      message: 'Request has been successfully rejected.',
+      updatedRequest,
+    });
   } catch (error) {
     console.error('Error rejecting request:', error);
-    res.status(500).json({ message: 'Error rejecting request' });
+    res.status(500).json({ message: 'Error rejecting the request' });
   }
 };
 
 // === POST Route: Update Request Status ===
 export const updateRequestStatus = async (req, res) => {
   const { requestId, newStatus } = req.body;
+  const userId = req.user.userId; // Hämta userId från token
 
   try {
-    // Ensure the new status is either 'approved' or 'rejected'
+    // Kontrollera att den nya statusen är giltig
     if (!['approved', 'rejected'].includes(newStatus)) {
-      return res.status(400).json({ message: 'Ogiltigt statusvärde' });
+      return res.status(400).json({ message: 'Invalid status value' });
     }
 
-    const updatedRequest = await UserModel.updateRequestStatus(
-      requestId,
-      newStatus,
-      req.user.shared_account_id
-    );
+    // Anropa modellen för att uppdatera statusen och skicka bekräftelsemail
+    const updatedRequest = await UserModel.updateRequestStatus(requestId, newStatus, userId);
 
-    if (!updatedRequest) {
-      return res.status(404).json({ message: 'Förfrågningen hittades inte eller är otillåten' });
-    }
-
-    res.status(200).json({ message: 'Förfrågningens status har uppdaterats', updatedRequest });
+    res.status(200).json({
+      message: `The request has been ${newStatus === 'approved' ? 'approved' : 'rejected'}, and a confirmation has been sent to the user.`,
+      updatedRequest,
+    });
   } catch (error) {
     console.error('Error updating request status:', error);
-    res.status(500).json({ message: 'Fel vid uppdatering av status' });
+    res.status(500).json({ message: 'Error updating status' });
   }
 };
 
+
+
 // === POST Route: Send a new request ===
 export const sendRequest = async (req, res) => {
-  const { speakerId, eventDetails } = req.body;
+  const { speakerId, eventDetails, email } = req.body;
 
-  if (!speakerId || !eventDetails) {
+  // Ensure all required fields are provided
+  if (!speakerId || !eventDetails || !email) {
     return res.status(400).json({ message: 'Missing information to create the request' });
   }
 
   try {
-    // Försök att hämta speaker från databasen
-    const speakerQuery = 'SELECT shared_account_id FROM users WHERE id = $1';
+    // Fetch the speaker from the database (if needed for further use, e.g., first and last name)
+    const speakerQuery = 'SELECT first_name, last_name, shared_account_id FROM users WHERE id = $1';
     const speakerResult = await pool.query(speakerQuery, [speakerId]);
 
     const speaker = speakerResult.rows[0];
@@ -95,28 +144,23 @@ export const sendRequest = async (req, res) => {
       return res.status(404).json({ message: 'Speaker not found' });
     }
 
-    const sharedAccountId = speaker.shared_account_id;
+    const { shared_account_id } = speaker;
 
-    console.log("Creating request with:", {
-      speakerId,
-      eventDetails,
-      sharedAccountId,
-      userId: req.user.userId, // User ID from the token
+    // Call the userModel's createRequest function to create the request and send the email
+    const newRequest = await UserModel.createRequest({
+      speaker_id: speakerId,
+      event_details: eventDetails,
+      status: 'pending',  // Assuming status is set to 'pending' by default
+      shared_account_id: shared_account_id,
+      email,
     });
 
-    // Skapa ny förfrågan, här använder vi textvärdet "pending"
-    const newRequest = await UserModel.createRequest(
-      {
-        speaker_id: speakerId,
-        event_details: eventDetails,
-        status: 'pending', // Använd textvärdet "pending"
-        shared_account_id: sharedAccountId,
-      },
-      req.user.userId // Använd userId från JWT token
-    );
+    // Return the new request details as a response
+    res.status(201).json({
+      message: 'Request created successfully',
+      newRequest,
+    });
 
-    // Skicka svar till klienten
-    res.status(201).json({ newRequest });
   } catch (error) {
     console.error('Error creating the request:', error);
     res.status(500).json({ message: 'Error creating the request' });
@@ -127,7 +171,7 @@ export const sendRequest = async (req, res) => {
 export const requestPasswordReset = async (req, res) => {
   try {
     const { email, username } = req.body;
-    
+
     // Log the incoming request to see what is being received
     console.log('Received email:', email);
     console.log('Received username:', username);

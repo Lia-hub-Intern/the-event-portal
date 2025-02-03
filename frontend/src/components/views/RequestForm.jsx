@@ -17,17 +17,12 @@ const RequestForm = () => {
   const [speakers, setSpeakers] = useState([]); // Available speakers
   const [selectedSpeaker, setSelectedSpeaker] = useState(null); // Selected speaker
   const [eventDetails, setEventDetails] = useState(""); // Event details
+  const [email, setEmail] = useState(""); // Email field
   const [error, setError] = useState(""); // Error message
   const [successMessage, setSuccessMessage] = useState(""); // Success message
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const [isSubmitted, setIsSubmitted] = useState(false); // To track form submission
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!isAuthenticated) {
-    navigate("/login", { state: { from: "/RequestForm" } });
-    }
-  }, [isAuthenticated, navigate]);
 
   // Fetch speakers from the API
   useEffect(() => {
@@ -38,47 +33,40 @@ const RequestForm = () => {
           throw new Error("Failed to fetch speakers");
         }
         const data = await response.json();
+        console.log("Fetched speakers:", data); // Log the fetched speakers
         setSpeakers(data);
       } catch (err) {
         console.error("Error fetching speakers:", err);
         setError("Could not fetch speakers. Please try again later.");
       }
     };
+    
 
     fetchSpeakers();
   }, []);
 
   // Send request to the server
-  const sendRequest = async (speakerId, eventDetails) => {
-    setIsLoading(true);
+  const sendRequest = async (speakerId, eventDetails, email) => {
     setError(""); // Clear any previous errors before sending the request
 
     try {
-      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-      if (!token) {
-        setError("You need to be logged in to make a request.");
-        setIsLoading(false);
-        return;
-      }
-
       const response = await fetch("http://localhost:5000/api/requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ speakerId, eventDetails }),
+        body: JSON.stringify({ speakerId, eventDetails, email }), // Include email here
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setSuccessMessage(data.message || "Request sent successfully!");
-        setIsSubmitted(true); // Mark as submitted
-        setEventDetails(""); // Clear event details after successful submission
-        setSelectedSpeaker(null); // Clear selected speaker
+        setIsSubmitted(true);
+        setEventDetails("");
+        setEmail("");
+        setSelectedSpeaker(null);
 
-        // Hide the success message after 5 seconds
         setTimeout(() => {
           setSuccessMessage("");
         }, 5000);
@@ -100,63 +88,32 @@ const RequestForm = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isLoading && selectedSpeaker && eventDetails.trim()) {
-      await sendRequest(selectedSpeaker.id, eventDetails.trim());
+    if (!isLoading && selectedSpeaker && eventDetails.trim() && email.trim()) {
+      await sendRequest(selectedSpeaker.id, eventDetails.trim(), email.trim());
     } else {
-      setError("Please select a speaker and provide valid event details.");
+      setError("Please select a speaker, provide valid event details, and enter a valid email.");
     }
   };
 
   return (
     <Container maxWidth="sm" sx={{ paddingTop: 4, paddingBottom: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: 4,
-          boxShadow: 3,
-          borderRadius: 3,
-          backgroundColor: "background.paper",
-          marginTop: 4,
-          border: "1px solid #ddd",
-        }}
-      >
-        <Typography
-          variant="h5"
-          sx={{ textAlign: "center", marginBottom: 4, fontWeight: "bold" }}
-        >
+      <Box sx={{ padding: 4, boxShadow: 3, borderRadius: 3 }}>
+        <Typography variant="h5" sx={{ textAlign: "center", marginBottom: 4 }}>
           Submit a Request
         </Typography>
 
-        {error && !isSubmitted && (
-          <Alert severity="error" sx={{ marginBottom: 2 }}>
-            {error}
-          </Alert>
-        )}
+        {error && !isSubmitted && <Alert severity="error">{error}</Alert>}
+        {successMessage && isSubmitted && <Alert severity="success">{successMessage}</Alert>}
 
-        {successMessage && isSubmitted && (
-          <Alert severity="success" sx={{ marginBottom: 2 }}>
-            {successMessage}
-          </Alert>
-        )}
-
-        {/* Hide form components if the form has been submitted */}
         {!isSubmitted ? (
-          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <form onSubmit={handleSubmit}>
             <Autocomplete
               value={selectedSpeaker}
               onChange={(e, newValue) => setSelectedSpeaker(newValue)}
               options={speakers}
               getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Speaker"
-                  required
-                  fullWidth
-                  sx={{ marginBottom: 3 }}
-                />
+                <TextField {...params} label="Select Speaker" required fullWidth sx={{ marginBottom: 3 }} />
               )}
               isOptionEqualToValue={(option, value) => option.id === value.id}
             />
@@ -172,11 +129,20 @@ const RequestForm = () => {
               sx={{ marginBottom: 3 }}
             />
 
+            <TextField
+              label="Your Email"
+              type="email"
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              sx={{ marginBottom: 3 }}
+            />
+
             <Button
               type="submit"
               variant="contained"
               fullWidth
-              disabled={isLoading}
               sx={{
                 padding: "12px",
                 fontSize: "1rem",
@@ -186,13 +152,12 @@ const RequestForm = () => {
                 "&:hover": { backgroundColor: "#1565c0" },
               }}
             >
-              {isLoading ? "Submitting..." : "Submit Request"}
+              Submit Request
             </Button>
           </form>
         ) : (
           <Button
             variant="contained"
-            color="primary"
             fullWidth
             sx={{
               padding: "12px",
@@ -202,7 +167,7 @@ const RequestForm = () => {
               color: "#fff",
               "&:hover": { backgroundColor: "#1565c0" },
             }}
-            onClick={() => setIsSubmitted(false)} // Reset the form to allow resubmission
+            onClick={() => setIsSubmitted(false)}
           >
             Submit Another Request
           </Button>

@@ -5,11 +5,12 @@ import {
   rejectRequest,
   updateRequestStatus,
   requestPasswordReset,
-  sendRequest
+  sendRequest,
+  fetchUserRequests
 } from '../controllers/requestController.js'
 import { registerUser, loginUser } from '../controllers/authController.js';
 import speakerController from '../controllers/speakerController.js';
-import { resetPassword, getUsersBySharedAccount, getUserRequests } from '../controllers/userController.js';
+import { resetPassword, getUsersById, getUsersBySharedAccount, getUserRequests } from '../controllers/userController.js';
 import { authenticateJWT } from '../middleware/authMiddleware.js';
 import EventRegistrationController from '../controllers/eventRegistrationController.js';
 const router = express.Router();
@@ -22,10 +23,15 @@ router.get('/api/BeASpeaker', authenticateJWT, speakerController.beASpeaker);
 
 // Request routes
 router.get('/api/requests/:sharedAccountId', authenticateJWT, getRequests);
+router.get('/requests/${userId}', authenticateJWT, getRequests);
 router.post('/api/requests/approve', authenticateJWT, approveRequest);
 router.post('/api/requests/reject', authenticateJWT, rejectRequest);
 router.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
-router.post('/api/requests', authenticateJWT, sendRequest);
+router.post('/api/requests', sendRequest);
+router.get('/api/user-requests', authenticateJWT, fetchUserRequests);
+
+
+
 
 
 // Authentication routes
@@ -39,7 +45,7 @@ router.route('/reset-password')
   .post(resetPassword); // Handle password change
 
 // User routes
-router.get('/api/users', authenticateJWT, getUsersBySharedAccount);
+router.get('/api/users', authenticateJWT, getUsersBySharedAccount, getUsersById);
 router.get('/api/requests/user-requests/:userId', authenticateJWT, getUserRequests);
 
 
