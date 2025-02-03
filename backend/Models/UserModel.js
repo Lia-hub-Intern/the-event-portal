@@ -739,7 +739,7 @@ createRequest: async (requestData) => {
       throw new Error('Error sending confirmation email: ' + emailError.message);
     }
 
-    // Return the created request object
+    // Return the created request object.
     return result.rows[0];
   } catch (error) {
     console.error('Error creating the request:', error.message);
