@@ -1,28 +1,4 @@
-/**
- * Developer Full Stack: Darwin Rengifo
- *
- * Create Date: 2024-08-24
- *     Program : Navbar.jsx
- *   Path Name : stagefider/frontend/src/components/navbar
- *       Tools : NodeJS, React, Mterial UI
- *
- * Description:
- * - create component Navbar and displays the menu and submenu.
- * - Variabler
- *             h6 : header h6
- *        Navlink : - This component prevents the entire page from reloading again when
- *                    accessing a menu option.
- *                  - It is then exported to navListDrawe as PROPS
- *        onClose : component that works with setOpen
- *        setOpen : - true/false
- *                  - display or close the navListDrawer
- *                  - It is then exported to navListDrawe as PROPS.
- *             To : The "To" replaces the "href" when working with the Navlink component
- *       flexGrow : The flex-grow CSS property sets the flex grow factor of a flex
- *                  item's main size.
- *
- */
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -33,45 +9,45 @@ import {
   SvgIcon,
   Tooltip,
   Drawer,
+  Menu,
+  MenuItem,
+  Divider,
+  ListItemText,
 } from "@mui/material";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useAuth } from "../../context/AuthContext";
 import NavListDrawer from "./NavListDrawer";
+
 
 export default function Navbar({ navBarLinks }) {
   const [open, setOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate(); // React Router hook för navigering
 
-  // Hook to get current location (route)
-  const location = useLocation();
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  useEffect(() => {
-    // Every time the location (route) changes, we scroll up
-    window.scrollTo(0, 0);
-  }, [location]); // This effect is executed every time the route changes
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  const { sharedAccountId } = useParams(); // För att använda sharedAccountId i URL:en
 
-  // Hook to handle the scroll event
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      logout();
+      handleMenuClose();
+      navigate("/"); // Navigate to the home page
+    }
+  };
 
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  // AppBar Initial Color and Scrolled Color
-  const appBarColor = "rgba(57, 73, 171, 1)"; // Solid blue
-  const scrolledColor = "rgba(66, 165, 245, 0.8)";
-
-  // Set AppBar color based on scroll
-  const getBackgroundColor = () => {
-    return scrollY > 0 ? scrolledColor : appBarColor; // Change to dark color when scrolling
+  const handleViewUsersList = () => {
+    navigate("/UsersList"); // Navigate to UsersList page
+    handleMenuClose(); // Close the menu
   };
 
   return (
@@ -79,8 +55,8 @@ export default function Navbar({ navBarLinks }) {
       <AppBar
         sx={{
           position: { xs: "static", sm: "fixed" },
-          backgroundColor: getBackgroundColor(),
-          transition: "background-color 0.3s ease", // Transición suave del color
+          backgroundColor: "rgba(57, 73, 171, 1)",
+          transition: "background-color 0.3s ease",
         }}
       >
         <Toolbar>
@@ -92,29 +68,30 @@ export default function Navbar({ navBarLinks }) {
           >
             <MenuIcon />
           </IconButton>
+
           <SvgIcon color="inherit" sx={{ display: { xs: "none", sm: "flex" } }}>
             <DiamondIcon />
           </SvgIcon>
+
           <Typography
             variant="h6"
             sx={{
               flexGrow: 1,
               paddingLeft: 1,
-              color: "white", // Letras siempre blancas
+              color: "white",
             }}
           >
             StageFinder
           </Typography>
+
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navBarLinks.map((item) => (
               <Button
                 key={item.title}
                 component={NavLink}
                 to={item.path}
-                aria-controls="basic-menu"
-                aria-haspopup="true"
                 sx={{
-                  color: "white", // Buttons always white
+                  color: "white",
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.2)",
                   },
@@ -126,18 +103,94 @@ export default function Navbar({ navBarLinks }) {
               </Button>
             ))}
           </Box>
-          <Tooltip title="Login" arrow>
-            <IconButton
-              color="inherit"
-              sx={{ paddingRight: 1 }}
-              component={NavLink}
-              to={"/Login"}
-            >
-              <PersonIcon />
-            </IconButton>
-          </Tooltip>
+
+          <Box sx={{ display: "flex", alignItems: "center", marginRight: 2 }}>
+            {isAuthenticated && (
+              <Typography sx={{ color: "white", marginRight: 2 }}>
+                Inloggad som {user?.username || "User"}
+              </Typography>
+            )}
+            <Tooltip title={isAuthenticated ? "Account" : "Login"} arrow>
+              <IconButton
+                color="inherit"
+                sx={{ paddingRight: 1 }}
+                onClick={handleMenuOpen}
+              >
+                <PersonIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+
+          <Menu
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+  MenuListProps={{
+    "aria-labelledby": "account-menu",
+  }}
+>
+  {isAuthenticated ? [
+    <MenuItem disabled key="username">
+      <ListItemText primary={` ${user?.username || "User"}`} />
+    </MenuItem>,
+    <Divider key="divider" />,
+    user?.role !== "speaker" && (
+      <MenuItem
+        key="add-speaker"
+        component={NavLink}
+        to="/add-speaker"
+        onClick={handleMenuClose}
+      >
+        Add Speaker
+      </MenuItem>
+    ),
+    user?.shared_account_id && (
+      <MenuItem key="view-users-list" onClick={handleViewUsersList}>
+        View Users List
+      </MenuItem>
+    ),
+    user?.role === "speaker_agent" && (
+      <MenuItem
+        key="requests"
+        component={NavLink}
+        to={`/requests/${sharedAccountId}`} // Dynamisk URL med sharedAccountId
+        onClick={handleMenuClose}
+      >
+        View Requests
+      </MenuItem>
+    ),
+    
+    (user?.role !== "speaker_agent" && (
+      <MenuItem
+        key="user-requests"
+        component={NavLink}
+        to={`/user-requests`}
+        onClick={handleMenuClose}
+      >
+        My Requests
+      </MenuItem>
+    )
+  ),
+    
+    <MenuItem key="logout" onClick={handleLogout}>
+      Logout
+    </MenuItem>
+  ] : (
+    <MenuItem
+      key="login"
+      component={NavLink}
+      to="/login"
+      onClick={handleMenuClose}
+    >
+      Login
+    </MenuItem>
+  )}
+</Menu>
+
+
         </Toolbar>
       </AppBar>
+
       <Drawer
         open={open}
         anchor="left"
@@ -150,9 +203,6 @@ export default function Navbar({ navBarLinks }) {
           setOpen={setOpen}
         />
       </Drawer>
-      <Box sx={{ marginTop: { xs: "0", sm: "64px" } }}>
-        {/* Page content */}
-      </Box>
     </>
   );
 }
