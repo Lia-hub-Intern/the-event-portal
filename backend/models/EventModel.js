@@ -5,7 +5,7 @@ dotenv.config();
 
 const EventModel = {
   /**
-   * Check if an event exists by ID
+   * Check if an event exists by ID.
    * @param {number} event_id - The ID of the event
    * @returns {Promise<boolean>} True if the event exists, otherwise false
    */
