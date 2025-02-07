@@ -1,4 +1,3 @@
-// Importera UserModel med korrekt sökväg
 import UserModel from '../models/UserModel.js';
 
 // === ROUTER: Get Users by Shared Account ID ===
@@ -23,11 +22,9 @@ export const getUsersBySharedAccount = async (req, res) => {
   }
 };
 
-
 export const getUserRequests = async (req, res) => {
   console.log('Request for user requests received for user ID:', req.params.userId);
 
-  // Se till att userId finns i förfrågan
   if (!req.params.userId) {
     return res.status(400).json({ message: 'User ID is required' });
   }
@@ -36,7 +33,6 @@ export const getUserRequests = async (req, res) => {
     const requests = await UserModel.getRequestsByUserId(req.params.userId);
     console.log('Fetched requests:', requests);
     
-    // Returnera JSON data om inga fel finns
     if (requests.length === 0) {
       return res.status(404).json({ message: 'No requests found' });
     }
@@ -48,11 +44,6 @@ export const getUserRequests = async (req, res) => {
   }
 };
 
-
-
-
-
-
 // Handle password reset
 export const resetPassword = async (req, res) => {
   const token = req.method === 'GET' ? req.query.token : req.body.token;
@@ -60,7 +51,6 @@ export const resetPassword = async (req, res) => {
   const newPassword = req.body.newPassword;
 
   if (req.method === 'GET') {
-    // Render password reset form
     if (!token || !username) {
       return res.status(400).send('<h1>Invalid or missing link</h1>');
     }
@@ -77,39 +67,30 @@ export const resetPassword = async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    // Handle password reset
     try {
       if (!token || !username || !newPassword) {
         return res.status(400).send('<h1>Token, username, and new password are required</h1>');
       }
 
       if (newPassword.length < 8) {
-        return res
-          .status(400)
-          .send('<h1>Password must be at least 8 characters long</h1>');
+        return res.status(400).send('<h1>Password must be at least 8 characters long</h1>');
       }
 
-      // Call UserModel to reset the password
       const result = await UserModel.resetPassword(token, username, newPassword);
       return res.send(`<h1>${result.message}</h1>`);
     } catch (error) {
       console.error('Error in resetPassword:', error.message);
-      return res
-        .status(400)
-        .send(`<h1>Error: ${error.message || 'Something went wrong.'}</h1>`);
+      return res.status(400).send(`<h1>Error: ${error.message || 'Something went wrong.'}</h1>`);
     }
   }
 
-  // If method is not GET or POST
   return res.status(405).send('<h1>Method not allowed</h1>');
 };
 
 export const getUsersById = async (req, res) => {
   try {
-    // Extract user_id from req.user
     const user_id = req.user?.user_id;
 
-    // Validate user_id
     if (!user_id) {
       return res.status(400).json({ message: 'User ID is missing' });
     }
@@ -127,5 +108,23 @@ export const getUsersById = async (req, res) => {
   }
 };
 
+// === ROUTER: Delete User Data (GDPR Compliance) ===
+export const deleteUser = async (req, res) => {
+  const { userId } = req.body;
 
-export default { getUsersBySharedAccount, resetPassword, getUsersById };
+  try {
+    const user = await UserModel.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await UserModel.deleteUserById(userId);
+
+    res.status(200).json({ message: 'User data deleted successfully' });
+  } catch (err) {
+    console.error('Error during user data deletion:', err);
+    res.status(500).json({ message: 'Failed to delete user data' });
+  }
+};
+
+export default { getUsersBySharedAccount, resetPassword, getUsersById, deleteUser };

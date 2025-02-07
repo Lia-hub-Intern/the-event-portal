@@ -16,10 +16,11 @@ export const registerUser = async (req, res) => {
       phone_number,
       company_name,
       sharedAccountId,
+      consentGiven, // Added for GDPR compliance
     } = req.body;
 
     // Validate required fields except for phone_number and company_name
-    if (!username || !password || !role || !first_name || !last_name || !email) {
+    if (!username || !password || !role || !first_name || !last_name || !email || consentGiven === undefined) {
       return res.status(400).json({ message: 'All fields except phone number and company name are required' });
     }
 
@@ -85,7 +86,8 @@ if (role === "user_account" && !sharedAccountId) {
       email,
       sharedAccountId,
       validPhoneNumber,
-      validCompanyName
+      validCompanyName,
+      consentGiven // Added for GDPR compliance
     );
 
     // Respond with success message
@@ -100,6 +102,7 @@ if (role === "user_account" && !sharedAccountId) {
         email: newUser.email,
         phone_number: newUser.phone_number,
         company_name: newUser.company_name,
+        consentGiven: newUser.consentGiven, // Added for GDPR compliance
       },
     });
   } catch (error) {
@@ -141,5 +144,24 @@ export const loginUser = async (req, res) => {
   } catch (err) {
     console.error('Error during login:', err);
     res.status(500).json({ message: 'Failed to login user' });
+  }
+};
+
+// === ROUTER: Delete User Data (GDPR Compliance) ===
+export const deleteUser = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const user = await UserModel.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    await UserModel.deleteUserById(userId);
+
+    res.status(200).json({ message: 'User data deleted successfully' });
+  } catch (err) {
+    console.error('Error during user data deletion:', err);
+    res.status(500).json({ message: 'Failed to delete user data' });
   }
 };

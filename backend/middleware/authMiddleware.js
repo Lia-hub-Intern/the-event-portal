@@ -9,6 +9,7 @@ export const generateToken = (user) => {
     role: user.role,
     userId: user.id,
     shared_account_id: user.shared_account_id,
+    consentGiven: user.consentGiven, // Added for GDPR compliance
   };
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
   return token;

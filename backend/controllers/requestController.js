@@ -1,5 +1,5 @@
 // Import necessary dependencies
-import UserModel from '../Models/UserModel.js'; // Assuming the path to UserModel is correct
+import UserModel from '../models/UserModel.js'; // Assuming the path to UserModel is correct
 import pool from '../database/db.js'; // Assuming the path to the database connection is correct
 import { generateResetToken, } from '../middleware/authMiddleware.js ';
 import sgMail from '@sendgrid/mail';
