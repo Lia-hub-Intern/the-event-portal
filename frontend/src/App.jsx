@@ -25,6 +25,7 @@ import "dayjs/locale/en-gb";
 import { useAuth } from "./context/AuthContext"; // Import auth context
 import RequestsPage from "./components/views/RequestsPage";
 import CookieConsentBanner from "./components/CookieConsentBanner"; // Import CookieConsentBanner
+import PrivacyPolicy from "./components/views/PrivacyPolicy"; // Import PrivacyPolicy
 
 // ProtectedRoute component to restrict access
 function ProtectedRoute({ children }) {
@@ -101,6 +102,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/requests/:sharedAccountId" element={<RequestsBySharedAccount />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>
