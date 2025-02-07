@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, Link, Modal } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
 const CookieConsentBanner = () => {
   const [open, setOpen] = useState(false);
@@ -59,11 +60,11 @@ const CookieConsentBanner = () => {
           </Button>
         </Box>
         <Box sx={{ marginTop: 2 }}>
-          <Link href="/privacy-policy" target="_blank" rel="noopener">
+          <Link component={RouterLink} to="/privacy-policy" target="_blank" rel="noopener">
             Privacy Policy
           </Link>
           {' | '}
-          <Link href="/terms-of-service" target="_blank" rel="noopener">
+          <Link component={RouterLink} to="/terms-of-service" target="_blank" rel="noopener">
             Terms of Service
           </Link>
         </Box>
