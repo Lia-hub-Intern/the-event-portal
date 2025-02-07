@@ -15,6 +15,8 @@ import {
   Select,
   TextField,
   Typography,
+  Checkbox,
+  FormControlLabel,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -31,6 +33,7 @@ export default function Register() {
   const [message, setMessage] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
   const [errors, setErrors] = useState({});
+  const [consentGiven, setConsentGiven] = useState(false); // Added for GDPR compliance
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -59,6 +62,11 @@ export default function Register() {
       formErrors.email = 'Invalid email format.';
     }
 
+    // Validate consent given
+    if (!consentGiven) {
+      formErrors.consentGiven = 'You must give your consent to proceed.';
+    }
+
     // If there are validation errors, set error messages
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -77,7 +85,8 @@ export default function Register() {
           last_name: lastName, 
           email, 
           phone_number: phoneNumber, 
-          company_name: companyName 
+          company_name: companyName,
+          consentGiven, // Added for GDPR compliance
         }),
       });
 
@@ -270,6 +279,20 @@ export default function Register() {
               <MenuItem value="user_account">User</MenuItem>
             </Select>
           </FormControl>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={consentGiven}
+                onChange={(e) => setConsentGiven(e.target.checked)}
+                name="consentGiven"
+                color="primary"
+              />
+            }
+            label="I agree to the privacy policy and terms of service"
+          />
+          {errors.consentGiven && (
+            <FormHelperText error>{errors.consentGiven}</FormHelperText>
+          )}
           <Button
             type="submit"
             variant="contained"
