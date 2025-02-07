@@ -20,7 +20,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(false); // "Remember me" state
-  const [consentGiven, setConsentGiven] = useState(false); // Added for GDPR compliance
   const navigate = useNavigate();
   const location = useLocation(); // Access location to get referrer
   const { login } = useAuth(); // Custom login function from AuthContext
@@ -108,16 +107,6 @@ export default function Login() {
               />
             }
             label="Remember me"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                value="consent"
-                checked={consentGiven}
-                onChange={() => setConsentGiven(!consentGiven)} // Toggle for consent
-              />
-            }
-            label="I agree to the privacy policy and terms of service"
           />
           <Button
             type="submit"

@@ -24,6 +24,7 @@ import ForgotPassword from "./components/views/ForgotPassword"
 import "dayjs/locale/en-gb";
 import { useAuth } from "./context/AuthContext"; // Import auth context
 import RequestsPage from "./components/views/RequestsPage";
+import CookieConsentBanner from "./components/CookieConsentBanner"; // Import CookieConsentBanner
 
 // ProtectedRoute component to restrict access
 function ProtectedRoute({ children }) {
@@ -104,6 +105,7 @@ export default function App() {
           </Routes>
         </Container>
         <Footer />
+        <CookieConsentBanner /> {/* Render CookieConsentBanner */}
       </LocalizationProvider>
     </>
   );
