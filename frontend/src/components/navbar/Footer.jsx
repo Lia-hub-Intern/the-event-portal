@@ -192,11 +192,11 @@ export default function Footer() {
           <Box
             sx={{ mt: 1, display: "flex", justifyContent: "center", gap: 1 }}
           >
-            <Link href="#" sx={{ color: "white" }}>
+            <Link href="/privacy-policy" sx={{ color: "white" }}>
               Privacy Policy
             </Link>
             <span>|</span>
-            <Link href="#" sx={{ color: "white" }}>
+            <Link href="/terms-of-service" sx={{ color: "white" }}>
               Terms and Conditions
             </Link>
           </Box>
