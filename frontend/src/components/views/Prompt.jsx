@@ -27,7 +27,7 @@ export default function Prompt() {
       return () => clearTimeout(timeout);
     }
     console.log("RESULT OK!!!.....", result);
-    return () => {};
+    return () => { };
   }, [result, cleared]);
 
   // Function to handle form submission
@@ -46,7 +46,7 @@ export default function Prompt() {
 
     // Make the API request
     try {
-      const response = await fetch("http://localhost:7000/generate", {
+      const response = await fetch("http://localhost:5000/generate", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -264,7 +264,7 @@ export default function Prompt() {
 
 
         try {
-            const response = await fetch("http://localhost:7000/generate", {
+            const response = await fetch("http://localhost:5000/generate", {
                 method: "POST",
                 mode: "cors",
                 headers: { "Content-Type": "application/json" },
