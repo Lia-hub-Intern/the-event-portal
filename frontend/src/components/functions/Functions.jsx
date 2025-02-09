@@ -5,6 +5,7 @@
  *     Program : Navbar.jsx
  *   Path Name : stagefider/frontend/src/components/functions
  *       Tools : Node.js, React, Mterial UI
+ *       Tools : Node.js, React, Mterial UI
  *
  * Description:
  * - General functions of the page
