@@ -1,6 +1,7 @@
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Tooltip from "@mui/material/Tooltip"; // Importera Tooltip
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import SocialMediaLinks from "./SocialMediaLinks";
@@ -23,8 +24,7 @@ import HeaderSida from "./HeaderSida";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const Image =
-  "https://img.freepik.com/fotos-premium/mujer-esta-pie-frente-gran-multitud-dando-discurso_283836-5657.jpg?w=826";
+const Image = "https://img.freepik.com/fotos-premium/mujer-esta-pie-frente-gran-multitud-dando-discurso_283836-5657.jpg?w=826";
 
 export default function Speakers({ title }) {
   const [categories, setCategories] = useState([]);
@@ -65,15 +65,15 @@ export default function Speakers({ title }) {
   return (
     <>
       <HeaderSida headerTitle={"Meet Our Speakers"} headerImage={Image} />
-      
+
       {/* Knapp för att navigera till requestform placerad högst upp */}
       <Box sx={{ textAlign: "center", marginBottom: "2rem" }}>
-  <Link to="/requestform">
-    <Button variant="contained" color="primary">
-      Send a Request
-    </Button>
-  </Link>
-</Box>
+        <Link to="/requestform">
+          <Button variant="contained" color="primary">
+            Send a Request
+          </Button>
+        </Link>
+      </Box>
 
 
       <Grid
