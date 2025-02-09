@@ -1,8 +1,6 @@
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Tooltip from "@mui/material/Tooltip"; // Importera Tooltip
-import Tooltip from "@mui/material/Tooltip"; // Importera Tooltip
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import SocialMediaLinks from "./SocialMediaLinks";
@@ -25,8 +23,8 @@ import HeaderSida from "./HeaderSida";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const Image = "https://img.freepik.com/fotos-premium/mujer-esta-pie-frente-gran-multitud-dando-discurso_283836-5657.jpg?w=826";
-const Image = "https://img.freepik.com/fotos-premium/mujer-esta-pie-frente-gran-multitud-dando-discurso_283836-5657.jpg?w=826";
+const Image =
+  "https://img.freepik.com/fotos-premium/mujer-esta-pie-frente-gran-multitud-dando-discurso_283836-5657.jpg?w=826";
 
 export default function Speakers({ title }) {
   const [categories, setCategories] = useState([]);
@@ -36,17 +34,18 @@ export default function Speakers({ title }) {
     const listCategories = [
       ...new Set(
         listSpeakers
-          .map((res) => res.category.split(","))
-          .flat()
-          .map((category) => category.trim())
+          .map((res) => res.category.split(",")) // Split the categories into an array
+          .flat() // Flattens the resulting array
+          .map((category) => category.trim()) // Removes unnecessary whitespace
       ),
-    ].map((category) => ({ title: category }));
+    ].map((category) => ({ title: category })); // Creates an object with the title property for each category
 
     setCategories([...listCategories]);
   }, []);
 
   const filterSpeakers = (event, newValue) => {
     newValue = newValue.map((value) => value.title.trim().toLowerCase());
+
     const filter = listSpeakers.filter((speaker) => {
       const categorySpeaker = speaker.category
         .split(",")
@@ -56,7 +55,11 @@ export default function Speakers({ title }) {
       );
       return match;
     });
-    setSpeakers(newValue.length > 0 ? [...filter] : [...listSpeakers]);
+    if (newValue.length > 0) {
+      setSpeakers([...filter]);
+    } else {
+      setSpeakers([...listSpeakers]);
+    }
   };
 
   return (

@@ -12,6 +12,7 @@ dist-ssr
 *.local
 build/
 .vite/
+node-modules/
 
 # Editor directories and files
 .vscode/*
