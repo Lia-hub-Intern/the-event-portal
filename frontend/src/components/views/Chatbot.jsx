@@ -22,7 +22,7 @@ export default function Chatbot() {
                 sx={{
                     position: "fixed",
                     bottom: 20,
-                    right: 20,
+                    right: 70,
                 }}
                 onClick={toggleChat}  // Hantera klick för att öppna eller stänga chattfönstret
             >
