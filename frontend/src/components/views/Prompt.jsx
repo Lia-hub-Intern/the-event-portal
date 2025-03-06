@@ -42,6 +42,7 @@ export default function Prompt() {
         message: "",
     });
     const [showEmailField, setShowEmailField] = useState(false); // To control the email input field visibility
+    const [scrollMessage, setScrollMessage] = useState(""); // New state for scroll message
 
     useEffect(() => {
         if (cleared) {
@@ -96,6 +97,20 @@ export default function Prompt() {
                 return [...prevSelectedEvents, item];
             }
         });
+
+        // Scroll to email input when a checkbox is checked
+        if (event.target.checked) {
+            // Remove the scroll message
+            setScrollMessage("");  // Clear the message
+
+            // Scroll to the email input field
+            setTimeout(() => {
+                const emailField = document.querySelector("input[type='email']");
+                if (emailField) {
+                    emailField.scrollIntoView({ behavior: "smooth" });
+                }
+            }, 100); // Allow time for checkbox state change
+        }
     };
 
     // Funktion för att skicka e-post för alla markerade events
@@ -103,10 +118,17 @@ export default function Prompt() {
         event.preventDefault(); // Förhindra att sidan laddas om
 
         if (email && selectedEvents.length > 0) {
-            // Här skickar vi e-post för alla valda events.
-            alert(`Sending email to: ${email} for events: ${selectedEvents.join(", ")}`);
+            // Bygg en strukturerad lista med events och användarens email
+            let eventList = selectedEvents
+                .map((event, index) => `${index + 1}. ${event}`)
+                .join("\n\n");  // Lägg till dubbla radbrytningar för att skapa mellanrum
 
-            // Gör något med emailen, t.ex. skicka den till servern
+            // Skapa meddelandet som vi vill visa i alerten
+            let message = `Sending email to the following events:\n\n${eventList}\n\nTo: ${email}`;
+
+            // Visa alert med strukturerat innehåll
+            alert(message);
+
             // Reset email state and selected events after sending
             setEmail("");
             setSelectedEvents([]);
@@ -114,6 +136,7 @@ export default function Prompt() {
             alert("Please enter an email and select at least one event.");
         }
     };
+
 
     return (
         <Box
@@ -123,15 +146,16 @@ export default function Prompt() {
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "flex-end",
+                alignItems: "flex-start",  // Align the form content to the left
                 width: "100%",
                 marginRight: 4,
-                backgroundColor: "#0a0a0a",
+                backgroundColor: "#0a0a0a", // Dark background
                 padding: 3,
                 color: "#fff",
-                background: "linear-gradient(135deg, #1e3c72, #2a5298)",
+                background: "linear-gradient(135deg, #1e3c72, #2a5298)",  // Gradient background
                 borderRadius: "12px",
                 boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.7)",
+                maxWidth: "100%", // Prevent the background from stretching too far
             }}
         >
             <Paper
@@ -242,6 +266,7 @@ export default function Prompt() {
                         backgroundColor: "#1c1c1c",
                         padding: 2,
                         borderRadius: "8px",
+                        minHeight: "50px",  // Ensure space for results without excessive background size
                     }}
                 >
                     {result.length > 0 ? (
@@ -294,6 +319,23 @@ export default function Prompt() {
                         </Typography>
                     )}
                 </Box>
+
+                {/* Show scroll message */}
+                {scrollMessage && (
+                    <Typography
+                        id="scrollMessage"
+                        sx={{
+                            color: "#ffdd00",
+                            textAlign: "center",
+                            fontSize: "14px",
+                            fontStyle: "italic",
+                            marginTop: 2,
+                            fontWeight: "bold",
+                        }}
+                    >
+                        {scrollMessage}
+                    </Typography>
+                )}
 
                 {/* E-mail Input and Submit Button for Multiple Events */}
                 {showEmailField && selectedEvents.length > 0 && (
