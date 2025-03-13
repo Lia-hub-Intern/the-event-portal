@@ -47,6 +47,15 @@ export default function BeASpeaker() {
   const [phonePrefix, setPhonePrefix] = useState("+46"); // Set default prefix for Sweden
   const [isChecked, setIsChecked] = useState(false); // State for the checkbox
   const [showMore, setShowMore] = useState(false); // State to manage "Read more" toggle
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    companyName: "",
+    comments: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Function to handle country change and set phone prefix
   const handleCountryChange = (event) => {
@@ -73,6 +82,41 @@ export default function BeASpeaker() {
   // Function to toggle "Read more"
   const handleReadMoreToggle = () => {
     setShowMore(!showMore);
+  };
+
+  // Function to handle form input changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Function to validate form data
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.fullName) errors.fullName = "Full name is required";
+    if (!formData.email) errors.email = "Email is required";
+    if (!formData.phoneNumber) errors.phoneNumber = "Phone number is required";
+    if (!formData.companyName) errors.companyName = "Company name is required";
+    return errors;
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const errors = validateForm();
+    if (Object.keys(errors).length === 0) {
+      setIsSubmitting(true);
+      // Simulate form submission
+      setTimeout(() => {
+        setIsSubmitting(false);
+        alert("Form submitted successfully!");
+      }, 2000);
+    } else {
+      setFormErrors(errors);
+    }
   };
 
   return (
@@ -207,6 +251,8 @@ export default function BeASpeaker() {
           </Typography>
 
           <Box
+            component="form"
+            onSubmit={handleSubmit}
             sx={{
               width: "100%",
               display: "flex",
@@ -219,6 +265,11 @@ export default function BeASpeaker() {
               label="Full name"
               variant="outlined"
               fullWidth
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleInputChange}
+              error={!!formErrors.fullName}
+              helperText={formErrors.fullName}
               sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
             />
             <TextField
@@ -226,6 +277,11 @@ export default function BeASpeaker() {
               label="Email"
               variant="outlined"
               fullWidth
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              error={!!formErrors.email}
+              helperText={formErrors.email}
               sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
             />
 
@@ -252,6 +308,11 @@ export default function BeASpeaker() {
                   label="Phone Number"
                   variant="outlined"
                   fullWidth
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  error={!!formErrors.phoneNumber}
+                  helperText={formErrors.phoneNumber}
                 />
               </Grid>
             </Grid>
@@ -261,6 +322,11 @@ export default function BeASpeaker() {
               label="Company name"
               variant="outlined"
               fullWidth
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleInputChange}
+              error={!!formErrors.companyName}
+              helperText={formErrors.companyName}
               sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
             />
             <TextField
@@ -269,6 +335,9 @@ export default function BeASpeaker() {
               fullWidth
               multiline // Enables the multiline text field
               rows={4} // Adjusts the height of the text area (you can increase or decrease the number of rows as needed)
+              name="comments"
+              value={formData.comments}
+              onChange={handleInputChange}
               sx={{ "& .MuiInputBase-input": { fontSize: "1rem" } }} // Reduced font size
             />
             <FormControlLabel
@@ -308,12 +377,13 @@ export default function BeASpeaker() {
             )}
 
             <Button
+              type="submit"
               variant="contained"
               color="primary"
-              disabled={!isChecked} // Disable the button if the checkbox is not checked
+              disabled={!isChecked || isSubmitting} // Disable the button if the checkbox is not checked or form is submitting
               sx={{ marginTop: "10px" }}
             >
-              Submit
+              {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
           </Box>
         </Box>
