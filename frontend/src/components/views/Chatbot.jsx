@@ -25,6 +25,7 @@ export default function Chatbot() {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isOpen]);
+
     return (
         <>
             {isOpen && (
@@ -35,16 +36,19 @@ export default function Chatbot() {
                         bottom: 120,
                         right: 30,
                         zIndex: 1000,
-                        animation: "fadeIn 0.4s ease",
+                        animation: "fadeIn 0.4s ease", // Fade-in animation
                         background: "linear-gradient(145deg, #ffffff, #f9f9f9)",
                         boxShadow: "0 8px 16px rgba(0, 0, 0, 0.3)",
                         borderRadius: "20px",
                         padding: "10px",
+                        maxWidth: "350px",
+                        minWidth: "300px",
                     }}
                 >
                     <ChatWindow />
                 </Box>
             )}
+
             <Box
                 onClick={toggleChat}
                 sx={{
@@ -105,6 +109,17 @@ export default function Chatbot() {
                     Chat with Us
                 </Typography>
             </Box>
+
+            <style>{`
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            `}</style>
         </>
     );
 }
