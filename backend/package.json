@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@sendgrid/mail": "^8.1.4",
-    "axios": "^1.7.9",
+    "axios": "^1.8.3",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
@@ -9,6 +9,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "groq": "^3.79.0",
     "groq-sdk": "^0.15.0",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.9",

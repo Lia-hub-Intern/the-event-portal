@@ -26,6 +26,8 @@ import { useAuth } from "./context/AuthContext"; // Import auth context
 import RequestsPage from "./components/views/RequestsPage";
 import CookieConsentBanner from "./components/CookieConsentBanner"; // Import CookieConsentBanner
 import PrivacyPolicy from "./components/views/PrivacyPolicy"; // Import PrivacyPolicy
+import SpeakerMatcher from "./components/views/SpeakerMatcher";
+import EventDescriptionGenerator from "./components/views/EventDescriptionGenerator";
 
 // ProtectedRoute component to restrict access
 function ProtectedRoute({ children }) {
@@ -103,6 +105,8 @@ export default function App() {
             <Route path="/requests/:sharedAccountId" element={<RequestsBySharedAccount />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/speaker-matcher" element={<SpeakerMatcher />} />
+            <Route path="/event-description-generator" element={<EventDescriptionGenerator />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>

@@ -17,6 +17,8 @@ import Diversity3Icon from "@mui/icons-material/Diversity3";
 import FestivalIcon from "@mui/icons-material/Festival";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import SmartToyIcon from '@mui/icons-material/SmartToy';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 /** Receives a text and puts the first
  * letter in capital letters and the rest
@@ -32,6 +34,8 @@ export const navBarLinks = [
   { title: "Partners", path: "/Partners", icon: <Diversity3Icon /> },
   { title: "Be a Speaker", path: "/BeASpeaker", icon: <RecordVoiceOverIcon /> },
   { title: "About Us", path: "/About", icon: <FestivalIcon /> },
+  { title: "Find Speakers", path: "/speaker-matcher", icon: <SmartToyIcon /> },
+  { title: "AI Content", path: "/event-description-generator", icon: <AutoAwesomeIcon /> },
 ];
 
 export const listSpeakers = [
@@ -169,6 +173,30 @@ export const listSpeakers = [
     instagram: "",
     linkedin: "",
   },
+  {
+    id: 1,
+    name: "Dr. Emma Johnson",
+    title: "Technology Leadership Expert",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    category: "Leadership, Technology, Innovation",
+    description: "Expert in digital transformation and leadership in tech organizations."
+  },
+  {
+    id: 2,
+    name: "Michael Chang",
+    title: "AI Strategy Consultant",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
+    category: "Artificial Intelligence, Strategy, Future of Work",
+    description: "Specializes in implementing AI solutions for enterprise businesses."
+  },
+  {
+    id: 3,
+    name: "Sarah Williams",
+    title: "Workshop Facilitator & Innovation Coach",
+    image: "https://randomuser.me/api/portraits/women/68.jpg", 
+    category: "Innovation, Workshops, Design Thinking",
+    description: "Experienced workshop leader focusing on innovation methodologies."
+  }
 ];
 
 export async function textToArray(data) {

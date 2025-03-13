@@ -13,6 +13,7 @@ import speakerController from '../controllers/speakerController.js';
 import { resetPassword, getUsersById, getUsersBySharedAccount, getUserRequests } from '../controllers/userController.js';
 import { authenticateJWT } from '../middleware/authMiddleware.js';
 import EventRegistrationController from '../controllers/eventRegistrationController.js';
+import { matchSpeakers, generateEventDescription } from '../controllers/aiController.js'; // Update your existing import
 const router = express.Router();
 
 // Speaker routes
@@ -49,6 +50,9 @@ router.post('/api/event-registration/register', authenticateJWT, EventRegistrati
 router.get('/api/event-registration/:user_id/:event_id', authenticateJWT, EventRegistrationController.getRegistrations);
 router.delete('/api/event-registration/all/:event_id', authenticateJWT, EventRegistrationController.deleteEventRegistrations);
 router.delete('/api/event-registration/specific', authenticateJWT, EventRegistrationController.deleteSpecificEventRegistrations);
-router.put('/api/event-registration/update', authenticateJWT, EventRegistrationController.updateRegistration);
+//router.put('/api/event-registration/update', authenticateJWT, EventRegistrationController.updateRegistration);
+
+router.post('/api/match-speakers', matchSpeakers); // Add this route with your other routes (before export default router;)
+router.post('/api/generate-event-description', generateEventDescription); // Add this route with your other routes
 
 export default router;
