@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useLocation, useNavigate, } from 'react-router-dom';
 import { Container, Typography, Button, Card, CardContent, Box, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 import { useAuth } from "../../context/AuthContext";
+import axios from 'axios';
 
 const EventRegistration = () => {
-  const { isAuthenticated } = useAuth(); // Check if the user is authenticated
+  const { isAuthenticated, user } = useAuth(); // Check if the user is authenticated and get user info
   const navigate = useNavigate(); // Initialize navigation
   const location = useLocation(); // Get current location
   const event = location.state?.event;
@@ -17,6 +18,9 @@ const EventRegistration = () => {
     other: false,
   });
 
+  const [error, setError] = useState(null); // State for error messages
+  const [successMessage, setSuccessMessage] = useState(null); // State for success messages
+
   // Handle checkbox change
   const handleChange = (event) => {
     const { name, checked } = event.target;
@@ -26,14 +30,7 @@ const EventRegistration = () => {
     }));
   };
 
-  const handleSubmit = async () => { }
-
-  if (!event) {
-    return <div>No event selected!</div>; // Show a message if no event is passed in state
-  }
-
-  // Placeholder for registration logic
-  const handleRegister = () => {
+  const handleSubmit = async () => {
     if (!isAuthenticated) {
       // Redirect to login if not authenticated
       navigate("/login", {
@@ -44,9 +41,31 @@ const EventRegistration = () => {
       });
       return;
     }
-    // Add registration logic here
-    console.log("User registered for event:", event.title);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/event-registration/register', {
+        user_id: user.id,
+        event_id: event.id,
+        registrationOptions: checkedFields,
+      });
+
+      if (response.status === 200) {
+        setSuccessMessage("Registration successful!");
+        setError(null);
+      } else {
+        setError("Registration failed. Please try again.");
+        setSuccessMessage(null);
+      }
+    } catch (error) {
+      setError("An error occurred during registration. Please try again.");
+      setSuccessMessage(null);
+    }
   };
+
+  if (!event) {
+    return <div>No event selected!</div>; // Show a message if no event is passed in state
+  }
+
   return (
     <Container
       sx={{
@@ -165,11 +184,37 @@ const EventRegistration = () => {
                   fontSize: "1rem",
                   textAlign: "center",
                 }}
-                onClick={handleRegister}
+                onClick={handleSubmit}
               >
                 Register
               </Button>
             </Box>
+
+            {/* Display success or error message */}
+            {successMessage && (
+              <Typography
+                variant="body1"
+                sx={{
+                  marginTop: "1rem",
+                  color: "green",
+                  textAlign: "center",
+                }}
+              >
+                {successMessage}
+              </Typography>
+            )}
+            {error && (
+              <Typography
+                variant="body1"
+                sx={{
+                  marginTop: "1rem",
+                  color: "red",
+                  textAlign: "center",
+                }}
+              >
+                {error}
+              </Typography>
+            )}
           </CardContent>
         </Card>
       </Box>

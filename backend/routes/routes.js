@@ -30,10 +30,6 @@ router.post('/api/update-request-status', authenticateJWT, updateRequestStatus);
 router.post('/api/requests', sendRequest);
 router.get('/api/user-requests', authenticateJWT, fetchUserRequests);
 
-
-
-
-
 // Authentication routes
 router.post('/api/register', registerUser);
 router.post('/api/login', loginUser);
@@ -48,16 +44,11 @@ router.route('/reset-password')
 router.get('/api/users', authenticateJWT, getUsersBySharedAccount, getUsersById);
 router.get('/api/requests/user-requests/:userId', authenticateJWT, getUserRequests);
 
-
-
-
-
 // Event Registration routes 
 router.post('/api/event-registration/register', authenticateJWT, EventRegistrationController.registerInterest);
 router.get('/api/event-registration/:user_id/:event_id', authenticateJWT, EventRegistrationController.getRegistrations);
 router.delete('/api/event-registration/all/:event_id', authenticateJWT, EventRegistrationController.deleteEventRegistrations);
 router.delete('/api/event-registration/specific', authenticateJWT, EventRegistrationController.deleteSpecificEventRegistrations);
-//router.put('/api/event-registration/update', authenticateJWT, EventRegistrationController.updateRegistration);
-
+router.put('/api/event-registration/update', authenticateJWT, EventRegistrationController.updateRegistration);
 
 export default router;
